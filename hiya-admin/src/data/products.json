@@ -1,0 +1,272 @@
+[
+  {
+    "id": 1,
+    "name": "Espresso",
+    "category": "Hot coffee",
+    "price": 2.5,
+    "stock": 17,
+    "status": "Available",
+    "sold": 225
+  },
+  {
+    "id": 2,
+    "name": "Cappuccino",
+    "category": "Hot coffee",
+    "price": 3.75,
+    "stock": 31,
+    "status": "Available",
+    "sold": 182
+  },
+  {
+    "id": 3,
+    "name": "Spanish latte",
+    "category": "Hot coffee",
+    "price": 4.5,
+    "stock": 64,
+    "status": "Available",
+    "sold": 471
+  },
+  {
+    "id": 4,
+    "name": "Flat white",
+    "category": "Hot coffee",
+    "price": 4,
+    "stock": 23,
+    "status": "Available",
+    "sold": 389
+  },
+  {
+    "id": 5,
+    "name": "Mocha",
+    "category": "Hot coffee",
+    "price": 4.75,
+    "stock": 19,
+    "status": "Available",
+    "sold": 260
+  },
+  {
+    "id": 6,
+    "name": "Iced Spanish latte",
+    "category": "Iced coffee",
+    "price": 4.75,
+    "stock": 61,
+    "status": "Available",
+    "sold": 612
+  },
+  {
+    "id": 7,
+    "name": "Iced caramel latte",
+    "category": "Iced coffee",
+    "price": 4.75,
+    "stock": 35,
+    "status": "Available",
+    "sold": 184
+  },
+  {
+    "id": 8,
+    "name": "Cold brew",
+    "category": "Iced coffee",
+    "price": 4,
+    "stock": 70,
+    "status": "Available",
+    "sold": 293
+  },
+  {
+    "id": 9,
+    "name": "Iced americano",
+    "category": "Iced coffee",
+    "price": 3.5,
+    "stock": 8,
+    "status": "Available",
+    "sold": 43
+  },
+  {
+    "id": 10,
+    "name": "Affogato",
+    "category": "Iced coffee",
+    "price": 5,
+    "stock": 0,
+    "status": "Out of stock",
+    "sold": 95
+  },
+  {
+    "id": 11,
+    "name": "Caramel frappe",
+    "category": "Frappe",
+    "price": 5.4,
+    "stock": 29,
+    "status": "Available",
+    "sold": 102
+  },
+  {
+    "id": 12,
+    "name": "Mocha frappe",
+    "category": "Frappe",
+    "price": 5.4,
+    "stock": 47,
+    "status": "Available",
+    "sold": 251
+  },
+  {
+    "id": 13,
+    "name": "Red velvet frappe",
+    "category": "Frappe",
+    "price": 5.75,
+    "stock": 41,
+    "status": "Available",
+    "sold": 286
+  },
+  {
+    "id": 14,
+    "name": "Hiyamisu frappe",
+    "category": "Frappe",
+    "price": 6.25,
+    "stock": 24,
+    "status": "Available",
+    "sold": 548
+  },
+  {
+    "id": 15,
+    "name": "HIYA frappe",
+    "category": "Frappe",
+    "price": 6,
+    "stock": 32,
+    "status": "Available",
+    "sold": 79
+  },
+  {
+    "id": 16,
+    "name": "Iced matcha latte",
+    "category": "Matcha",
+    "price": 5,
+    "stock": 78,
+    "status": "Available",
+    "sold": 503
+  },
+  {
+    "id": 17,
+    "name": "Matcha latte",
+    "category": "Matcha",
+    "price": 5,
+    "stock": 47,
+    "status": "Available",
+    "sold": 224
+  },
+  {
+    "id": 18,
+    "name": "Strawberry matcha",
+    "category": "Matcha",
+    "price": 5.75,
+    "stock": 48,
+    "status": "Available",
+    "sold": 290
+  },
+  {
+    "id": 19,
+    "name": "Ube latte",
+    "category": "Matcha",
+    "price": 5.5,
+    "stock": 20,
+    "status": "Available",
+    "sold": 311
+  },
+  {
+    "id": 20,
+    "name": "Coconut matcha",
+    "category": "Matcha",
+    "price": 5.5,
+    "stock": 0,
+    "status": "Out of stock",
+    "sold": 255
+  },
+  {
+    "id": 21,
+    "name": "Manakish",
+    "category": "Breakfast",
+    "price": 4,
+    "stock": 60,
+    "status": "Available",
+    "sold": 282
+  },
+  {
+    "id": 22,
+    "name": "Butter croissant",
+    "category": "Breakfast",
+    "price": 3,
+    "stock": 80,
+    "status": "Available",
+    "sold": 82
+  },
+  {
+    "id": 23,
+    "name": "Avocado toast",
+    "category": "Breakfast",
+    "price": 7,
+    "stock": 22,
+    "status": "Available",
+    "sold": 211
+  },
+  {
+    "id": 24,
+    "name": "Halloumi bagel",
+    "category": "Breakfast",
+    "price": 6.5,
+    "stock": 0,
+    "status": "Out of stock",
+    "sold": 321
+  },
+  {
+    "id": 25,
+    "name": "Granola bowl",
+    "category": "Breakfast",
+    "price": 5.5,
+    "stock": 10,
+    "status": "Available",
+    "sold": 285
+  },
+  {
+    "id": 26,
+    "name": "Hiyamisu",
+    "category": "Sweets",
+    "price": 5.5,
+    "stock": 78,
+    "status": "Available",
+    "sold": 455
+  },
+  {
+    "id": 27,
+    "name": "Brownie",
+    "category": "Sweets",
+    "price": 3.5,
+    "stock": 72,
+    "status": "Available",
+    "sold": 184
+  },
+  {
+    "id": 28,
+    "name": "Cheesecake",
+    "category": "Sweets",
+    "price": 5,
+    "stock": 58,
+    "status": "Available",
+    "sold": 418
+  },
+  {
+    "id": 29,
+    "name": "Cookie",
+    "category": "Sweets",
+    "price": 2.5,
+    "stock": 45,
+    "status": "Available",
+    "sold": 120
+  },
+  {
+    "id": 30,
+    "name": "Red velvet cupcake",
+    "category": "Sweets",
+    "price": 3.75,
+    "stock": 0,
+    "status": "Out of stock",
+    "sold": 307
+  }
+]

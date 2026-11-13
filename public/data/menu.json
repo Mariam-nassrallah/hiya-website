@@ -1,0 +1,70 @@
+{
+  "categories": [
+    {
+      "name": "Hot coffee",
+      "description": "Pulled slow, served warm. The classics, done properly.",
+      "items": [
+        { "id": "hc-espresso", "name": "Espresso", "price": 2.5, "description": "A short, rich double shot.", "pick": false },
+        { "id": "hc-cappuccino", "name": "Cappuccino", "price": 3.75, "description": "Espresso with silky foamed milk.", "pick": false },
+        { "id": "hc-spanish", "name": "Spanish latte", "price": 4.5, "description": "Espresso, milk and a touch of condensed milk.", "pick": true },
+        { "id": "hc-flatwhite", "name": "Flat white", "price": 4.0, "description": "Velvety microfoam over a double shot.", "pick": false },
+        { "id": "hc-mocha", "name": "Mocha", "price": 4.75, "description": "Espresso, chocolate and steamed milk.", "pick": false },
+        { "id": "hc-americano", "name": "Americano", "price": 3.0, "image": "americano-brownie.jpg", "description": "Espresso topped with hot water.", "pick": false }
+      ]
+    },
+    {
+      "name": "Iced coffee",
+      "description": "Cold, smooth and made for a slower afternoon.",
+      "items": [
+        { "id": "ic-spanish", "name": "Iced Spanish latte", "price": 4.75, "image": "iced-latte.jpg", "description": "Our favorite, over ice.", "pick": true },
+        { "id": "ic-caramel", "name": "Iced caramel latte", "price": 4.75, "image": "iced-latte.jpg", "description": "Espresso, milk and caramel over ice.", "pick": false },
+        { "id": "ic-coldbrew", "name": "Cold brew", "price": 4.0, "description": "Steeped for 18 hours, smooth and bold.", "pick": false },
+        { "id": "ic-americano", "name": "Iced americano", "price": 3.5, "image": "americano-brownie.jpg", "description": "Espresso and cold water over ice.", "pick": false },
+        { "id": "ic-affogato", "name": "Affogato", "price": 5.0, "description": "Vanilla ice cream drowned in espresso.", "pick": false }
+      ]
+    },
+    {
+      "name": "Frappe",
+      "description": "Blended, cold, and a little indulgent.",
+      "items": [
+        { "id": "fr-caramel", "name": "Caramel", "price": 5.4, "image": "frappe.jpg", "description": "Blended caramel and coffee.", "pick": false },
+        { "id": "fr-vanilla", "name": "Vanilla", "price": 5.4, "image": "frappe.jpg", "description": "Blended vanilla and coffee.", "pick": false },
+        { "id": "fr-mocha", "name": "Mocha", "price": 5.4, "image": "frappe.jpg", "description": "Blended chocolate and coffee.", "pick": false },
+        { "id": "fr-whitemocha", "name": "White mocha", "price": 5.4, "image": "frappe.jpg", "description": "Blended white chocolate and coffee.", "pick": false },
+        { "id": "fr-redvelvet", "name": "Red velvet", "price": 5.75, "image": "red-velvet.jpg", "description": "Red velvet cake in a cup.", "pick": false },
+        { "id": "fr-hiya", "name": "HIYA frappe", "price": 6.0, "image": "frappe.jpg", "description": "Our house blend, topped with cream.", "pick": true }
+      ]
+    },
+    {
+      "name": "Matcha",
+      "description": "Ceremonial grade, whisked to order.",
+      "items": [
+        { "id": "ma-iced", "name": "Iced matcha latte", "price": 5.0, "image": "matcha.jpg", "description": "Hand-whisked matcha over cold milk.", "pick": true },
+        { "id": "ma-latte", "name": "Matcha latte", "price": 5.0, "image": "matcha.jpg", "description": "Hand-whisked matcha with steamed milk.", "pick": false },
+        { "id": "ma-strawberry", "name": "Strawberry matcha", "price": 5.75, "description": "Matcha layered over strawberry milk.", "pick": false },
+        { "id": "ma-ube", "name": "Ube latte", "price": 5.5, "image": "ube.jpg", "description": "Purple yam latte, sweet and nutty.", "pick": false }
+      ]
+    },
+    {
+      "name": "Breakfast",
+      "description": "Baked every morning, served until noon.",
+      "items": [
+        { "id": "br-manakish", "name": "Manakish", "price": 4.0, "image": "manakish.jpg", "description": "Fresh-baked flatbread with zaatar or cheese.", "pick": true },
+        { "id": "br-croissant", "name": "Butter croissant", "price": 3.0, "description": "Flaky, golden and buttery.", "pick": false },
+        { "id": "br-avocado", "name": "Avocado toast", "price": 7.0, "description": "Sourdough, smashed avocado and chili.", "pick": false },
+        { "id": "br-halloumi", "name": "Halloumi bagel", "price": 6.5, "description": "Grilled halloumi, tomato and mint.", "pick": false }
+      ]
+    },
+    {
+      "name": "Sweets",
+      "description": "Something sweet next to your cup.",
+      "items": [
+        { "id": "sw-hiyamisu", "name": "Hiyamisu", "price": 5.5, "image": "hiyamisu.jpg", "description": "Our signature tiramisu in a jar.", "pick": true },
+        { "id": "sw-brownie", "name": "Brownie", "price": 3.5, "image": "americano-brownie.jpg", "description": "Fudgy, dark chocolate brownie.", "pick": false },
+        { "id": "sw-cheesecake", "name": "Cheesecake", "price": 5.0, "description": "Creamy baked cheesecake.", "pick": false },
+        { "id": "sw-cookie", "name": "Cookie", "price": 2.5, "description": "Chewy chocolate chip cookie.", "pick": false },
+        { "id": "sw-cupcake", "name": "Red velvet cupcake", "price": 3.75, "description": "With cream cheese frosting.", "pick": false }
+      ]
+    }
+  ]
+}

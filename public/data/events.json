@@ -1,0 +1,19 @@
+[
+  {
+    "id": 1,
+    "title": "Coffee & Canvas: Paint + Sip Night",
+    "type": "Art",
+    "date": "2026-11-21",
+    "time": "6:30 PM",
+    "end": "8:30 PM",
+    "duration": "2 hrs",
+    "price": 50,
+    "priceLabel": "/ painter",
+    "seats": 20,
+    "taken": 12,
+    "image": "paint-sip-poster.jpg",
+    "poster": true,
+    "includes": ["All painting supplies", "A drink of your choice", "Guided by an artist"],
+    "description": "Unleash your inner artist while sipping on your favorite brew! A guided painting night, all supplies and a drink of your choice are included."
+  }
+]

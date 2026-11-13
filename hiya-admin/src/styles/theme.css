@@ -1,0 +1,231 @@
+/* =========================================================
+   HIYA brand theme for Bootstrap 5
+   Only the five brand colours are used. Lighter/darker tones
+   are mixed from them (color-mix) or use transparency.
+   ========================================================= */
+:root {
+  --olive: #697A32;
+  --terra: #B76F4C;
+  --cream: #F5EBDD;
+  --espresso: #38251D;
+  --sage: #C5C9A2;
+
+  --olive-dark: color-mix(in srgb, var(--olive) 80%, var(--espresso));
+  --terra-dark: color-mix(in srgb, var(--terra) 75%, var(--espresso));
+  --cream-light: color-mix(in srgb, var(--cream) 40%, #fff); /* card surface: a lighter tint of cream */
+  --sage-soft: color-mix(in srgb, var(--sage) 35%, var(--cream));
+  --font-title: 'Playfair Display', Georgia, serif;
+  --sidebar-width: 260px;
+
+  /* ---- Bootstrap variables ---- */
+  --bs-primary: var(--olive);
+  --bs-primary-rgb: 105, 122, 50;
+  --bs-danger: var(--terra);
+  --bs-danger-rgb: 183, 111, 76;
+  --bs-body-bg: var(--cream);
+  --bs-body-bg-rgb: 245, 235, 221;
+  --bs-body-color: var(--espresso);
+  --bs-body-color-rgb: 56, 37, 29;
+  --bs-emphasis-color: var(--espresso);
+  --bs-heading-color: var(--espresso);
+  --bs-secondary-color: rgba(56, 37, 29, .66);
+  --bs-tertiary-bg: var(--sage-soft);
+  --bs-border-color: rgba(56, 37, 29, .12);
+  --bs-border-color-translucent: rgba(56, 37, 29, .12);
+  --bs-link-color: var(--olive);
+  --bs-link-color-rgb: 105, 122, 50;
+  --bs-link-hover-color: var(--olive-dark);
+  --bs-link-hover-color-rgb: 85, 101, 42;
+  --bs-body-font-family: 'DM Sans', system-ui, sans-serif;
+  --bs-border-radius: .75rem;
+  --bs-border-radius-lg: 1rem;
+  --bs-border-radius-xl: 1.25rem;
+  --bs-focus-ring-color: rgba(105, 122, 50, .3);
+  --bs-form-invalid-color: var(--terra-dark);
+  --bs-form-invalid-border-color: var(--terra);
+  --bs-box-shadow: 0 .5rem 1.5rem rgba(56, 37, 29, .08);
+  --bs-box-shadow-sm: 0 .125rem .5rem rgba(56, 37, 29, .07);
+}
+
+body { -webkit-font-smoothing: antialiased; }
+html, body { overflow-x: clip; }
+
+/* Titles use Playfair Display */
+.font-title { font-family: var(--font-title); }
+
+/* ---------- buttons ---------- */
+.btn { --bs-btn-font-weight: 600; border-radius: 999px; }
+.btn-primary {
+  --bs-btn-bg: var(--olive); --bs-btn-border-color: var(--olive); --bs-btn-color: var(--cream);
+  --bs-btn-hover-bg: var(--olive-dark); --bs-btn-hover-border-color: var(--olive-dark); --bs-btn-hover-color: var(--cream);
+  --bs-btn-active-bg: var(--olive-dark); --bs-btn-active-border-color: var(--olive-dark); --bs-btn-active-color: var(--cream);
+  --bs-btn-disabled-bg: var(--olive); --bs-btn-disabled-border-color: var(--olive); --bs-btn-disabled-color: var(--cream);
+  --bs-btn-focus-shadow-rgb: 105, 122, 50;
+}
+.btn-outline-primary {
+  --bs-btn-color: var(--olive); --bs-btn-border-color: rgba(105, 122, 50, .45);
+  --bs-btn-hover-bg: var(--olive); --bs-btn-hover-border-color: var(--olive); --bs-btn-hover-color: var(--cream);
+  --bs-btn-active-bg: var(--olive); --bs-btn-active-border-color: var(--olive); --bs-btn-active-color: var(--cream);
+  --bs-btn-focus-shadow-rgb: 105, 122, 50;
+}
+.btn-danger {
+  --bs-btn-bg: var(--terra); --bs-btn-border-color: var(--terra); --bs-btn-color: var(--cream);
+  --bs-btn-hover-bg: var(--terra-dark); --bs-btn-hover-border-color: var(--terra-dark); --bs-btn-hover-color: var(--cream);
+  --bs-btn-active-bg: var(--terra-dark); --bs-btn-active-border-color: var(--terra-dark); --bs-btn-active-color: var(--cream);
+  --bs-btn-focus-shadow-rgb: 183, 111, 76;
+}
+.btn-outline-danger {
+  --bs-btn-color: var(--terra-dark); --bs-btn-border-color: rgba(183, 111, 76, .5);
+  --bs-btn-hover-bg: var(--terra); --bs-btn-hover-border-color: var(--terra); --bs-btn-hover-color: var(--cream);
+  --bs-btn-active-bg: var(--terra); --bs-btn-active-border-color: var(--terra); --bs-btn-active-color: var(--cream);
+  --bs-btn-focus-shadow-rgb: 183, 111, 76;
+}
+.btn-outline-secondary {
+  --bs-btn-color: var(--espresso); --bs-btn-border-color: rgba(56, 37, 29, .25);
+  --bs-btn-hover-bg: var(--espresso); --bs-btn-hover-border-color: var(--espresso); --bs-btn-hover-color: var(--cream);
+  --bs-btn-active-bg: var(--espresso); --bs-btn-active-border-color: var(--espresso); --bs-btn-active-color: var(--cream);
+  --bs-btn-focus-shadow-rgb: 56, 37, 29;
+}
+.btn-icon { width: 34px; height: 34px; padding: 0; display: inline-grid; place-items: center; }
+
+/* ---------- forms ---------- */
+.form-control, .form-select { background-color: var(--cream-light); border-color: rgba(56, 37, 29, .16); border-radius: .75rem; }
+.form-control:focus, .form-select:focus { border-color: var(--olive); box-shadow: 0 0 0 .25rem rgba(105, 122, 50, .2); background-color: var(--cream-light); }
+.form-control.is-invalid, .form-select.is-invalid { border-color: var(--terra); }
+/* Bootstrap's invalid icon is a fixed red; the terracotta border + message are enough */
+.form-control.is-invalid { background-image: none; padding-right: .75rem; }
+.form-control.is-invalid:focus { border-color: var(--terra); box-shadow: 0 0 0 .25rem rgba(183, 111, 76, .2); }
+.form-label { font-weight: 600; font-size: .875rem; }
+
+/* ---------- cards ---------- */
+.card {
+  --bs-card-bg: var(--cream-light); --bs-card-border-color: transparent; --bs-card-border-radius: 1.25rem;
+  --bs-card-inner-border-radius: 1.25rem; --bs-card-cap-bg: transparent;
+  box-shadow: 0 .75rem 2rem -1rem rgba(56, 37, 29, .25);
+}
+.card-title { font-weight: 600; }
+
+/* ---------- tables ---------- */
+.table {
+  --bs-table-bg: transparent; --bs-table-color: var(--espresso);
+  --bs-table-hover-bg: rgba(197, 201, 162, .28); --bs-table-hover-color: var(--espresso);
+  --bs-table-border-color: rgba(56, 37, 29, .08);
+}
+.table > thead th {
+  font-size: .75rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase;
+  color: var(--bs-secondary-color); white-space: nowrap; border-bottom-width: 1px;
+}
+.table td { white-space: nowrap; }
+
+/* ---------- pagination ---------- */
+.pagination {
+  --bs-pagination-color: var(--olive); --bs-pagination-bg: var(--cream-light);
+  --bs-pagination-border-color: rgba(56, 37, 29, .12);
+  --bs-pagination-hover-color: var(--olive-dark); --bs-pagination-hover-bg: var(--sage-soft);
+  --bs-pagination-hover-border-color: rgba(56, 37, 29, .12);
+  --bs-pagination-focus-color: var(--olive-dark); --bs-pagination-focus-bg: var(--sage-soft);
+  --bs-pagination-focus-box-shadow: 0 0 0 .25rem rgba(105, 122, 50, .25);
+  --bs-pagination-active-bg: var(--olive); --bs-pagination-active-border-color: var(--olive); --bs-pagination-active-color: var(--cream);
+  --bs-pagination-disabled-color: rgba(56, 37, 29, .35); --bs-pagination-disabled-bg: var(--cream-light);
+  --bs-pagination-disabled-border-color: rgba(56, 37, 29, .12);
+}
+
+/* ---------- badges (StatusBadge) ---------- */
+.badge { font-weight: 600; padding: .45em .8em; border-radius: 999px; }
+.badge-olive { background: var(--olive); color: var(--cream); }
+.badge-terra { background: var(--terra); color: var(--cream); }
+.badge-sage { background: var(--sage); color: var(--espresso); }
+.badge-espresso { background: var(--espresso); color: var(--cream); }
+
+/* ---------- modal, toast, misc ---------- */
+.modal { --bs-modal-bg: var(--cream-light); --bs-modal-border-color: transparent; --bs-modal-border-radius: 1.25rem; --bs-modal-header-border-color: rgba(56, 37, 29, .08); --bs-modal-footer-border-color: rgba(56, 37, 29, .08); }
+.modal-backdrop { --bs-backdrop-bg: var(--espresso); --bs-backdrop-opacity: .45; }
+.modal-title { font-family: var(--font-title); font-weight: 600; }
+.toast { --bs-toast-bg: var(--espresso); --bs-toast-color: var(--cream); --bs-toast-border-color: transparent; --bs-toast-border-radius: 1rem; }
+.toast.toast-success { --bs-toast-bg: var(--olive); }
+.toast.toast-danger { --bs-toast-bg: var(--terra-dark); }
+.progress { --bs-progress-bg: var(--sage-soft); --bs-progress-bar-bg: var(--olive); --bs-progress-height: .5rem; border-radius: 999px; }
+.list-group { --bs-list-group-bg: transparent; --bs-list-group-border-color: rgba(56, 37, 29, .08); }
+.min-w-0 { min-width: 0; }
+.text-olive { color: var(--olive) !important; }
+.text-terra { color: var(--terra-dark) !important; }
+.bg-sage-soft { background: var(--sage-soft) !important; }
+
+/* ---------- layout ---------- */
+.admin-main { min-width: 0; }
+@media (min-width: 992px) {
+  .sidebar-shell { position: fixed; inset: 0 auto 0 0; width: var(--sidebar-width); background: var(--espresso); z-index: 1030; }
+  .admin-main { margin-left: var(--sidebar-width); }
+}
+
+.sidebar { --bs-offcanvas-bg: var(--espresso); --bs-offcanvas-color: var(--cream); --bs-offcanvas-width: 280px; color: var(--cream); }
+.sidebar .offcanvas-body { height: 100%; }
+@media (min-width: 992px) { .sidebar-shell .sidebar { height: 100%; } }
+.sidebar-brand img { width: 46px; height: 46px; border-radius: 50%; background: var(--cream); }
+.sidebar-brand span { font-family: var(--font-title); font-size: 1.35rem; font-weight: 600; letter-spacing: .02em; }
+.sidebar-brand small { color: var(--sage); letter-spacing: .2em; font-size: .65rem; font-weight: 600; }
+.sidebar-link {
+  display: flex; align-items: center; gap: .85rem; padding: .75rem 1rem; border-radius: .9rem;
+  color: rgba(245, 235, 221, .75); font-weight: 500; text-decoration: none; transition: background .2s, color .2s;
+}
+.sidebar-link i { font-size: 1.15rem; }
+.sidebar-link:hover { color: var(--cream); background: rgba(245, 235, 221, .08); }
+.sidebar-link.active { color: var(--cream); background: var(--olive); box-shadow: 0 .5rem 1rem -.6rem var(--olive); }
+.sidebar-close { color: var(--cream); }
+.sidebar-close:hover { color: var(--sage); }
+.sidebar-note { background: rgba(245, 235, 221, .07); color: rgba(245, 235, 221, .7); }
+
+.top-navbar { background: rgba(245, 235, 221, .92); backdrop-filter: blur(8px); border-bottom: 1px solid rgba(56, 37, 29, .08); }
+.page-title { font-family: var(--font-title); font-weight: 600; }
+.avatar {
+  width: 40px; height: 40px; border-radius: 50%; display: inline-grid; place-items: center; flex-shrink: 0;
+  background: var(--terra); color: var(--cream); font-weight: 700; font-size: .9rem;
+}
+
+.avatar-sm { width: 32px; height: 32px; font-size: .75rem; background: var(--sage); color: var(--espresso); }
+.rank {
+  width: 32px; height: 32px; border-radius: 10px; flex-shrink: 0; display: grid; place-items: center;
+  background: var(--sage-soft); color: var(--olive-dark); font-family: var(--font-title); font-weight: 600;
+}
+
+/* stat cards */
+.stat-icon { width: 48px; height: 48px; border-radius: 14px; display: grid; place-items: center; font-size: 1.35rem; flex-shrink: 0; }
+.stat-value { font-family: var(--font-title); font-weight: 600; font-size: 1.9rem; line-height: 1.1; }
+.icon-olive { background: rgba(105, 122, 50, .14); color: var(--olive); }
+.icon-terra { background: rgba(183, 111, 76, .15); color: var(--terra-dark); }
+.icon-sage { background: var(--sage-soft); color: var(--olive-dark); }
+.icon-espresso { background: rgba(56, 37, 29, .1); color: var(--espresso); }
+
+/* card hover polish */
+.card-lift { transition: transform .25s ease, box-shadow .25s ease; }
+.card-lift:hover { transform: translateY(-3px); box-shadow: 0 1rem 2.25rem -1rem rgba(56, 37, 29, .32); }
+
+.chart-box { position: relative; width: 100%; }
+.empty-state i { font-size: 2.25rem; color: var(--sage); }
+
+/* ---------- login page ---------- */
+.form-check-input:checked { background-color: var(--olive); border-color: var(--olive); }
+.form-check-input:focus { border-color: var(--olive); box-shadow: 0 0 0 .25rem rgba(105, 122, 50, .2); }
+.login-box { max-width: 440px; }
+.login-logo { width: 72px; height: 72px; border-radius: 50%; background: var(--cream-light); box-shadow: 0 .5rem 1.25rem -.5rem rgba(56, 37, 29, .3); }
+.login-photo {
+  min-height: calc(100vh - 2rem); color: var(--cream);
+  background:
+    linear-gradient(180deg, transparent 45%, rgba(56, 37, 29, .78)),
+    url('/login-photo.jpg') center / cover no-repeat;
+}
+.login-quote { font-family: var(--font-title); font-size: clamp(2rem, 3vw, 2.75rem); font-weight: 600; line-height: 1.1; }
+.login-quote-sub { letter-spacing: .2em; color: var(--sage); }
+.password-toggle {
+  --bs-btn-bg: var(--cream-light); --bs-btn-color: var(--espresso); --bs-btn-border-color: rgba(56, 37, 29, .16);
+  --bs-btn-hover-bg: var(--sage-soft); --bs-btn-hover-color: var(--espresso); --bs-btn-hover-border-color: rgba(56, 37, 29, .16);
+  --bs-btn-active-bg: var(--sage-soft); --bs-btn-active-color: var(--espresso); --bs-btn-active-border-color: rgba(56, 37, 29, .16);
+  border-radius: 0 .75rem .75rem 0 !important;
+}
+.input-group > .form-control:not(:last-child) { border-top-right-radius: 0; border-bottom-right-radius: 0; }
+.login-info { background: rgba(105, 122, 50, .12); color: var(--olive-dark); border: 0; }
+.demo-note { background: var(--sage-soft); }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition: none !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; }
+}

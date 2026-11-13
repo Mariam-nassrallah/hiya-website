@@ -1,0 +1,9 @@
+[
+  {
+    "id": 1,
+    "email": "admin@hiya.com",
+    "password": "hiya123",
+    "name": "Admin",
+    "role": "Manager"
+  }
+]

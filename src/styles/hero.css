@@ -1,0 +1,127 @@
+/* ---------- HERO ---------- */
+.hero {
+  position: relative; min-height: max(100vh, 760px);
+  display: flex; flex-direction: column; justify-content: space-between;
+  overflow: hidden; color: var(--cream); background: var(--hero-grad);
+}
+.hero-bg {
+  position: absolute; top: 70px; right: -2%; width: min(80vw, 1300px); aspect-ratio: 1672 / 941;
+  background-position: center; background-size: cover; background-repeat: no-repeat;
+  -webkit-mask-image: radial-gradient(58% 50% at 60% 48%, #000 62%, transparent 100%);
+  mask-image: radial-gradient(58% 50% at 60% 48%, #000 62%, transparent 100%);
+  transform: translateX(60px) scale(1.06); opacity: 0;
+  animation: bgIn 1.6s .1s var(--ease) forwards;
+}
+@keyframes bgIn { to { transform: none; opacity: 1; } }
+
+.hero .wrap { position: relative; z-index: 2; }
+.hero .wrap.top { padding: 160px 0 80px; }
+.copy { max-width: 600px; }
+/* next-event pill (EventPill) */
+.event-pill {
+  display: inline-flex; align-items: center; gap: 12px; max-width: 100%; margin-bottom: 28px;
+  padding: 6px 6px 6px 16px; border-radius: 999px; cursor: pointer;
+  border: 1px solid color-mix(in srgb, var(--cream) 30%, transparent);
+  background: color-mix(in srgb, var(--cream) 10%, transparent); backdrop-filter: blur(8px);
+  color: var(--cream); font: 400 .86rem var(--sans); text-align: left;
+  transition: background .3s var(--ease), border-color .3s var(--ease);
+}
+.event-pill:hover { background: color-mix(in srgb, var(--cream) 18%, transparent); border-color: color-mix(in srgb, var(--cream) 55%, transparent); }
+.ep-dot { position: relative; width: 8px; height: 8px; flex-shrink: 0; border-radius: 50%; background: var(--terra); }
+.ep-dot::after { content: ''; position: absolute; inset: 0; border-radius: 50%; background: var(--terra); animation: epPulse 1.8s var(--ease) infinite; }
+@keyframes epPulse { from { transform: scale(1); opacity: .8; } to { transform: scale(3.2); opacity: 0; } }
+.ep-text { display: block; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ep-text b { font-weight: 600; }
+.ep-cta {
+  flex-shrink: 0; display: inline-flex; align-items: center; gap: 6px; padding: 8px 14px; border-radius: 999px;
+  background: var(--terra); color: var(--cream); font-size: .74rem; font-weight: 700; letter-spacing: .08em;
+  transition: background .3s var(--ease);
+}
+.event-pill.is-full .ep-cta { background: color-mix(in srgb, var(--cream) 20%, transparent); }
+.event-pill.is-full .ep-dot, .event-pill.is-full .ep-dot::after { background: color-mix(in srgb, var(--cream) 60%, transparent); }
+
+.eyebrow { font-size: .82rem; letter-spacing: .3em; font-weight: 500; }
+.rule { width: 60px; height: 1px; background: color-mix(in srgb, var(--cream) 60%, transparent); margin: 24px 0 30px; }
+
+.hero-title {
+  font-family: var(--serif); font-weight: 600;
+  font-size: clamp(3.4rem, 7.2vw, 6.6rem); line-height: .98; letter-spacing: -.02em;
+}
+.hero-title .dot { color: var(--terra); }
+.hero-title .line { display: block; overflow: hidden; padding-bottom: .08em; }
+.hero-title .line span { display: inline-block; }
+.hero-title .line > span { transform: translateY(105%); animation: rise 1.2s var(--ease) forwards; }
+.hero-title .line:nth-child(2) > span { animation-delay: .12s; }
+@keyframes rise { to { transform: none; } }
+
+.desc { font-size: 1.3rem; line-height: 1.5; margin-top: 26px; max-width: 440px; color: color-mix(in srgb, var(--cream) 92%, transparent); }
+.cta-row { display: flex; gap: 18px; margin-top: 40px; flex-wrap: wrap; }
+
+.btn-ghost {
+  border: 1.5px solid color-mix(in srgb, var(--cream) 85%, transparent);
+  color: var(--cream); padding: 15px 22px 15px 28px; background: transparent;
+}
+.btn-ghost:hover { background: var(--cream); color: var(--olive); }
+.btn-ghost i { width: 24px; height: 24px; border-radius: 50%; background: currentColor; display: grid; place-items: center; }
+.btn-ghost i svg { fill: var(--olive); }
+.btn-ghost:hover i svg { fill: var(--cream); }
+
+/* ---------- hero cards ---------- */
+.hero .h-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 26px; padding: 0 0 60px; }
+.h-card {
+  position: relative; height: 178px; border-radius: 24px; overflow: hidden;
+  display: flex; flex-direction: column; justify-content: center; align-items: flex-start; padding: 0 30px;
+  box-shadow: 0 24px 40px -24px color-mix(in srgb, var(--espresso) 75%, transparent);
+  border: 1px solid color-mix(in srgb, var(--cream) 25%, transparent);
+  transition: transform .5s var(--ease), box-shadow .5s var(--ease);
+}
+.h-card:hover { transform: translateY(-8px); box-shadow: 0 34px 50px -24px color-mix(in srgb, var(--espresso) 80%, transparent); }
+.h-card img {
+  position: absolute; right: 0; top: 0; height: 100%; width: 55%; object-fit: cover;
+  -webkit-mask: linear-gradient(90deg, transparent, #000 35%); mask: linear-gradient(90deg, transparent, #000 35%);
+  transition: transform 1s var(--ease);
+}
+.h-card:hover img { transform: scale(1.07); }
+.h-card h3 { position: relative; font: 500 1.75rem/1.1 var(--serif); max-width: 55%; }
+.h-card .bar { position: relative; width: 26px; height: 2px; background: currentColor; margin: 16px 0 14px; opacity: .7; }
+.h-card .go {
+  position: relative; width: 34px; height: 34px; border-radius: 50%; border: 1.5px solid currentColor;
+  display: grid; place-items: center; transition: .35s var(--ease);
+}
+.h-card:hover .go { background: currentColor; }
+.h-card:hover .go svg { stroke: var(--card-bg); }
+.c1 { --card-bg: var(--olive-dark); background: var(--olive-dark); color: var(--cream); }
+.c2 { --card-bg: var(--terra); background: var(--terra); color: var(--cream); }
+.c3 { --card-bg: var(--cream); background: var(--cream); color: var(--espresso); }
+.c1:hover, .c2:hover { color: var(--cream); }
+.c3:hover { color: var(--espresso); }
+/* "backwards" fill: the card is hidden during its delay, and once the entrance
+   ends the normal styles take over, so the hover lift keeps working. */
+.h-cards .h-card { animation: cardIn 1s var(--ease) backwards; }
+@keyframes cardIn { from { opacity: 0; transform: translateY(30px); } }
+
+@media (max-width: 1100px) { .h-card h3 { font-size: 1.45rem; } }
+
+@media (max-width: 991px) {
+  /* text first, drinks image below it, then the cards */
+  .hero { min-height: 0; }
+  .hero-bg {
+    position: relative; top: auto; right: auto; order: 2; width: 100%; height: 400px; aspect-ratio: auto;
+    margin: 10px 0 0; background-size: cover; background-position: 80% 45%;
+    -webkit-mask-image: linear-gradient(transparent 0, #000 18%, #000 78%, transparent 100%);
+    mask-image: linear-gradient(transparent 0, #000 18%, #000 78%, transparent 100%);
+  }
+  .hero .wrap.top { order: 1; padding: 130px 0 0; }
+  .hero .h-cards { order: 3; grid-template-columns: 1fr; gap: 14px; padding: 0 0 50px; }
+  .h-card { height: 140px; }
+}
+@media (max-width: 520px) {
+  .eyebrow { font-size: .7rem; letter-spacing: .22em; }
+  .event-pill { gap: 10px; padding-left: 14px; font-size: .8rem; margin-bottom: 22px; }
+  .ep-date { display: none; }
+  .hero-title { font-size: 3.3rem; }
+  .desc { font-size: 1.1rem; }
+  .cta-row { gap: 12px; }
+  .cta-row .hy-btn { flex: 1 1 100%; justify-content: center; }
+  .hero-bg { height: 340px; background-size: auto 115%; background-position: 84% 40%; }
+}

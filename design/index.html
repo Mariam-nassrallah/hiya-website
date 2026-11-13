@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#5b5c16">
+<title>HIYA Coffee Shop — A little sip of happiness</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;1,500&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --olive:#697A32; --olive-deep:#55652A; --terra:#B76F4C; --cream:#F5EBDD; --espresso:#38251D; --sage:#C5C9A2;
+  --serif:'Playfair Display',Georgia,serif; --sans:'DM Sans',system-ui,sans-serif;
+  --ease:cubic-bezier(.22,1,.36,1);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{overflow-x:clip}
+body{font-family:var(--sans);background:var(--cream);color:var(--espresso);-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+.wrap{width:min(1240px,92%);margin-inline:auto}
+
+/* ---------- NAVBAR ---------- */
+.nav{position:fixed;inset:0 0 auto;z-index:50;padding:22px 0;transition:background .45s var(--ease),box-shadow .45s var(--ease),padding .45s var(--ease)}
+.nav .wrap{display:flex;align-items:center;gap:28px}
+.brand img{width:62px;height:62px;display:block;transition:width .45s var(--ease),height .45s var(--ease)}
+.divider{width:1px;height:40px;background:rgba(245,235,221,.45)}
+.links{display:flex;gap:40px;list-style:none;margin-right:auto}
+.links a{position:relative;font-size:.98rem;color:rgba(245,235,221,.86);transition:color .3s}
+.links a::after{content:"";position:absolute;left:0;right:0;bottom:-8px;height:2px;background:var(--cream);transform:scaleX(0);transform-origin:left;transition:transform .4s var(--ease)}
+.links a:hover,.links a.active{color:var(--cream)}
+.links a:hover::after,.links a.active::after{transform:scaleX(1)}
+.btn{display:inline-flex;align-items:center;gap:12px;border-radius:999px;font:600 .88rem var(--sans);letter-spacing:.04em;transition:transform .3s var(--ease),background .3s,color .3s,box-shadow .3s;cursor:pointer;border:0}
+.btn-order{background:var(--cream);color:var(--espresso);padding:14px 24px}
+.btn-order:hover{transform:translateY(-2px);box-shadow:0 12px 24px -12px rgba(0,0,0,.45)}
+.burger{display:none;width:44px;height:44px;border:0;background:none;cursor:pointer;position:relative;margin-left:auto}
+.burger span{position:absolute;left:11px;right:11px;height:1.5px;background:var(--cream);transition:.35s var(--ease)}
+.burger span:nth-child(1){top:17px}.burger span:nth-child(2){top:25px}
+.nav.open .burger span:nth-child(1){top:21px;transform:rotate(45deg)}
+.nav.open .burger span:nth-child(2){top:21px;transform:rotate(-45deg)}
+.nav.scrolled{background:rgba(105,122,50,.97);box-shadow:0 10px 30px -18px rgba(56,37,29,.6);padding:10px 0}
+.nav.scrolled .brand img{width:48px;height:48px}
+
+/* ---------- HERO ---------- */
+.hero{position:relative;min-height:max(100vh,760px);display:flex;flex-direction:column;justify-content:space-between;overflow:hidden;color:var(--cream);background:radial-gradient(60% 70% at 55% 40%,#64651d 0%,#5c5d17 50%,#4f510e 100%)}
+.hero-bg{position:absolute;top:70px;right:-2%;width:min(80vw,1300px);aspect-ratio:1672/941;background:url(assets/hero-bg.jpg) center/cover no-repeat;-webkit-mask-image:radial-gradient(58% 50% at 60% 48%,#000 62%,transparent 100%);mask-image:radial-gradient(58% 50% at 60% 48%,#000 62%,transparent 100%);transform:translateX(60px) scale(1.06);opacity:0;animation:bgIn 1.6s .1s var(--ease) forwards}
+@keyframes bgIn{to{transform:none;opacity:1}}
+.hero::after{display:none}
+.hero .wrap{position:relative;z-index:2;padding:150px 0 70px}
+.hero .wrap.top{padding:160px 0 80px}
+.copy{max-width:600px}
+.eyebrow{font-size:.82rem;letter-spacing:.3em;font-weight:500}
+.rule{width:60px;height:1px;background:rgba(245,235,221,.6);margin:24px 0 30px}
+h1{font-family:var(--serif);font-weight:600;font-size:clamp(3.4rem,7.2vw,6.6rem);line-height:.98;letter-spacing:-.02em}
+h1 .dot{color:var(--terra)}
+h1 .line{display:block;overflow:hidden;padding-bottom:.08em}
+h1 .line span{display:inline-block;transform:translateY(105%);animation:rise 1.2s var(--ease) forwards}
+h1 .line:nth-child(2) span{animation-delay:.12s}
+@keyframes rise{to{transform:none}}
+.desc{font-size:1.3rem;line-height:1.5;margin-top:26px;max-width:440px;color:rgba(245,235,221,.92)}
+.cta-row{display:flex;gap:18px;margin-top:40px;flex-wrap:wrap}
+.btn-terra{background:var(--terra);color:var(--cream);padding:17px 28px}
+.btn-terra:hover{transform:translateY(-2px);box-shadow:0 14px 28px -12px rgba(183,111,76,.8)}
+.btn-terra svg{transition:transform .35s var(--ease)}.btn-terra:hover svg{transform:translateX(4px)}
+.btn-ghost{border:1.5px solid rgba(245,235,221,.85);color:var(--cream);padding:15px 22px 15px 28px;background:transparent}
+.btn-ghost:hover{background:var(--cream);color:var(--olive)}
+.btn-ghost i{width:24px;height:24px;border-radius:50%;background:currentColor;display:grid;place-items:center}
+.btn-ghost i svg{fill:var(--olive)}
+.btn-ghost:hover i svg{fill:var(--cream)}
+.reveal{opacity:0;transform:translateY(18px);animation:fadeUp 1s var(--ease) forwards}
+@keyframes fadeUp{to{opacity:1;transform:none}}
+.leaf{position:absolute;z-index:1;color:rgba(197,201,162,.18);pointer-events:none;animation:sway 7s ease-in-out infinite alternate}
+@keyframes sway{to{transform:rotate(6deg) translateY(-10px)}}
+
+/* hero cards */
+.hero .h-cards{position:relative;z-index:2;display:grid;grid-template-columns:repeat(3,1fr);gap:26px;padding:0 0 60px}
+.h-card{position:relative;height:178px;border-radius:24px;overflow:hidden;display:flex;flex-direction:column;justify-content:center;padding:0 30px;
+  box-shadow:0 24px 40px -24px rgba(30,20,10,.7);border:1px solid rgba(245,235,221,.25);transition:transform .5s var(--ease),box-shadow .5s var(--ease)}
+.h-card:hover{transform:translateY(-8px);box-shadow:0 34px 50px -24px rgba(30,20,10,.75)}
+.h-card img{position:absolute;right:0;top:0;height:100%;width:55%;object-fit:cover;-webkit-mask:linear-gradient(90deg,transparent,#000 35%);mask:linear-gradient(90deg,transparent,#000 35%);transition:transform 1s var(--ease)}
+.h-card:hover img{transform:scale(1.07)}
+.h-card h3{position:relative;font:500 1.75rem/1.1 var(--serif);max-width:55%}
+.h-card .bar{position:relative;width:26px;height:2px;background:currentColor;margin:16px 0 14px;opacity:.7}
+.h-card .go{position:relative;width:34px;height:34px;border-radius:50%;border:1.5px solid currentColor;display:grid;place-items:center;transition:.35s var(--ease)}
+.h-card:hover .go{background:currentColor}.h-card:hover .go svg{stroke:var(--card-bg)}
+.c1{--card-bg:#4d5a22;background:#4d5a22;color:var(--cream)}
+.c2{--card-bg:var(--terra);background:var(--terra);color:var(--cream)}
+.c3{--card-bg:var(--cream);background:var(--cream);color:var(--espresso)}
+.h-cards .h-card{opacity:0;transform:translateY(30px);animation:fadeUp 1s var(--ease) forwards}
+
+/* ---------- shared ---------- */
+.label{display:inline-block;font-size:.76rem;letter-spacing:.32em;color:var(--terra);font-weight:600}
+.label.on-dark{color:var(--sage)}
+.h2{font-family:var(--serif);font-weight:500;font-size:clamp(2.3rem,4.4vw,3.7rem);line-height:1.06;margin:14px 0 22px}
+.h2 em,.m-title em{font-style:italic;color:var(--terra)}
+.center{text-align:center}
+.btn-dark{background:var(--olive);color:var(--cream);padding:9px 9px 9px 26px;margin-top:34px}
+.btn-dark i{width:40px;height:40px;border-radius:50%;background:var(--cream);color:var(--olive);display:grid;place-items:center;transition:transform .4s var(--ease)}
+.btn-dark:hover i{transform:rotate(-45deg)}
+.fx{opacity:0;transform:translateY(26px);transition:opacity .9s var(--ease),transform .9s var(--ease)}
+.fx.in{opacity:1;transform:none}
+.wave{position:absolute;left:0;right:0;bottom:-1px;z-index:6;line-height:0}
+.wave svg{width:100%;height:90px;display:block}
+.wave.top{top:-1px;bottom:auto;transform:scaleY(-1)}
+
+/* ---------- story ---------- */
+.story{padding:120px 0 150px}
+.story-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center}
+.story-img{position:relative}
+.story-img>img{width:100%;aspect-ratio:4/5;object-fit:cover;border-radius:220px 220px 28px 28px;box-shadow:0 40px 60px -30px rgba(56,37,29,.45)}
+.badge-round{position:absolute;right:-30px;bottom:50px;width:132px;height:132px;border-radius:50%;background:var(--terra);display:grid;place-items:center;animation:spin 18s linear infinite}
+.badge-round svg{position:absolute;inset:0;width:100%;height:100%;fill:var(--cream);font:600 9.5px var(--sans);letter-spacing:.2em}
+.badge-round img{width:50px;border-radius:50%;animation:spin 18s linear infinite reverse}
+@keyframes spin{to{transform:rotate(360deg)}}
+.lead{font-size:1.05rem;line-height:1.75;color:#5b4a3f;max-width:500px}
+.stats{display:flex;gap:40px;margin-top:36px;padding-top:30px;border-top:1px solid rgba(105,122,50,.25)}
+.stats b{display:block;font:500 2.6rem var(--serif);color:var(--olive);line-height:1}
+.stats span{font-size:.85rem;color:#7a6a5e}
+
+/* ---------- menu (same idea, HIYA colors) ---------- */
+.menu-sec{position:relative;padding:130px 0 170px;color:var(--cream);
+  background:radial-gradient(60% 70% at 90% 10%,rgba(197,201,162,.28),transparent 70%),linear-gradient(160deg,#5d6c2c,#697A32 55%,#76883a)}
+.menu-sec>.wrap{position:relative;z-index:1}
+.m-head{display:flex;justify-content:space-between;align-items:flex-end;gap:30px;flex-wrap:wrap}
+.m-title{font-family:var(--serif);font-weight:600;font-size:clamp(3.2rem,7.5vw,6.6rem);line-height:.95;margin-top:14px}
+.menu-sec .m-title em{color:var(--cream);font-weight:500}
+.menu-sec .m-title .dot{color:var(--terra)}
+.m-head p{max-width:330px;color:rgba(245,235,221,.85);font-size:1.15rem;line-height:1.5;margin-bottom:10px}
+.m-tools{display:flex;gap:12px;margin-top:44px}
+.search{flex:1;max-width:420px;display:flex;align-items:center;gap:10px;padding:0 18px;border-radius:999px;background:rgba(245,235,221,.12);border:1px solid rgba(245,235,221,.3);color:rgba(245,235,221,.75)}
+.search input{flex:1;background:none;border:0;outline:0;color:var(--cream);font:inherit;padding:13px 0}
+.search input::placeholder{color:rgba(245,235,221,.65)}
+.cart-pill{border:0;border-radius:999px;background:var(--cream);color:var(--espresso);font:600 .92rem var(--sans);padding:0 10px 0 20px;display:flex;align-items:center;gap:10px;cursor:pointer}
+.cart-pill span{width:28px;height:28px;border-radius:50%;background:var(--terra);color:var(--cream);display:grid;place-items:center;font-size:.8rem}
+.pills{display:flex;flex-wrap:wrap;gap:10px;margin:26px 0 60px}
+.pill{border:1.5px solid rgba(245,235,221,.4);color:var(--cream);background:transparent;border-radius:999px;padding:10px 20px;font:500 .95rem var(--sans);cursor:pointer;transition:.3s var(--ease)}
+.pill sup{opacity:.7;margin-left:4px}
+.pill:hover{border-color:var(--cream)}
+.pill.on{background:var(--terra);border-color:var(--terra)}
+.content{display:grid;grid-template-columns:.9fr 2fr;gap:56px;min-height:300px}
+.content>*,.items>*{min-width:0}
+.cat-title{font-family:var(--serif);font-weight:500;font-style:italic;font-size:clamp(2.8rem,5vw,4.6rem);line-height:1;color:var(--cream);margin-bottom:16px}
+.cat-desc{color:rgba(245,235,221,.82);max-width:300px;line-height:1.6}
+.items{display:grid;grid-template-columns:1fr 1fr;column-gap:46px;align-content:start}
+.row-i{display:flex;align-items:center;gap:14px;padding:15px 0;border-bottom:1px solid rgba(245,235,221,.2)}
+.thumb{width:52px;height:52px;border-radius:50%;flex-shrink:0;background:var(--sage);color:var(--olive-deep);display:grid;place-items:center;font:italic 500 1.4rem var(--serif);overflow:hidden;border:2px solid rgba(245,235,221,.6)}
+.thumb img{width:100%;height:100%;object-fit:cover}
+.name{font-weight:500;white-space:nowrap}
+.pick{white-space:nowrap;background:var(--cream);color:var(--terra);font-size:.64rem;font-weight:700;letter-spacing:.08em;border-radius:20px;padding:3px 9px}
+.dots{flex:1;border-bottom:1.5px dotted rgba(245,235,221,.4);transform:translateY(4px);min-width:10px}
+.price{font-family:var(--serif);font-size:1.25rem;font-weight:600;color:var(--cream);white-space:nowrap}
+.add{width:34px;height:34px;border-radius:50%;border:1.5px solid rgba(245,235,221,.55);background:transparent;color:var(--cream);flex-shrink:0;cursor:pointer;transition:.3s}
+.add:hover{background:var(--terra);border-color:var(--terra)}
+.anim-out{animation:out .25s ease-in forwards}
+.anim-in{animation:in .6s var(--ease) both}
+@keyframes out{to{opacity:0;transform:translateY(-14px);filter:blur(4px)}}
+@keyframes in{from{opacity:0;transform:translateY(22px);filter:blur(6px)}}
+
+/* ---------- why ---------- */
+.why{padding:40px 0 130px}
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:40px}
+.card{background:var(--sage);border-radius:28px;padding:38px 34px;transition:transform .5s var(--ease),box-shadow .5s var(--ease),opacity .9s var(--ease)}
+.card:hover{transform:translateY(-6px);box-shadow:0 30px 40px -25px rgba(56,37,29,.4)}
+.card .num{font:italic 500 1.2rem var(--serif);color:var(--olive)}
+.card h4{font:500 1.9rem var(--serif);margin:40px 0 10px}
+.card p{color:#5b4a3f;line-height:1.6}
+.card:nth-child(2){background:var(--terra);color:var(--cream)}
+.card:nth-child(2) p,.card:nth-child(2) .num{color:var(--cream)}
+
+/* ---------- gallery ---------- */
+.gallery{padding:0 0 130px}
+.link-arrow{color:var(--terra);font-weight:600;border-bottom:1.5px solid currentColor;padding-bottom:4px;margin-bottom:24px}
+.g-grid{display:grid;grid-template-columns:1.2fr 1fr 1fr 1fr;grid-template-rows:250px 250px;gap:18px;margin-top:30px}
+.g{border-radius:26px;overflow:hidden}
+.g img{width:100%;height:100%;object-fit:cover;transition:transform 1.2s var(--ease)}
+.g:hover img{transform:scale(1.06)}
+.g1{grid-row:span 2}
+
+/* ---------- contact ---------- */
+.contact{padding:120px 0;background:var(--sage);border-radius:60px 60px 0 0}
+.c-grid{display:grid;grid-template-columns:1fr 1fr;gap:70px;align-items:center}
+.info{list-style:none;margin-top:26px}
+.info li{display:flex;justify-content:space-between;padding:18px 0;border-bottom:1px solid rgba(56,37,29,.18)}
+.info b{font-weight:600}.info span{color:#5b4a3f}
+.c-card{background:var(--cream);border-radius:30px;padding:40px;box-shadow:0 30px 50px -30px rgba(56,37,29,.4);display:flex;flex-direction:column;gap:14px}
+.c-card h4{font:500 1.9rem var(--serif);margin-bottom:6px}
+.c-card input,.c-card textarea{width:100%;border:1px solid rgba(56,37,29,.18);background:#fffaf2;border-radius:16px;padding:14px 18px;font:inherit;color:var(--espresso);outline:0;transition:border .3s}
+.c-card input:focus,.c-card textarea:focus{border-color:var(--olive)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.c-card .btn-terra{align-self:flex-start;padding:15px 26px}
+
+/* ---------- footer ---------- */
+.foot{background:var(--espresso);color:var(--cream);padding:80px 0 30px}
+.f-grid{display:grid;grid-template-columns:2fr 1fr 1fr;gap:40px}
+.f-brand{display:flex;align-items:center;gap:16px;font:600 2.2rem var(--serif)}
+.f-brand img{width:64px}
+.foot p{color:rgba(245,235,221,.6);margin-top:12px;letter-spacing:.2em;font-size:.78rem}
+.foot b{display:block;font-weight:600;margin-bottom:14px;color:var(--sage)}
+.foot a{display:block;color:rgba(245,235,221,.72);padding:4px 0;transition:color .3s}.foot a:hover{color:var(--terra)}
+.f-bottom{margin-top:60px;padding-top:24px;border-top:1px solid rgba(245,235,221,.12);font-size:.82rem;color:rgba(245,235,221,.5)}
+
+
+/* ---------- events ---------- */
+.events{padding:20px 0 130px}
+.ev-filter{display:flex;gap:10px;flex-wrap:wrap;margin:6px 0 34px}
+.ev-chip{border:1.5px solid rgba(105,122,50,.35);background:transparent;color:var(--olive);border-radius:999px;padding:9px 18px;font:600 .88rem var(--sans);cursor:pointer;transition:.3s var(--ease)}
+.ev-chip:hover{border-color:var(--olive)}
+.ev-chip.on{background:var(--olive);border-color:var(--olive);color:var(--cream)}
+.ev-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.ev{background:#fffaf2;border-radius:28px;overflow:hidden;box-shadow:0 24px 40px -30px rgba(56,37,29,.45);display:flex;flex-direction:column;transition:transform .5s var(--ease),box-shadow .5s var(--ease)}
+.ev:hover{transform:translateY(-6px);box-shadow:0 34px 50px -30px rgba(56,37,29,.5)}
+.ev-img{position:relative;height:200px;overflow:hidden}
+.ev-img img{width:100%;height:100%;object-fit:cover;transition:transform 1.2s var(--ease)}
+.ev:hover .ev-img img{transform:scale(1.06)}
+.ev-date{position:absolute;left:16px;top:16px;background:var(--cream);border-radius:16px;padding:8px 12px;text-align:center;line-height:1;box-shadow:0 8px 16px -8px rgba(0,0,0,.4)}
+.ev-date b{display:block;font:600 1.5rem var(--serif);color:var(--espresso)}
+.ev-date span{font-size:.68rem;font-weight:700;letter-spacing:.12em;color:var(--terra)}
+.ev-tag{position:absolute;right:16px;top:16px;background:rgba(56,37,29,.55);backdrop-filter:blur(6px);color:var(--cream);font-size:.7rem;font-weight:600;letter-spacing:.08em;border-radius:999px;padding:6px 12px}
+.ev-body{padding:22px 24px 24px;display:flex;flex-direction:column;flex:1}
+.ev-body h4{font:500 1.5rem/1.15 var(--serif)}
+.ev-meta{display:flex;gap:16px;margin:10px 0 12px;font-size:.84rem;color:#7a6a5e}
+.ev-body p{color:#5b4a3f;font-size:.93rem;line-height:1.55;flex:1}
+.seats{margin:18px 0 18px}
+.seats-top{display:flex;justify-content:space-between;font-size:.8rem;font-weight:600;margin-bottom:8px}
+.seats-top .left{color:var(--terra)}
+.bar-bg{height:6px;border-radius:6px;background:rgba(105,122,50,.15);overflow:hidden}
+.bar-fill{height:100%;border-radius:6px;background:var(--olive);transition:width .8s var(--ease)}
+.ev-foot{display:flex;align-items:center;justify-content:space-between}
+.ev-price{font:600 1.4rem var(--serif);color:var(--olive)}
+.ev-price small{font:500 .78rem var(--sans);color:#7a6a5e}
+.btn-reg{background:var(--terra);color:var(--cream);padding:12px 22px}
+.btn-reg:hover{transform:translateY(-2px);box-shadow:0 12px 24px -12px rgba(183,111,76,.8)}
+.btn-reg.done{background:var(--olive)}
+.btn-reg:disabled{background:#cbbfae;cursor:not-allowed;transform:none;box-shadow:none}
+
+/* modal */
+.modal{position:fixed;inset:0;z-index:100;display:grid;place-items:center;padding:20px;background:rgba(56,37,29,.5);backdrop-filter:blur(6px);opacity:0;pointer-events:none;transition:opacity .35s var(--ease)}
+.modal.open{opacity:1;pointer-events:auto}
+.sheet{width:min(520px,100%);background:var(--cream);border-radius:30px;overflow:hidden;transform:translateY(30px) scale(.97);transition:transform .45s var(--ease);max-height:92vh;overflow-y:auto}
+.modal.open .sheet{transform:none}
+.sheet-head{position:relative;background:var(--olive);color:var(--cream);padding:26px 28px}
+.sheet-head small{letter-spacing:.24em;font-size:.7rem;color:var(--sage);font-weight:600}
+.sheet-head h3{font:500 1.8rem var(--serif);margin:6px 0 6px}
+.sheet-head p{font-size:.88rem;opacity:.85}
+.x{position:absolute;right:18px;top:18px;width:36px;height:36px;border-radius:50%;border:1px solid rgba(245,235,221,.4);background:transparent;color:var(--cream);font-size:1.2rem;cursor:pointer}
+.sheet form{padding:24px 28px 28px;display:flex;flex-direction:column;gap:14px}
+.field label{display:block;font-size:.8rem;font-weight:600;margin-bottom:6px}
+.field input,.field select,.field textarea{width:100%;border:1px solid rgba(56,37,29,.18);background:#fffaf2;border-radius:14px;padding:13px 16px;font:inherit;color:var(--espresso);outline:0;transition:border .3s}
+.field input:focus,.field textarea:focus{border-color:var(--olive)}
+.field.err input{border-color:#b5482f}
+.field .msg{display:none;color:#b5482f;font-size:.76rem;margin-top:5px}
+.field.err .msg{display:block}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.stepper{display:flex;align-items:center;border:1px solid rgba(56,37,29,.18);border-radius:14px;background:#fffaf2;overflow:hidden}
+.stepper button{width:44px;height:46px;border:0;background:transparent;font-size:1.2rem;color:var(--olive);cursor:pointer}
+.stepper span{flex:1;text-align:center;font-weight:600}
+.total{display:flex;justify-content:space-between;align-items:center;padding:14px 18px;border-radius:16px;background:var(--sage)}
+.total b{font:600 1.4rem var(--serif);color:var(--olive-deep)}
+.sheet .btn-terra{justify-content:center;padding:16px}
+.success{display:none;padding:40px 28px;text-align:center}
+.success .tick{width:74px;height:74px;border-radius:50%;background:var(--olive);display:grid;place-items:center;margin:0 auto 18px;animation:pop .6s var(--ease)}
+@keyframes pop{from{transform:scale(.4);opacity:0}}
+.success h4{font:500 1.9rem var(--serif)}
+.success p{color:#5b4a3f;margin:10px 0 22px;line-height:1.6}
+.ticket{border:1.5px dashed rgba(105,122,50,.5);border-radius:18px;padding:16px;text-align:left;font-size:.9rem;display:grid;gap:6px;margin-bottom:22px}
+.ticket div{display:flex;justify-content:space-between}.ticket span{color:#7a6a5e}
+.sheet.ok form{display:none}.sheet.ok .success{display:block}
+@media (max-width:991px){.ev-grid{grid-template-columns:1fr 1fr}}
+@media (max-width:640px){.ev-grid{grid-template-columns:1fr}.row2{grid-template-columns:1fr}
+  .modal{align-items:end;padding:0}.sheet{border-radius:28px 28px 0 0;width:100%}}
+
+/* ---------- RESPONSIVE ---------- */
+@media (max-width:1100px){.h-card h3{font-size:1.45rem}.links{gap:26px}}
+@media (max-width:991px){
+  .links,.divider,.nav .btn-order{display:none}
+  .burger{display:block}
+  .menu-panel{position:fixed;inset:0;z-index:-1;background:var(--olive);display:flex;flex-direction:column;justify-content:center;gap:10px;padding:0 8%;
+    clip-path:circle(0 at calc(100% - 40px) 40px);transition:clip-path .7s var(--ease)}
+  .nav.open .menu-panel{clip-path:circle(150% at calc(100% - 40px) 40px)}
+  .nav.open{background:transparent;box-shadow:none}
+  .menu-panel a{font-family:var(--serif);font-size:2.5rem;color:var(--cream);opacity:0;transform:translateY(20px);transition:.5s var(--ease)}
+  .nav.open .menu-panel a{opacity:1;transform:none}
+  .menu-panel .btn-terra{margin-top:24px;align-self:flex-start;font-family:var(--sans);font-size:.95rem}
+
+  /* hero: text first, drinks image below it */
+  .hero{min-height:0}
+  .hero-bg{position:relative;top:auto;right:auto;order:2;width:100%;height:400px;aspect-ratio:auto;margin:10px 0 0;background-size:cover;background-position:80% 45%;
+    -webkit-mask-image:linear-gradient(transparent 0,#000 18%,#000 78%,transparent 100%);mask-image:linear-gradient(transparent 0,#000 18%,#000 78%,transparent 100%)}
+  .hero::after{display:none}
+  .hero .wrap.top{order:1;padding:130px 0 0}
+  .hero .h-cards{order:3;grid-template-columns:1fr;gap:14px;padding:0 0 50px}
+  .h-card{height:140px}
+  .story-grid,.c-grid,.content{grid-template-columns:1fr;gap:40px}
+  .items{grid-template-columns:1fr}.cards{grid-template-columns:1fr}
+  .badge-round{right:10px;width:112px;height:112px}
+  .g-grid{grid-template-columns:1fr 1fr;grid-template-rows:240px 180px 180px}.g1{grid-row:span 2}
+  .f-grid{grid-template-columns:1fr 1fr}.f-grid>div:first-child{grid-column:1/3}
+}
+@media (min-width:992px){.menu-panel{display:none}}
+@media (max-width:520px){
+  .brand img{width:52px;height:52px}
+  .eyebrow{font-size:.7rem;letter-spacing:.22em}
+  h1{font-size:3.3rem}
+  .desc{font-size:1.1rem}
+  .cta-row{gap:12px}.cta-row .btn{flex:1 1 100%;justify-content:center}
+  .hero-bg{height:340px;background-size:auto 115%;background-position:84% 40%}
+  .menu-sec{padding:100px 0 140px}
+  .m-tools{flex-direction:column}.cart-pill{align-self:flex-start;padding:10px 10px 10px 20px}
+  .pills{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:40px}
+  .pill{display:flex;justify-content:space-between;padding:12px 14px;white-space:nowrap}
+  .row-i{gap:10px}.name{white-space:normal}.thumb{width:44px;height:44px}
+  .story,.contact{padding:90px 0}.story-img>img{border-radius:160px 160px 24px 24px}
+  .stats{gap:22px}.stats b{font-size:2rem}
+  .two{grid-template-columns:1fr}.c-card{padding:28px}.contact{border-radius:36px 36px 0 0}
+  .g-grid{grid-template-columns:1fr 1fr;grid-template-rows:none;grid-auto-rows:170px}.g1{grid-row:span 2}
+}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}
+  h1 .line span{transform:none}.reveal,.hero-bg,.h-cards .h-card,.fx{opacity:1;transform:none}}
+</style>
+</head>
+<body>
+
+<header class="nav" id="nav">
+  <div class="wrap">
+    <a href="#" class="brand"><img src="assets/logo.png" alt="HIYA Coffee Shop"></a>
+    <span class="divider"></span>
+    <ul class="links">
+      <li><a href="#" class="active">Home</a></li><li><a href="#menu">Menu</a></li><li><a href="#story">Our Story</a></li>
+      <li><a href="#events">Experiences</a></li><li><a href="#contact">Contact</a></li>
+    </ul>
+    <a href="#" class="btn btn-order">ORDER NOW <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M5 8h14l-1 12H6L5 8z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg></a>
+    <button class="burger" id="burger" aria-label="Menu"><span></span><span></span></button>
+  </div>
+  <nav class="menu-panel">
+    <a href="#">Home</a><a href="#menu">Menu</a><a href="#story">Our Story</a><a href="#events">Experiences</a><a href="#contact">Contact</a>
+    <a href="#" class="btn btn-terra">ORDER NOW</a>
+  </nav>
+</header>
+
+<section class="hero" id="hero">
+  <div class="hero-bg" role="img" aria-label="Iced Spanish latte and iced matcha latte with milk and matcha splashes"></div>
+  <div class="wrap top">
+    <div class="copy">
+      <p class="eyebrow reveal" style="animation-delay:.1s">GOOD COFFEE. GOOD ENERGY. HIYA VIBES.</p>
+      <div class="rule reveal" style="animation-delay:.2s"></div>
+      <h1><span class="line"><span>A little sip</span></span><span class="line"><span>of happiness<span class="dot">.</span></span></span></h1>
+      <p class="desc reveal" style="animation-delay:.5s">Your favorite coffee, matcha and sweet moments — all in one place.</p>
+      <div class="cta-row reveal" style="animation-delay:.65s">
+        <a href="#menu" class="btn btn-terra">EXPLORE OUR MENU <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        <a href="#story" class="btn btn-ghost">DISCOVER HIYA <i><svg width="10" height="10" viewBox="0 0 10 10"><path d="M2 1l7 4-7 4z"/></svg></i></a>
+      </div>
+    </div>
+  </div>
+  <div class="wrap h-cards" id="experiences">
+    <a href="#menu" class="h-card c1" style="animation-delay:.8s"><img src="assets/iced-latte.jpg" alt=""><h3>Signature Drinks</h3><span class="bar"></span><span class="go"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></a>
+    <a href="#menu" class="h-card c2" style="animation-delay:.92s"><img src="assets/hiyamisu.jpg" alt=""><h3>Sweet Treats</h3><span class="bar"></span><span class="go"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></a>
+    <a href="#events" class="h-card c3" style="animation-delay:1.04s"><img src="assets/matcha-girl.jpg" alt=""><h3>Creative Experiences</h3><span class="bar"></span><span class="go"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></a>
+  </div>
+</section>
+
+<!-- ============ OUR STORY ============ -->
+<section class="story" id="story">
+  <div class="wrap story-grid">
+    <div class="story-img fx">
+      <img src="assets/matcha.jpg" alt="">
+      <div class="badge-round"><svg viewBox="0 0 120 120"><defs><path id="c" d="M60 60m-44 0a44 44 0 1 1 88 0a44 44 0 1 1-88 0"/></defs><text><textPath href="#c">GOOD COFFEE · GOOD ENERGY · HIYA · </textPath></text></svg><img src="assets/logo.png" alt=""></div>
+    </div>
+    <div class="fx">
+      <small class="label">OUR STORY</small>
+      <h2 class="h2">A little café with a <em>big</em> heart.</h2>
+      <p class="lead">HIYA started as a small corner for good coffee and good company. Today we pour Spanish lattes, whisk matcha to order and bake sweet treats every morning, all with the same warm HIYA vibe.</p>
+      <div class="stats">
+        <div><b>30+</b><span>drinks on the menu</span></div>
+        <div><b>Daily</b><span>fresh sweets</span></div>
+        <div><b>100%</b><span>HIYA vibes</span></div>
+      </div>
+      <a href="#" class="btn btn-dark">Discover HIYA <i><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></i></a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ MENU (same idea as before, HIYA colors) ============ -->
+<section class="menu-sec" id="menu">
+  <div class="wave top"><svg viewBox="0 0 1440 90" preserveAspectRatio="none"><path d="M0 40C220 95 420 0 720 30s520 60 720 0v60H0z" fill="#F5EBDD"/></svg></div>
+  <div class="wrap">
+    <div class="m-head fx">
+      <div><small class="label on-dark">OUR MENU</small><h2 class="m-title">Pick your <em>pour</em><span class="dot">.</span></h2></div>
+      <p>From your first espresso to your last bite, it's all here.</p>
+    </div>
+    <div class="m-tools fx">
+      <div class="search"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><input placeholder="Search the menu…"></div>
+      <button class="cart-pill">Cart <span>2</span></button>
+    </div>
+    <div class="pills fx" id="pills"></div>
+    <div class="content">
+      <div id="left"><h3 class="cat-title" id="title"></h3><p class="cat-desc" id="desc"></p></div>
+      <div class="items" id="items"></div>
+    </div>
+  </div>
+  <div class="wave"><svg viewBox="0 0 1440 90" preserveAspectRatio="none"><path d="M0 40C220 95 420 0 720 30s520 60 720 0v60H0z" fill="#F5EBDD"/></svg></div>
+</section>
+
+
+<!-- ============ EVENTS ============ -->
+<section class="events" id="events">
+  <div class="wrap">
+    <div class="m-head fx"><div><small class="label">HIYA EXPERIENCES</small><h2 class="h2">Upcoming <em>events</em>.</h2></div>
+      <p style="max-width:340px;color:#5b4a3f;line-height:1.6;margin-bottom:24px">Workshops, tastings and cozy nights at HIYA. Seats are limited, so save yours.</p></div>
+    <div class="ev-filter fx" id="evFilter"></div>
+    <div class="ev-grid" id="evGrid"></div>
+  </div>
+</section>
+
+<div class="modal" id="modal" aria-hidden="true">
+  <div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-labelledby="mTitle">
+    <div class="sheet-head"><small>REGISTRATION</small><h3 id="mTitle"></h3><p id="mMeta"></p><button class="x" id="mClose" aria-label="Close">×</button></div>
+    <form id="regForm" novalidate>
+      <div class="field" data-f="name"><label>Full name</label><input id="fName" placeholder="Your name"><div class="msg">Please enter your name.</div></div>
+      <div class="row2">
+        <div class="field" data-f="phone"><label>Phone (WhatsApp)</label><input id="fPhone" placeholder="+961 70 000 000"><div class="msg">Enter a valid phone number.</div></div>
+        <div class="field" data-f="email"><label>Email (optional)</label><input id="fEmail" placeholder="you@email.com"><div class="msg">Enter a valid email.</div></div>
+      </div>
+      <div class="field"><label>Number of guests</label><div class="stepper"><button type="button" id="minus">−</button><span id="gCount">1</span><button type="button" id="plus">+</button></div><div class="msg" id="gMsg" style="display:none"></div></div>
+      <div class="field"><label>Notes (optional)</label><textarea id="fNotes" rows="2" placeholder="Allergies, special requests…"></textarea></div>
+      <div class="total"><span>Total to pay at HIYA</span><b id="mTotal"></b></div>
+      <button class="btn btn-terra" type="submit">CONFIRM MY SEAT</button>
+    </form>
+    <div class="success">
+      <div class="tick"><svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#F5EBDD" stroke-width="2.5" stroke-linecap="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg></div>
+      <h4>You're in!</h4>
+      <p>We saved your seat. We'll send a reminder on WhatsApp the day before.</p>
+      <div class="ticket" id="ticket"></div>
+      <button class="btn btn-dark" id="okClose" style="margin:0">Done <i><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></i></button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ WHY ============ -->
+<section class="why">
+  <div class="wrap">
+    <div class="center fx"><small class="label">WHY HIYA</small><h2 class="h2">Made with <em>good</em> energy.</h2></div>
+    <div class="cards">
+      <div class="card fx"><span class="num">01</span><h4>Fresh every day</h4><p>Espresso pulled to order and sweets baked each morning.</p></div>
+      <div class="card fx"><span class="num">02</span><h4>Real matcha</h4><p>Ceremonial-grade matcha, whisked by hand for every cup.</p></div>
+      <div class="card fx"><span class="num">03</span><h4>A place to stay</h4><p>Cozy corners, good music and space to slow down.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ GALLERY ============ -->
+<section class="gallery" id="gallery">
+  <div class="wrap">
+    <div class="m-head fx"><div><small class="label">GALLERY</small><h2 class="h2">Moments at <em>HIYA</em>.</h2></div><a href="#" class="link-arrow">@hiya.coffee →</a></div>
+    <div class="g-grid">
+      <div class="g g1 fx"><img src="assets/matcha-girl.jpg" alt=""></div>
+      <div class="g fx"><img src="assets/iced-latte.jpg" alt=""></div>
+      <div class="g fx"><img src="assets/red-velvet.jpg" alt=""></div>
+      <div class="g fx"><img src="assets/ube.jpg" alt=""></div>
+      <div class="g fx"><img src="assets/americano-brownie.jpg" alt=""></div>
+      <div class="g fx"><img src="assets/frappe.jpg" alt=""></div>
+      <div class="g fx"><img src="assets/manakish.jpg" alt=""></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CONTACT ============ -->
+<section class="contact" id="contact">
+  <div class="wrap c-grid">
+    <div class="fx">
+      <small class="label">VISIT US</small>
+      <h2 class="h2">Come for a sip, <em>stay</em> for the vibes.</h2>
+      <ul class="info">
+        <li><b>Address</b><span>Your street, your city</span></li>
+        <li><b>Hours</b><span>Every day · 8am – 12am</span></li>
+        <li><b>Phone</b><span>+961 00 000 000</span></li>
+      </ul>
+    </div>
+    <form class="c-card fx" onsubmit="return false">
+      <h4>Send us a note</h4>
+      <div class="two"><input placeholder="Your name"><input placeholder="Email"></div>
+      <textarea rows="4" placeholder="Message"></textarea>
+      <button class="btn btn-terra">SEND MESSAGE</button>
+    </form>
+  </div>
+</section>
+
+<footer class="foot">
+  <div class="wrap f-grid">
+    <div><div class="f-brand"><img src="assets/logo.png" alt="">HIYA Coffee</div><p>GOOD COFFEE. GOOD ENERGY. HIYA VIBES.</p></div>
+    <div><b>Visit</b><a href="#menu">Menu</a><a href="#story">Our Story</a><a href="#events">Experiences</a></div>
+    <div><b>Follow</b><a href="#">Instagram</a><a href="#">TikTok</a><a href="#">WhatsApp</a></div>
+  </div>
+  <div class="wrap f-bottom">© 2026 HIYA Coffee Shop</div>
+</footer>
+
+<script>
+const nav=document.getElementById('nav');
+const onScroll=()=>nav.classList.toggle('scrolled',scrollY>40);
+addEventListener('scroll',onScroll,{passive:true});onScroll();
+document.getElementById('burger').onclick=()=>nav.classList.toggle('open');
+document.querySelectorAll('.menu-panel a').forEach(a=>a.onclick=()=>nav.classList.remove('open'));
+
+const MENU={
+ "Hot coffee":{desc:"Pulled slow, served warm. The classics, done properly.",items:[["Espresso","2.50"],["Cappuccino","3.75"],["Spanish latte","4.50",1],["Flat white","4.00"],["Mocha","4.75"],["Americano","3.00",0,"americano-brownie"]]},
+ "Iced coffee":{desc:"Cold, smooth and made for a slower afternoon.",items:[["Iced Spanish latte","4.75",1,"iced-latte"],["Iced caramel latte","4.75",0,"iced-latte"],["Cold brew","4.00"],["Iced americano","3.50",0,"americano-brownie"],["Affogato","5.00"]]},
+ "Frappe":{desc:"Blended, cold, and a little indulgent.",items:[["Caramel","5.40",0,"frappe"],["Vanilla","5.40",0,"frappe"],["Mocha","5.40",0,"frappe"],["White mocha","5.40",0,"frappe"],["Red velvet","5.75",0,"red-velvet"],["HIYA frappe","6.00",1,"frappe"]]},
+ "Matcha":{desc:"Ceremonial grade, whisked to order.",items:[["Iced matcha latte","5.00",1,"matcha"],["Matcha latte","5.00",0,"matcha"],["Strawberry matcha","5.75"],["Ube latte","5.50",0,"ube"]]},
+ "Breakfast":{desc:"Baked every morning, served until noon.",items:[["Manakish","4.00",1,"manakish"],["Butter croissant","3.00"],["Avocado toast","7.00"],["Halloumi bagel","6.50"]]},
+ "Sweets":{desc:"Something sweet next to your cup.",items:[["Hiyamisu","5.50",1,"hiyamisu"],["Brownie","3.50",0,"americano-brownie"],["Cheesecake","5.00"],["Cookie","2.50"],["Red velvet cupcake","3.75"]]}};
+const names=Object.keys(MENU);let current="Iced coffee";
+const pills=document.getElementById('pills'),items=document.getElementById('items'),left=document.getElementById('left');
+function renderPills(){pills.innerHTML=names.map(n=>`<button class="pill ${n===current?"on":""}" data-cat="${n}">${n}<sup>${MENU[n].items.length}</sup></button>`).join("")}
+function renderContent(){const c=MENU[current];title.textContent=current;desc.textContent=c.desc;
+ items.innerHTML=c.items.map(([n,p,pick,img],i)=>`<div class="row-i anim-in" style="animation-delay:${i*50}ms"><div class="thumb">${img?`<img src="assets/${img}.jpg" alt="">`:n[0]}</div><span class="name">${n}</span>${pick?'<span class="pick">HIYA PICK</span>':""}<span class="dots"></span><span class="price">$${p}</span><button class="add">+</button></div>`).join("");
+ left.classList.remove("anim-in");void left.offsetWidth;left.classList.add("anim-in")}
+pills.addEventListener("click",e=>{const b=e.target.closest("[data-cat]");if(!b||b.dataset.cat===current)return;current=b.dataset.cat;renderPills();
+ document.querySelectorAll("#left,.row-i").forEach(el=>{el.classList.remove("anim-in");el.classList.add("anim-out")});setTimeout(renderContent,250)});
+renderPills();renderContent();
+
+/* ---------- events + registration ---------- */
+const EVENTS=[
+ {id:1,title:"Latte Art Workshop",type:"Workshop",date:"2026-11-20",time:"6:00 PM",dur:"2 hrs",price:15,seats:12,taken:8,img:"iced-latte",desc:"Learn to pour hearts and tulips with our baristas. Your drink is included."},
+ {id:2,title:"Matcha Tasting Night",type:"Tasting",date:"2026-11-27",time:"7:30 PM",dur:"1.5 hrs",price:12,seats:16,taken:15,img:"matcha",desc:"Taste 4 matcha grades and find your favorite, paired with sweet bites."},
+ {id:3,title:"Paint & Sip",type:"Creative",date:"2026-12-04",time:"5:00 PM",dur:"2.5 hrs",price:20,seats:14,taken:6,img:"matcha-girl",desc:"A cozy painting session with all materials and a drink of your choice."},
+ {id:4,title:"Hiyamisu Baking Class",type:"Workshop",date:"2026-12-11",time:"4:00 PM",dur:"2 hrs",price:18,seats:10,taken:10,img:"hiyamisu",desc:"Make our signature Hiyamisu from scratch and take a jar home."},
+ {id:5,title:"Acoustic Friday",type:"Music",date:"2026-12-18",time:"8:00 PM",dur:"3 hrs",price:0,seats:40,taken:22,img:"americano-brownie",desc:"Live acoustic music, warm drinks and the best HIYA vibes. Free entry."},
+ {id:6,title:"Ube Season Launch",type:"Tasting",date:"2026-12-23",time:"6:00 PM",dur:"2 hrs",price:5,seats:30,taken:9,img:"ube",desc:"Be the first to try the new ube drinks and desserts before they hit the menu."}];
+let store={};try{store=JSON.parse(localStorage.getItem("hiyaRegs")||"{}")}catch(e){}
+const save=()=>{try{localStorage.setItem("hiyaRegs",JSON.stringify(store))}catch(e){}};
+const taken=e=>e.taken+(store[e.id]?store[e.id].guests:0);
+const types=["All",...new Set(EVENTS.map(e=>e.type))];let evType="All";
+const fmt=d=>{const x=new Date(d+"T12:00");return{day:x.getDate(),mon:x.toLocaleString("en",{month:"short"}).toUpperCase(),wd:x.toLocaleString("en",{weekday:"long"})}};
+function renderEvents(){
+ evFilter.innerHTML=types.map(t=>`<button class="ev-chip ${t===evType?"on":""}" data-t="${t}">${t}</button>`).join("");
+ evGrid.innerHTML=EVENTS.filter(e=>evType==="All"||e.type===evType).map((e,i)=>{const f=fmt(e.date),left=e.seats-taken(e),full=left<=0,mine=store[e.id];
+  return `<article class="ev anim-in" style="animation-delay:${i*60}ms">
+   <div class="ev-img"><img src="assets/${e.img}.jpg" alt=""><div class="ev-date"><b>${f.day}</b><span>${f.mon}</span></div><span class="ev-tag">${e.type.toUpperCase()}</span></div>
+   <div class="ev-body"><h4>${e.title}</h4><div class="ev-meta"><span>${f.wd} · ${e.time}</span><span>${e.dur}</span></div><p>${e.desc}</p>
+    <div class="seats"><div class="seats-top"><span>${taken(e)}/${e.seats} booked</span><span class="left">${full?"Fully booked":left<=3?`Only ${left} left!`:`${left} seats left`}</span></div><div class="bar-bg"><div class="bar-fill" style="width:${Math.min(100,taken(e)/e.seats*100)}%"></div></div></div>
+    <div class="ev-foot"><span class="ev-price">${e.price?`$${e.price}<small> / person</small>`:"Free"}</span>
+     <button class="btn btn-reg ${mine?"done":""}" data-id="${e.id}" ${full&&!mine?"disabled":""}>${mine?"✓ Registered":full?"Full":"Register"}</button></div></div></article>`}).join("");
+}
+evFilter.addEventListener("click",e=>{const b=e.target.closest("[data-t]");if(!b)return;evType=b.dataset.t;renderEvents()});
+let cur=null,guests=1;
+function openModal(ev){cur=ev;guests=1;sheet.classList.remove("ok");regForm.reset();regForm.querySelectorAll(".field").forEach(f=>f.classList.remove("err"));
+ const f=fmt(ev.date);mTitle.textContent=ev.title;mMeta.textContent=`${f.wd}, ${f.day} ${f.mon} · ${ev.time} · ${ev.dur}`;updGuests();
+ modal.classList.add("open");modal.setAttribute("aria-hidden","false");setTimeout(()=>fName.focus(),300)}
+function closeModal(){modal.classList.remove("open");modal.setAttribute("aria-hidden","true")}
+function updGuests(){const max=Math.min(6,cur.seats-taken(cur));gCount.textContent=guests;minus.disabled=guests<=1;plus.disabled=guests>=max;
+ mTotal.textContent=cur.price?`$${cur.price*guests}`:"Free"}
+minus.onclick=()=>{guests--;updGuests()};plus.onclick=()=>{guests++;updGuests()};
+evGrid.addEventListener("click",e=>{const b=e.target.closest(".btn-reg");if(!b||b.disabled)return;const ev=EVENTS.find(x=>x.id==b.dataset.id);
+ if(store[ev.id]){showTicket(ev);return}openModal(ev)});
+mClose.onclick=closeModal;okClose.onclick=closeModal;modal.addEventListener("click",e=>{if(e.target===modal)closeModal()});
+addEventListener("keydown",e=>{if(e.key==="Escape")closeModal()});
+function showTicket(ev){const r=store[ev.id],f=fmt(ev.date);if(!modal.classList.contains("open")){cur=ev;mTitle.textContent=ev.title;mMeta.textContent=`${f.wd}, ${f.day} ${f.mon} · ${ev.time}`;modal.classList.add("open")}
+ ticket.innerHTML=`<div><span>Name</span><b>${r.name}</b></div><div><span>Guests</span><b>${r.guests}</b></div><div><span>When</span><b>${f.day} ${f.mon} · ${ev.time}</b></div><div><span>Booking code</span><b>${r.code}</b></div>`;sheet.classList.add("ok")}
+regForm.addEventListener("submit",e=>{e.preventDefault();
+ const v={name:fName.value.trim(),phone:fPhone.value.trim(),email:fEmail.value.trim()};
+ const ok={name:v.name.length>=2,phone:/^\+?[\d\s-]{7,}$/.test(v.phone),email:!v.email||/^\S+@\S+\.\S+$/.test(v.email)};
+ regForm.querySelectorAll(".field[data-f]").forEach(f=>f.classList.toggle("err",!ok[f.dataset.f]));
+ if(!ok.name||!ok.phone||!ok.email)return;
+ store[cur.id]={...v,guests,notes:fNotes.value.trim(),code:"HY-"+Math.random().toString(36).slice(2,7).toUpperCase()};save();renderEvents();showTicket(cur)});
+renderEvents();
+
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add("in");io.unobserve(e.target)}}),{threshold:.15});
+document.querySelectorAll(".fx").forEach(el=>io.observe(el));
+if(new URLSearchParams(location.search).has("shot"))document.querySelectorAll(".fx").forEach(el=>el.classList.add("in"));
+</script>
+</body>
+</html>

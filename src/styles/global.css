@@ -1,0 +1,101 @@
+/* =========================================================
+   Base + shared pieces (buttons, labels, headings, reveal)
+   Loaded after Bootstrap so these rules win.
+   ========================================================= */
+*, *::before, *::after { box-sizing: border-box; }
+html, body { overflow-x: clip; }
+body {
+  margin: 0;
+  font-family: var(--sans);
+  font-size: 16px;
+  line-height: normal;
+  background: var(--bg);
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+}
+/* Undo Bootstrap Reboot spacing so the layout matches the design */
+h1, h2, h3, h4, h5, h6, p, ul, ol, figure, blockquote { margin: 0; padding: 0; }
+h1, h2, h3, h4, h5, h6 { color: inherit; }
+a { color: inherit; text-decoration: none; }
+a:hover { color: inherit; }
+img { max-width: 100%; }
+button { font: inherit; }
+
+:focus-visible { outline: 2px solid var(--terra); outline-offset: 3px; }
+
+.wrap { width: min(1240px, 92%); margin-inline: auto; }
+
+.skip-link:focus {
+  position: fixed !important; left: 16px; top: 16px; z-index: 2000;
+  background: var(--cream); color: var(--espresso); padding: 12px 18px; border-radius: 999px; font-weight: 600;
+}
+.center { text-align: center; }
+
+/* ---------- buttons (prefixed so Bootstrap's .btn never applies) ---------- */
+.hy-btn {
+  display: inline-flex; align-items: center; gap: 12px;
+  border-radius: 999px; border: 0; cursor: pointer;
+  font: 600 .88rem var(--sans); letter-spacing: .04em; line-height: normal;
+  transition: transform .3s var(--ease), background .3s, color .3s, box-shadow .3s;
+}
+.btn-terra { background: var(--terra); color: var(--cream); padding: 17px 28px; }
+.btn-terra:hover { color: var(--cream); transform: translateY(-2px); box-shadow: 0 14px 28px -12px color-mix(in srgb, var(--terra) 80%, transparent); }
+.btn-terra svg { transition: transform .35s var(--ease); }
+.btn-terra:hover svg { transform: translateX(4px); }
+
+.btn-dark { background: var(--olive); color: var(--cream); padding: 9px 9px 9px 26px; margin-top: 34px; }
+.btn-dark:hover { color: var(--cream); }
+.btn-dark i {
+  width: 40px; height: 40px; border-radius: 50%;
+  background: var(--cream); color: var(--olive);
+  display: grid; place-items: center; transition: transform .4s var(--ease);
+}
+.btn-dark:hover i { transform: rotate(-45deg); }
+
+/* ---------- section labels + headings ---------- */
+.label { display: inline-block; font-size: .76rem; letter-spacing: .32em; color: var(--label); font-weight: 600; }
+.label.on-dark { color: var(--sage); }
+.hy-h2 {
+  font-family: var(--serif); font-weight: 500;
+  font-size: clamp(2.3rem, 4.4vw, 3.7rem); line-height: 1.06; margin: 14px 0 22px;
+}
+.hy-h2 em { font-style: italic; color: var(--terra); }
+
+/* Shared header row (menu, events, gallery) */
+.m-head { display: flex; justify-content: space-between; align-items: flex-end; gap: 30px; flex-wrap: wrap; }
+
+/* ---------- reveal on scroll (useReveal) ---------- */
+.fx { opacity: 0; transform: translateY(26px); transition: opacity .9s var(--ease), transform .9s var(--ease); }
+.fx.in { opacity: 1; transform: none; }
+
+/* ---------- load-in animations ---------- */
+.reveal { opacity: 0; transform: translateY(18px); animation: fadeUp 1s var(--ease) forwards; }
+@keyframes fadeUp { to { opacity: 1; transform: none; } }
+
+.anim-out { animation: out .25s ease-in forwards; }
+.anim-in { animation: in .6s var(--ease) both; }
+@keyframes out { to { opacity: 0; transform: translateY(-14px); filter: blur(4px); } }
+@keyframes in { from { opacity: 0; transform: translateY(22px); filter: blur(6px); } }
+
+/* ---------- waves between sections ---------- */
+.wave { position: absolute; left: 0; right: 0; bottom: -1px; z-index: 6; line-height: 0; color: var(--bg); }
+.wave svg { width: 100%; height: 90px; display: block; }
+.wave path { fill: currentColor; }
+.wave.top { top: -1px; bottom: auto; transform: scaleY(-1); }
+
+/* ---------- smooth theme switch (class added by ThemeContext for ~650ms) ---------- */
+.theme-switching *,
+.theme-switching *::before,
+.theme-switching *::after {
+  transition: background-color .5s var(--ease), color .5s var(--ease),
+    border-color .5s var(--ease), fill .5s var(--ease), box-shadow .5s var(--ease) !important;
+}
+
+/* ---------- reduced motion ---------- */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto !important; }
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+  .hero-title .line span { transform: none; }
+  .reveal, .hero-bg, .h-cards .h-card, .fx, .anim-in { opacity: 1; transform: none; filter: none; }
+  .anim-out { opacity: 0; }
+}

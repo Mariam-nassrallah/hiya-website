@@ -1,0 +1,362 @@
+[
+  {
+    "id": 1,
+    "name": "Maya Haddad",
+    "email": "maya.haddad@mail.com",
+    "phone": "+961 74 831 463",
+    "role": "Admin",
+    "status": "Inactive",
+    "joined": "2025-01-08"
+  },
+  {
+    "id": 2,
+    "name": "Karim Khoury",
+    "email": "karim.khoury@mail.com",
+    "phone": "+961 79 467 821",
+    "role": "Admin",
+    "status": "Inactive",
+    "joined": "2025-01-22"
+  },
+  {
+    "id": 3,
+    "name": "Lea Nassar",
+    "email": "lea.nassar@mail.com",
+    "phone": "+961 78 604 406",
+    "role": "Admin",
+    "status": "Active",
+    "joined": "2025-02-13"
+  },
+  {
+    "id": 4,
+    "name": "Omar Saleh",
+    "email": "omar.saleh@mail.com",
+    "phone": "+961 73 573 604",
+    "role": "Staff",
+    "status": "Active",
+    "joined": "2025-02-24"
+  },
+  {
+    "id": 5,
+    "name": "Nour Aoun",
+    "email": "nour.aoun@mail.com",
+    "phone": "+961 76 135 799",
+    "role": "Staff",
+    "status": "Active",
+    "joined": "2025-03-15"
+  },
+  {
+    "id": 6,
+    "name": "Rami Farah",
+    "email": "rami.farah@mail.com",
+    "phone": "+961 73 726 485",
+    "role": "Staff",
+    "status": "Active",
+    "joined": "2025-03-30"
+  },
+  {
+    "id": 7,
+    "name": "Yara Mansour",
+    "email": "yara.mansour@mail.com",
+    "phone": "+961 75 288 799",
+    "role": "Staff",
+    "status": "Active",
+    "joined": "2025-04-15"
+  },
+  {
+    "id": 8,
+    "name": "Hadi Hamdan",
+    "email": "hadi.hamdan@mail.com",
+    "phone": "+961 71 840 150",
+    "role": "Staff",
+    "status": "Active",
+    "joined": "2025-05-04"
+  },
+  {
+    "id": 9,
+    "name": "Sara Chami",
+    "email": "sara.chami@mail.com",
+    "phone": "+961 78 867 694",
+    "role": "Staff",
+    "status": "Active",
+    "joined": "2025-05-19"
+  },
+  {
+    "id": 10,
+    "name": "Ziad Daher",
+    "email": "ziad.daher@mail.com",
+    "phone": "+961 73 373 325",
+    "role": "Staff",
+    "status": "Active",
+    "joined": "2025-06-06"
+  },
+  {
+    "id": 11,
+    "name": "Lina Ghanem",
+    "email": "lina.ghanem@mail.com",
+    "phone": "+961 72 936 922",
+    "role": "Staff",
+    "status": "Inactive",
+    "joined": "2025-06-22"
+  },
+  {
+    "id": 12,
+    "name": "Fadi Issa",
+    "email": "fadi.issa@mail.com",
+    "phone": "+961 78 710 808",
+    "role": "Staff",
+    "status": "Active",
+    "joined": "2025-07-12"
+  },
+  {
+    "id": 13,
+    "name": "Dana Karam",
+    "email": "dana.karam@mail.com",
+    "phone": "+961 79 483 166",
+    "role": "Customer",
+    "status": "Active",
+    "joined": "2025-07-28"
+  },
+  {
+    "id": 14,
+    "name": "Tarek Moussa",
+    "email": "tarek.moussa@mail.com",
+    "phone": "+961 74 689 762",
+    "role": "Customer",
+    "status": "Active",
+    "joined": "2025-08-13"
+  },
+  {
+    "id": 15,
+    "name": "Rita Rizk",
+    "email": "rita.rizk@mail.com",
+    "phone": "+961 70 761 424",
+    "role": "Customer",
+    "status": "Active",
+    "joined": "2025-09-02"
+  },
+  {
+    "id": 16,
+    "name": "Jad Sabbagh",
+    "email": "jad.sabbagh@mail.com",
+    "phone": "+961 78 234 811",
+    "role": "Customer",
+    "status": "Active",
+    "joined": "2025-09-17"
+  },
+  {
+    "id": 17,
+    "name": "Mira Tannous",
+    "email": "mira.tannous@mail.com",
+    "phone": "+961 77 604 523",
+    "role": "Customer",
+    "status": "Active",
+    "joined": "2025-10-02"
+  },
+  {
+    "id": 18,
+    "name": "Ali Younes",
+    "email": "ali.younes@mail.com",
+    "phone": "+961 74 549 824",
+    "role": "Customer",
+    "status": "Active",
+    "joined": "2025-10-19"
+  },
+  {
+    "id": 19,
+    "name": "Hiba Zein",
+    "email": "hiba.zein@mail.com",
+    "phone": "+961 79 656 551",
+    "role": "Customer",
+    "status": "Active",
+    "joined": "2025-11-04"
+  },
+  {
+    "id": 20,
+    "name": "Elie Abboud",
+    "email": "elie.abboud@mail.com",
+    "phone": "+961 77 271 270",
+    "role": "Customer",
+    "status": "Active",
+    "joined": "2025-11-25"
+  },
+  {
+    "id": 21,
+    "name": "Nadine Haddad",
+    "email": "nadine.haddad@mail.com",
+    "phone": "+961 77 728 852",
+    "role": "Customer",
+    "status": "Active",
+    "joined": "2025-12-11"
+  },
+  {
+    "id": 22,
+    "name": "Samir Khoury",
+    "email": "samir.khoury@mail.com",
+    "phone": "+961 73 522 300",
+    "role": "Customer",
+    "status": "Active",
+    "joined": "2025-12-28"
+  },
+  {
+    "id": 23,
+    "name": "Joelle Nassar",
+    "email": "joelle.nassar@mail.com",
+    "phone": "+961 71 910 817",
+    "role": "Customer",
+    "status": "Inactive",
+    "joined": "2026-01-09"
+  },
+  {
+    "id": 24,
+    "name": "Bilal Saleh",
+    "email": "bilal.saleh@mail.com",
+    "phone": "+961 71 148 242",
+    "role": "Customer",
+    "status": "Active",
+    "joined": "2026-01-31"
+  },
+  {
+    "id": 25,
+    "name": "Layal Aoun",
+    "email": "layal.aoun@mail.com",
+    "phone": "+961 72 723 327",
+    "role": "Customer",
+    "status": "Active",
+    "joined": "2026-02-17"
+  },
+  {
+    "id": 26,
+    "name": "Georges Farah",
+    "email": "georges.farah@mail.com",
+    "phone": "+961 79 944 380",
+    "role": "Customer",
+    "status": "Inactive",
+    "joined": "2026-03-02"
+  },
+  {
+    "id": 27,
+    "name": "Rania Mansour",
+    "email": "rania.mansour@mail.com",
+    "phone": "+961 77 929 961",
+    "role": "Customer",
+    "status": "Inactive",
+    "joined": "2026-03-22"
+  },
+  {
+    "id": 28,
+    "name": "Wael Hamdan",
+    "email": "wael.hamdan@mail.com",
+    "phone": "+961 74 114 754",
+    "role": "Customer",
+    "status": "Active",
+    "joined": "2026-04-04"
+  },
+  {
+    "id": 29,
+    "name": "Christelle Chami",
+    "email": "christelle.chami@mail.com",
+    "phone": "+961 71 602 612",
+    "role": "Customer",
+    "status": "Active",
+    "joined": "2026-04-19"
+  },
+  {
+    "id": 30,
+    "name": "Hassan Daher",
+    "email": "hassan.daher@mail.com",
+    "phone": "+961 75 154 615",
+    "role": "Customer",
+    "status": "Active",
+    "joined": "2026-05-05"
+  },
+  {
+    "id": 31,
+    "name": "Perla Ghanem",
+    "email": "perla.ghanem@mail.com",
+    "phone": "+961 74 905 793",
+    "role": "Customer",
+    "status": "Active",
+    "joined": "2026-05-26"
+  },
+  {
+    "id": 32,
+    "name": "Marwan Issa",
+    "email": "marwan.issa@mail.com",
+    "phone": "+961 71 507 640",
+    "role": "Customer",
+    "status": "Inactive",
+    "joined": "2026-06-14"
+  },
+  {
+    "id": 33,
+    "name": "Sabine Karam",
+    "email": "sabine.karam@mail.com",
+    "phone": "+961 70 677 169",
+    "role": "Customer",
+    "status": "Active",
+    "joined": "2026-06-30"
+  },
+  {
+    "id": 34,
+    "name": "Ibrahim Moussa",
+    "email": "ibrahim.moussa@mail.com",
+    "phone": "+961 79 222 122",
+    "role": "Customer",
+    "status": "Active",
+    "joined": "2026-07-16"
+  },
+  {
+    "id": 35,
+    "name": "Tala Rizk",
+    "email": "tala.rizk@mail.com",
+    "phone": "+961 73 105 629",
+    "role": "Customer",
+    "status": "Active",
+    "joined": "2026-08-01"
+  },
+  {
+    "id": 36,
+    "name": "Youssef Sabbagh",
+    "email": "youssef.sabbagh@mail.com",
+    "phone": "+961 79 574 528",
+    "role": "Customer",
+    "status": "Inactive",
+    "joined": "2026-08-19"
+  },
+  {
+    "id": 37,
+    "name": "Nayla Tannous",
+    "email": "nayla.tannous@mail.com",
+    "phone": "+961 75 921 376",
+    "role": "Customer",
+    "status": "Inactive",
+    "joined": "2026-08-31"
+  },
+  {
+    "id": 38,
+    "name": "Charbel Younes",
+    "email": "charbel.younes@mail.com",
+    "phone": "+961 70 722 416",
+    "role": "Customer",
+    "status": "Inactive",
+    "joined": "2026-09-18"
+  },
+  {
+    "id": 39,
+    "name": "Reem Zein",
+    "email": "reem.zein@mail.com",
+    "phone": "+961 71 170 764",
+    "role": "Customer",
+    "status": "Active",
+    "joined": "2026-10-08"
+  },
+  {
+    "id": 40,
+    "name": "Adam Abboud",
+    "email": "adam.abboud@mail.com",
+    "phone": "+961 71 111 592",
+    "role": "Customer",
+    "status": "Active",
+    "joined": "2026-10-22"
+  }
+]
