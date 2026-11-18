@@ -10,6 +10,7 @@
     "dev:admin": "npm run dev --prefix hiya-admin",
     "build": "vite build && npm run build --prefix hiya-admin && node scripts/copy-admin.mjs",
     "preview": "vite preview",
+    "preview:dist": "node scripts/preview-dist.mjs",
     "start": "serve -s dist -l $PORT"
   },
   "dependencies": {

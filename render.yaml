@@ -1,4 +1,7 @@
 # Render Blueprint: the HIYA website and the admin dashboard as ONE static site.
+# Render only reads this file for services created with "New -> Blueprint".
+# For a Static Site created by hand, add the same rewrite rules in the
+# dashboard (Redirects/Rewrites tab). See README.md, "Deploy on Render".
 #   /          -> the customer website (built from the project root)
 #   /admin/... -> the admin dashboard (built from hiya-admin/, copied to dist/admin)
 services:

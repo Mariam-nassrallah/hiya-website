@@ -69,7 +69,8 @@ How it works locally:
 | `npm run dev` | Website + admin dev servers together (open :5173) |
 | `npm run dev:site` / `npm run dev:admin` | Start only one of them |
 | `npm run build` | Build the website, build the admin, copy `hiya-admin/dist` into `dist/admin` |
-| `npm run preview` | Preview the website build |
+| `npm run preview` | Preview the website build only |
+| `npm run preview:dist` | Serve the whole `dist/` like Render does (http://localhost:4173), printing every request and its status |
 
 ## Deploy on Render
 
@@ -90,7 +91,10 @@ What happens on each deploy:
    - builds the website into `dist/`
    - builds the admin into `hiya-admin/dist/` (its Vite `base` is `/admin/`, so
      all its files expect to live under `/admin`)
-   - runs `scripts/copy-admin.mjs`, which copies the admin into `dist/admin/`
+   - runs `scripts/copy-admin.mjs`, which copies the admin into `dist/admin/`.
+     It also puts a copy of the admin's `index.html` in `dist/admin/login/`,
+     `users/`, `products/` and `orders/`, so those pages load even if the
+     rewrite rules are missing (see below).
 3. Render publishes `dist/`. Real files (JS, CSS, images, JSON) are served
    directly.
 4. Any other address is rewritten:
@@ -100,12 +104,36 @@ What happens on each deploy:
 
 So a refresh on a deep link such as `/admin/orders` still works.
 
-**First deploy:**
+**Option A: deploy with the Blueprint.** Render then uses `render.yaml`,
+including the rewrite rules.
 1. Push this folder to GitHub (including `render.yaml`, `hiya-admin/` and
    `scripts/`; `node_modules` and `dist` are git-ignored).
 2. On Render, choose **New → Blueprint** and pick the repository. Render reads
    `render.yaml` and creates the static site `hiya-coffee`.
 3. Every push to the main branch redeploys automatically.
+
+**Option B: a Static Site created by hand.** Render **ignores** `render.yaml`
+here, so set everything in the dashboard:
+- **Build Command:** `npm install && npm install --prefix hiya-admin && npm run build`
+  (or `npm run install:all && npm run build`)
+- **Publish Directory:** `dist`
+- **Redirects/Rewrites** tab: add two rules in this order. The **Action** must
+  be **Rewrite**, not Redirect.
+
+  | # | Source | Destination | Action |
+  | --- | --- | --- | --- |
+  | 1 | `/admin/*` | `/admin/index.html` | Rewrite |
+  | 2 | `/*` | `/index.html` | Rewrite |
+
+  Click **Save Changes**. Rules apply right away, with no new deploy needed.
+
+**Check a deploy:**
+- Without rewrite rules, a made-up address such as `/anything` returns a
+  plain-text `Not Found`. With the rules it shows the website. That's a quick
+  way to see whether the rules are active.
+- Before pushing, run `npm run build` then `npm run preview:dist`. Open `/`,
+  `/admin/login` and `/admin/users`, refresh each, and check that the terminal
+  shows no `404` lines.
 
 The original static design in `design/` is not part of the build: only `src/`,
 `public/` and the admin build end up in `dist/`.
@@ -125,6 +153,7 @@ src/
   styles/        brand variables, global styles, one file per section
 hiya-admin/      admin dashboard (separate Vite app, served at /admin)
 scripts/         copy-admin.mjs (puts the admin build into dist/admin)
+                 preview-dist.mjs (serves dist/ like Render, for testing)
 render.yaml      Render static site settings
 design/          original static design (reference, not deployed)
 ```

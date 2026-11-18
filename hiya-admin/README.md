@@ -89,7 +89,10 @@ How `/admin` works:
 - Images in `public/` (the logo and the login photo) are referenced with
   `import.meta.env.BASE_URL`, which is `/admin/`.
 - On Render, the parent folder's `npm run build` builds this app and copies
-  `dist/` into the website's `dist/admin`. See the parent `README.md`.
+  `dist/` into the website's `dist/admin`. It also adds entry points for
+  `/admin/login`, `/admin/users`, `/admin/products` and `/admin/orders`. **If you
+  add a new page in `App.jsx`, add it to `ADMIN_PAGES` in
+  `../scripts/copy-admin.mjs` too.** See the parent `README.md`.
 
 Scripts in this folder (normally run from the parent instead):
 
