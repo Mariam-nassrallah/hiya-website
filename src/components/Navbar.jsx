@@ -15,8 +15,9 @@ const LINKS = [
 // Order the sections appear on the page (used to highlight the active link).
 const PAGE_ORDER = ['hero', 'story', 'menu', 'events', 'contact'];
 
-// Admin dashboard login page, set in .env (change it after deploying).
-const ADMIN_URL = import.meta.env.VITE_ADMIN_URL;
+// The admin dashboard is served by the same site at /admin
+// (locally through the dev proxy, on Render as a sub-folder).
+const ADMIN_LOGIN = '/admin/login';
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
@@ -83,11 +84,9 @@ export default function Navbar() {
             <BagIcon />
             {count > 0 && <span className="nav-count" aria-hidden="true">{count > 99 ? '99+' : count}</span>}
           </button>
-          {ADMIN_URL && (
-            <a href={ADMIN_URL} className="nav-icon nav-admin" title="Admin login" aria-label="Admin login">
-              <i className="bi bi-person-circle" aria-hidden="true" />
-            </a>
-          )}
+          <a href={ADMIN_LOGIN} className="nav-icon nav-admin" title="Admin login" aria-label="Admin login">
+            <i className="bi bi-person-circle" aria-hidden="true" />
+          </a>
           <a href="#menu" className="hy-btn btn-order">
             ORDER NOW <BagIcon />
           </a>
@@ -114,12 +113,10 @@ export default function Navbar() {
         <a href="#menu" className="hy-btn btn-terra" onClick={close} tabIndex={open ? 0 : -1}>
           ORDER NOW
         </a>
-        {ADMIN_URL && (
-          <a href={ADMIN_URL} className="menu-admin" tabIndex={open ? 0 : -1}>
-            <i className="bi bi-person-circle" aria-hidden="true" />
-            Admin login
-          </a>
-        )}
+        <a href={ADMIN_LOGIN} className="menu-admin" tabIndex={open ? 0 : -1}>
+          <i className="bi bi-person-circle" aria-hidden="true" />
+          Admin login
+        </a>
       </nav>
     </header>
   );

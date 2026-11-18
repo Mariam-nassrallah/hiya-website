@@ -152,11 +152,12 @@ theme toggle, cart button with count, an **Admin login** icon button
 - Under 992 px, the links become a hamburger that opens a full-screen olive
   panel with a circle `clip-path` animation. The panel closes on link click, Esc,
   or when the window widens past 992 px, and locks page scroll while open.
-- **Admin login link:** goes to `import.meta.env.VITE_ADMIN_URL` (set in `.env`).
+- **Admin login link:** goes to `/admin/login`, the admin dashboard on the same
+  site. Locally, Vite's dev proxy serves it; on Render it's the `dist/admin`
+  folder.
   - On desktop it's the round icon before ORDER NOW.
   - Under 992 px the icon is hidden, and "Admin login" appears at the bottom of
     the full-screen menu instead.
-  - If the variable isn't set, both links are hidden.
 - **Props:** none
 - **State:** `scrolled`, `open`, `active`
 - **Listeners:** window `scroll`; `keydown` and a `matchMedia` listener while the

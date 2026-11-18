@@ -212,7 +212,7 @@ html, body { overflow-x: clip; }
   min-height: calc(100vh - 2rem); color: var(--cream);
   background:
     linear-gradient(180deg, transparent 45%, rgba(56, 37, 29, .78)),
-    url('/login-photo.jpg') center / cover no-repeat;
+    var(--login-photo) center / cover no-repeat; /* set in LoginPage with the app's base path */
 }
 .login-quote { font-family: var(--font-title); font-size: clamp(2rem, 3vw, 2.75rem); font-weight: 600; line-height: 1.1; }
 .login-quote-sub { letter-spacing: .2em; color: var(--sage); }

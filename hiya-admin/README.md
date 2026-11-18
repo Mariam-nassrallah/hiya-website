@@ -43,13 +43,16 @@ _Add screenshots here._
 
 Requirements: Node.js 18 or newer.
 
+This dashboard is served at **`/admin`** on the same site as the HIYA website
+(the parent folder), so run both from the **parent folder**:
+
 ```bash
-npm install
-npm run dev
+cd ..                  # the hiya-website folder
+npm run install:all    # installs the website and this dashboard
+npm run dev            # starts both
 ```
 
-Open the address shown in the terminal (usually http://localhost:5173) and log in
-with the demo account:
+Open **http://localhost:5173/admin/login** and log in with the demo account:
 
 | Email | Password |
 | --- | --- |
@@ -76,11 +79,23 @@ with the demo account:
 > Hiding pages in React (`ProtectedRoute`) only improves the experience. Real
 > protection has to happen on the server.
 
-Other scripts:
+How `/admin` works:
+- `vite.config.js` sets `base: '/admin/'`, so every built file expects to live
+  under `/admin`.
+- The dev server runs on the fixed port **5174**. The website's dev server on
+  5173 forwards `/admin` to it, so you open 5173.
+- `src/main.jsx` uses `<BrowserRouter basename="/admin">`, so the routes below
+  become `/admin/login`, `/admin/orders` and so on.
+- Images in `public/` (the logo and the login photo) are referenced with
+  `import.meta.env.BASE_URL`, which is `/admin/`.
+- On Render, the parent folder's `npm run build` builds this app and copies
+  `dist/` into the website's `dist/admin`. See the parent `README.md`.
+
+Scripts in this folder (normally run from the parent instead):
 
 ```bash
-npm run build     # production build in dist/
-npm run preview   # serve the production build
+npm run dev       # this dashboard only, http://localhost:5174/admin/
+npm run build     # production build in dist/ (expects to be served at /admin)
 ```
 
 ## Project structure
@@ -106,11 +121,13 @@ React concepts used.
 
 ## Routes
 
+All routes sit under `/admin` (the router's `basename`).
+
 | URL | Page |
 | --- | --- |
-| `/login` | Login (public) |
-| `/` | Dashboard |
-| `/users` | Users |
-| `/products` | Products |
-| `/orders` | Orders |
-| anything else | 404 page |
+| `/admin/login` | Login (public) |
+| `/admin/` | Dashboard |
+| `/admin/users` | Users |
+| `/admin/products` | Products |
+| `/admin/orders` | Orders |
+| anything else under `/admin` | 404 page |

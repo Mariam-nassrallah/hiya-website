@@ -27,46 +27,88 @@ cream, espresso and sage colours.
 There is no backend. The contact form, checkout and registrations are
 demonstrations that run entirely in the browser.
 
-## Getting started
+The **admin dashboard** is a separate React app in [`hiya-admin/`](hiya-admin/).
+Both apps are served from **one site**:
+
+| URL | App |
+| --- | --- |
+| `/` | Customer website (this folder) |
+| `/admin/...` | Admin dashboard (`hiya-admin/`), e.g. `/admin/login` |
+
+The person icon in the navbar ("Admin login") links to `/admin/login`. It works
+the same locally and on Render, with no environment variables to set.
+
+## Run locally
 
 Requirements: Node.js 18 or newer.
 
 ```bash
-npm install
-npm run dev
+npm run install:all   # installs packages for the website AND hiya-admin
+npm run dev           # starts both apps together
 ```
 
-Then open the address shown in the terminal (usually http://localhost:5173).
+Then open **http://localhost:5173**. Click the person icon, or go straight to
+**http://localhost:5173/admin/login**. The demo admin account is
+`admin@hiya.com` / `hiya123`.
 
-### Admin login link
+How it works locally:
+- `npm run dev` uses `concurrently` to start two Vite servers in one terminal:
+  - **site** on port 5173
+  - **admin** on port 5174
+- The website's Vite server has a **proxy** in `vite.config.js` that forwards
+  every `/admin` request to port 5174, including the live-reload connection. So
+  you only ever open port 5173.
+- Both ports are fixed (`strictPort`). If one is already in use, for example by
+  an old dev server that's still running, Vite stops with an error. Close the
+  other terminal and run `npm run dev` again.
+- To stop both, press **Ctrl + C**.
 
-The person icon in the navbar ("Admin login") opens the admin dashboard, which
-is a separate app in [`hiya-admin/`](hiya-admin/). Its address comes from an
-environment variable in `.env`:
+| Script | What it does |
+| --- | --- |
+| `npm run install:all` | `npm install` in the root and in `hiya-admin/` |
+| `npm run dev` | Website + admin dev servers together (open :5173) |
+| `npm run dev:site` / `npm run dev:admin` | Start only one of them |
+| `npm run build` | Build the website, build the admin, copy `hiya-admin/dist` into `dist/admin` |
+| `npm run preview` | Preview the website build |
 
-```bash
-VITE_ADMIN_URL=http://localhost:5174/login
+## Deploy on Render
+
+The repository includes a [`render.yaml`](render.yaml) Blueprint that publishes
+both apps as **one Static Site**:
+
+```yaml
+buildCommand: npm run install:all && npm run build
+staticPublishPath: dist
+routes:                      # rewrites, checked in order
+  /admin/*  -> /admin/index.html
+  /*        -> /index.html
 ```
 
-To run both apps locally, use two terminals:
+What happens on each deploy:
+1. `npm run install:all` installs the packages of both apps.
+2. `npm run build` does three things:
+   - builds the website into `dist/`
+   - builds the admin into `hiya-admin/dist/` (its Vite `base` is `/admin/`, so
+     all its files expect to live under `/admin`)
+   - runs `scripts/copy-admin.mjs`, which copies the admin into `dist/admin/`
+3. Render publishes `dist/`. Real files (JS, CSS, images, JSON) are served
+   directly.
+4. Any other address is rewritten:
+   - `/admin/...` pages load the admin app, whose React Router
+     (`basename="/admin"`) shows the right page
+   - everything else loads the website
 
-```bash
-npm run dev                    # website  → http://localhost:5173
-cd hiya-admin && npm run dev   # admin    → http://localhost:5174 (fixed port)
-```
+So a refresh on a deep link such as `/admin/orders` still works.
 
-After deploying the admin dashboard, change `VITE_ADMIN_URL` to its real
-address, for example `https://admin.hiya.com/login`. You can change it in `.env`,
-or set it in your hosting provider's environment settings. Vite reads the value
-when the site is **built**, so rebuild or redeploy after changing it. See
-`.env.example`.
+**First deploy:**
+1. Push this folder to GitHub (including `render.yaml`, `hiya-admin/` and
+   `scripts/`; `node_modules` and `dist` are git-ignored).
+2. On Render, choose **New → Blueprint** and pick the repository. Render reads
+   `render.yaml` and creates the static site `hiya-coffee`.
+3. Every push to the main branch redeploys automatically.
 
-Other scripts:
-
-```bash
-npm run build     # production build in dist/
-npm run preview   # serve the production build locally
-```
+The original static design in `design/` is not part of the build: only `src/`,
+`public/` and the admin build end up in `dist/`.
 
 ## Project structure
 
@@ -81,7 +123,10 @@ src/
   data/          JSON loaders
   utils/         formatting and storage helpers
   styles/        brand variables, global styles, one file per section
-design/          original static design (reference)
+hiya-admin/      admin dashboard (separate Vite app, served at /admin)
+scripts/         copy-admin.mjs (puts the admin build into dist/admin)
+render.yaml      Render static site settings
+design/          original static design (reference, not deployed)
 ```
 
 See [COMPONENTS.md](COMPONENTS.md) for details on each component.

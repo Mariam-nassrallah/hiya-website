@@ -5,6 +5,9 @@ import Loader from '../components/Loader';
 
 const DEMO = { email: 'admin@hiya.com', password: 'hiya123' };
 
+// "/admin/" — public files (logo, photo) live under the app's base path
+const BASE = import.meta.env.BASE_URL;
+
 export default function LoginPage() {
   const { user, ready, login } = useAuth();
   const location = useLocation();
@@ -51,7 +54,10 @@ export default function LoginPage() {
       <div className="row min-vh-100">
         {/* Photo panel: desktop only */}
         <div className="col-lg-6 d-none d-lg-block p-3">
-          <div className="login-photo h-100 rounded-5 d-flex flex-column justify-content-end p-5">
+          <div
+            className="login-photo h-100 rounded-5 d-flex flex-column justify-content-end p-5"
+            style={{ '--login-photo': `url(${BASE}login-photo.jpg)` }}
+          >
             <p className="login-quote mb-2">A little sip of happiness.</p>
             <p className="mb-0 small text-uppercase fw-semibold login-quote-sub">HIYA Coffee Shop · Admin</p>
           </div>
@@ -61,7 +67,7 @@ export default function LoginPage() {
         <div className="col-12 col-lg-6 d-flex align-items-center justify-content-center py-5 px-3">
           <main className="w-100 login-box">
             <div className="text-center mb-4">
-              <img src="/logo.png" alt="HIYA Coffee Shop" className="login-logo mb-3" />
+              <img src={`${BASE}logo.png`} alt="HIYA Coffee Shop" className="login-logo mb-3" />
               <h1 className="page-title h2 mb-1">Welcome back</h1>
               <p className="text-body-secondary mb-0">Log in to the HIYA admin dashboard.</p>
             </div>

@@ -24,13 +24,22 @@ main.jsx ─ BrowserRouter ─ AuthProvider (logged-in user, login, logout)
 
 ### `main.jsx`
 Imports Bootstrap CSS, Bootstrap Icons and `styles/theme.css` once. It renders
-`<App />` inside `<BrowserRouter>` (so routing works everywhere) and
-`<AuthProvider>` (so every component can read the logged-in user).
+`<App />` inside `<BrowserRouter basename="/admin">` (so routing works everywhere)
+and `<AuthProvider>` (so every component can read the logged-in user).
+
+The dashboard is served at `/admin` on the same site as the website:
+- **Router:** `basename="/admin"` adds that prefix to every route below, so `/login`
+  in the code is `/admin/login` in the browser.
+- **Vite:** `vite.config.js` sets `base: '/admin/'` to match.
+- **Public files:** images in `public/` are referenced with
+  `import.meta.env.BASE_URL` (`/admin/`), as in `` `${import.meta.env.BASE_URL}logo.png` ``.
 
 ### `App.jsx`
 Declares the routes. `/login` is public. Every other route is nested inside
 `ProtectedRoute`, which lets you in only when logged in, and then inside the
 `Layout`, so those pages share the sidebar and navbar.
+
+Paths below are inside the `/admin` basename (e.g. `/login` = `/admin/login`).
 
 | Path | Page | Login needed |
 | --- | --- | --- |

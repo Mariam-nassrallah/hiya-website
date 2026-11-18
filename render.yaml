@@ -1,0 +1,20 @@
+# Render Blueprint: the HIYA website and the admin dashboard as ONE static site.
+#   /          -> the customer website (built from the project root)
+#   /admin/... -> the admin dashboard (built from hiya-admin/, copied to dist/admin)
+services:
+  - type: web
+    name: hiya-coffee
+    runtime: static
+    buildCommand: npm run install:all && npm run build
+    staticPublishPath: dist
+    # Rewrites are checked in order. Real files (JS, CSS, images) are served as they are.
+    routes:
+      # Any admin page (e.g. /admin/login, /admin/orders) loads the admin app,
+      # which then shows the right page with React Router.
+      - type: rewrite
+        source: /admin/*
+        destination: /admin/index.html
+      # Everything else loads the website.
+      - type: rewrite
+        source: /*
+        destination: /index.html

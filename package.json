@@ -4,8 +4,11 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
+    "install:all": "npm install --include=dev && npm install --include=dev --prefix hiya-admin",
+    "dev": "concurrently --names site,admin --prefix-colors green,yellow --kill-others-on-fail \"vite\" \"npm run dev --prefix hiya-admin\"",
+    "dev:site": "vite",
+    "dev:admin": "npm run dev --prefix hiya-admin",
+    "build": "vite build && npm run build --prefix hiya-admin && node scripts/copy-admin.mjs",
     "preview": "vite preview",
     "start": "serve -s dist -l $PORT"
   },
@@ -18,6 +21,7 @@
   },
   "devDependencies": {
     "@vitejs/plugin-react": "^4.3.4",
+    "concurrently": "^9.1.0",
     "vite": "^5.4.11"
   }
 }

@@ -37,7 +37,7 @@ export default function Sidebar({ open, onClose }) {
             {/* Brand */}
             <div className="d-flex align-items-center justify-content-between mb-4 pb-2">
               <NavLink to="/" className="sidebar-brand d-flex align-items-center gap-3 text-reset text-decoration-none">
-                <img src="/logo.png" alt="" />
+                <img src={`${import.meta.env.BASE_URL}logo.png`} alt="" />
                 <div className="d-flex flex-column lh-sm">
                   <span>HIYA</span>
                   <small>ADMIN</small>

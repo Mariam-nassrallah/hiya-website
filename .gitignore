@@ -1,6 +1,16 @@
+# dependencies
 node_modules
+hiya-admin/node_modules
+
+# builds
 dist
-.DS_Store
-*.log
+hiya-admin/dist
+
+# environment files
+.env
 .env.local
 .env.*.local
+
+# misc
+.DS_Store
+*.log
