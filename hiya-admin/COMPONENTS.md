@@ -26,7 +26,19 @@ main.jsx ─ BrowserRouter ─ AuthProvider (logged-in user, login, logout)
   - On desktop the sidebar is also fixed on the left, full height. The top bar
     starts where the sidebar ends, and the content starts next to the sidebar
     (`margin-left: 260px`), never under it.
-- **Login page:** it has no top bar and no extra padding.
+- **Phones and tablets (< 992 px) use an "app shell" on dashboard pages.** The
+  page itself never scrolls:
+  - the top bar is a normal block (`position: relative`) at the top
+  - only `<main>` below it scrolls (`overflow-y: auto;
+    overscroll-behavior: contain`), so content can never pass behind or above
+    the bar, even with the iOS bounce or in-app browsers
+  - `Layout` adds the `admin-shell` class to `<html>` while it's shown, which
+    turns this on (`theme.css`)
+  - while a modal or the mobile sidebar is open, `<main>` is frozen too
+- **Login page:** it has no top bar and no extra padding. It doesn't use the
+  shell, so it scrolls normally.
+- **Status bar colour:** `<meta name="theme-color">` is `#F5EBDD`, the top
+  bar's cream, so phones colour the status bar to match.
 - **Layers:** only modals (1050/1055), the mobile sidebar (1040/1045) and toasts
   (1090) go above the top bar (1030).
 - **No sideways scrolling, on any page or table.**
@@ -154,6 +166,10 @@ data only. See the note in `README.md` about what a real login needs.
 ## Layout (`src/components/layout/`)
 
 ### `Layout`
+On phones and tablets it adds the `admin-shell` class to `<html>` while it's
+shown (removed on unmount), and `sidebar-open` to `.admin-main` while the mobile
+sidebar is open. See "Layout rules".
+
 The app shell: `Sidebar`, `TopNavbar`, then the current page through
 `<Outlet />`, plus the global `ToastMessage`. The top bar is fixed, so the
 content wrapper (`.admin-main`) has `padding-top: var(--topbar-h)` (72 px) and

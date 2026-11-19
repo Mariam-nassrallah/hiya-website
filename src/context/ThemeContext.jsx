@@ -18,8 +18,10 @@ export function ThemeProvider({ children }) {
     } catch {
       /* storage unavailable */
     }
+    // Phone browsers colour the status bar / address bar with theme-color.
+    // The navbar is olive in both themes, so this stays olive too.
     const meta = document.querySelector('meta[name="theme-color"]');
-    if (meta) meta.setAttribute('content', theme === 'dark' ? '#38251D' : '#697A32');
+    if (meta) meta.setAttribute('content', '#697A32');
   }, [theme]);
 
   useEffect(

@@ -50,6 +50,14 @@ export default function Layout() {
     document.title = `${pageTitle} · HIYA Admin`;
   }, [location.pathname, pageTitle]);
 
+  // Phones and tablets use the "app shell" layout on dashboard pages (theme.css):
+  // only the content area scrolls, below the top bar. The class is set only
+  // while this Layout is shown, so the login page keeps normal scrolling.
+  useEffect(() => {
+    document.documentElement.classList.add('admin-shell');
+    return () => document.documentElement.classList.remove('admin-shell');
+  }, []);
+
   // useCallback keeps these functions the same between renders,
   // so the toast timer is not restarted on every render.
   const showToast = useCallback((message, variant = 'success') => {
@@ -64,7 +72,7 @@ export default function Layout() {
     <>
       <Sidebar open={sidebarOpen} onClose={() => setSidebarOpen(false)} />
 
-      <div className="admin-main d-flex flex-column min-vh-100">
+      <div className={`admin-main d-flex flex-column${sidebarOpen ? ' sidebar-open' : ''}`}>
         <TopNavbar title={pageTitle} onMenuClick={() => setSidebarOpen(true)} />
         <main className="container-fluid px-3 px-md-4 py-4 flex-grow-1">
           {loading ? <Loader text="Loading HIYA data…" /> : <Outlet context={pageContext} />}

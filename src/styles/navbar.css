@@ -78,7 +78,13 @@ html.scroll-locked .hy-nav { padding-right: var(--scrollbar-w, 0px); }
 
 @media (max-width: 1100px) { .links { gap: 26px; } }
 
-@media (max-width: 991px) {
+@media (max-width: 991.98px) {
+  /* Phones and tablets: the "app shell" (global.css). The navbar is a normal
+     block at the top of the screen (not fixed) and only the area below it
+     scrolls, so nothing can pass behind or above it. Same solid olive bar,
+     same height, still covering the iPhone notch area. */
+  .hy-nav { position: relative; flex: 0 0 auto; }
+
   .hy-nav nav[aria-label='Main'], .divider, .hy-nav .btn-order, .nav-admin { display: none; }
   .nav-actions { margin-left: auto; gap: 8px; }
   .burger { display: flex; }
@@ -126,7 +132,7 @@ html.scroll-locked .hy-nav { padding-right: var(--scrollbar-w, 0px); }
 @keyframes menuLinkIn { from { opacity: 0; transform: translateY(20px); } }
 
 /* the 64px bar under 992px: smaller logo and icon buttons */
-@media (max-width: 991px) {
+@media (max-width: 991.98px) {
   .brand img { width: 44px; height: 44px; }
   .nav-icon { width: 40px; height: 40px; }
 }

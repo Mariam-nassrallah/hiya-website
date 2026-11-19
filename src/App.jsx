@@ -11,20 +11,25 @@ import CartDrawer from './components/CartDrawer';
 
 export default function App() {
   return (
-    <>
-      {/* Fixed navbar, rendered once, before all sections (it also holds the "Skip to content" link) */}
+    // .app-shell / .app-scroll: on phones and tablets (< 992px) only .app-scroll
+    // scrolls, below the navbar (see "app shell" in global.css). On desktop they
+    // are plain wrappers: the navbar is fixed and the page scrolls as usual.
+    <div className="app-shell">
+      {/* Navbar, rendered once, before all sections (it also holds the "Skip to content" link) */}
       <Navbar />
-      <main id="main">
-        <Hero />
-        <StorySection />
-        <MenuSection />
-        <EventsSection />
-        <WhyUs />
-        <Gallery />
-        <Contact />
-      </main>
-      <Footer />
+      <div className="app-scroll">
+        <main id="main">
+          <Hero />
+          <StorySection />
+          <MenuSection />
+          <EventsSection />
+          <WhyUs />
+          <Gallery />
+          <Contact />
+        </main>
+        <Footer />
+      </div>
       <CartDrawer />
-    </>
+    </div>
   );
 }

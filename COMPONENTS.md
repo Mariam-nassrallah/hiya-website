@@ -5,8 +5,17 @@ scroll in this order: Navbar → Hero → StorySection → MenuSection → Event
 → WhyUs → Gallery → Contact → Footer, with CartDrawer mounted at the end.
 
 **Layout rules:**
-- **The navbar is `position: fixed` and always visible** at the top of the
-  screen while scrolling. It's fully solid olive, so nothing shows through it.
+- **Phones and tablets (< 992 px) use an "app shell".** The page itself never
+  scrolls:
+  - the navbar is a normal block at the top of the screen
+  - only the area below it (`.app-scroll`) scrolls, so content can never pass
+    behind or above the navbar
+  - on iPhones and in-app browsers, the bounce and the shrinking address bar
+    can't move it
+  - see "App structure" below
+- **Desktop (≥ 992 px): the navbar is `position: fixed` and always visible** at
+  the top of the screen while scrolling. It's fully solid olive, so nothing
+  shows through it.
   - **Height:** exactly `--nav-h` (80 px, or 64 px under 992 px).
   - **Space for it:** the body is pushed down by the same amount
     (`padding-top: calc(var(--nav-h) + env(safe-area-inset-top))`), so the hero
@@ -30,9 +39,30 @@ Entry point. Imports Bootstrap CSS once, then `styles/variables.css` and
 and `EventsProvider`.
 
 ### `App.jsx`
-Lays out the page: the fixed `Navbar` first (rendered once, before all sections;
-it also holds the "Skip to content" link), then `<main>` with all the sections,
-the footer and the cart drawer.
+Lays out the page inside `.app-shell`:
+1. the `Navbar` first (rendered once, before all sections; it also holds the
+   "Skip to content" link)
+2. `.app-scroll`, which holds `<main>` with all the sections and the footer
+3. the cart drawer
+
+**How the wrappers behave:**
+- **Desktop:** `.app-shell` and `.app-scroll` are plain wrappers. The navbar is
+  fixed and the page scrolls.
+- **Phones and tablets (< 992 px), in `global.css`:**
+  - `html`, `body` and `#root` are `height: 100%; overflow: hidden;
+    overscroll-behavior-y: none`, so the page itself never scrolls or bounces.
+  - `.app-shell` is a `100dvh` flex column, and the navbar is
+    `position: relative` at the top.
+  - `.app-scroll` is `flex: 1; min-height: 0; overflow-y: auto;
+    overscroll-behavior: contain`: the only part that scrolls, right below the
+    navbar.
+- **What still works inside the scroll area:**
+  - anchor links stop 16 px below the navbar (`scroll-padding-top`)
+  - the scroll animations, because `IntersectionObserver` works with any
+    scrolling area
+  - "FULL" in the event pill scrolls to `#events`
+  - while the menu, cart or a modal is open, `html.scroll-locked` freezes the
+    area too
 - **Props:** none · **State:** none
 - **Used in:** `main.jsx`
 
@@ -48,6 +78,10 @@ Light/dark theme for the whole site.
   theme before the first paint to avoid a flash.
 - **Smooth switch:** `toggle()` adds `theme-switching` to `<html>` for 650 ms,
   which turns on colour transitions everywhere. The timer is cleared on unmount.
+- **`<meta name="theme-color">`** stays olive (`#697A32`) in both themes, because
+  the navbar is olive in both. Phone browsers use it to colour the status bar
+  and address bar, so a different colour would look like a strip above the
+  navbar.
 - **Hook:** `useTheme()`
 - **Used in:** `ThemeToggle`
 
@@ -177,8 +211,11 @@ Inline SVG icons from the design: `ArrowIcon`, `BagIcon`, `PlayIcon`,
 ## Sections
 
 ### `Navbar`
-A **fixed** header that always stays visible at the top of the screen while
-scrolling, on desktop and on phones:
+The header that always stays visible at the top of the screen.
+- **Desktop (≥ 992 px):** fixed, using the rule below.
+- **Phones and tablets:** `position: relative` at the top of the app shell (see
+  `App.jsx`). It's the same solid bar, the same height, and still covers the
+  iPhone notch area. Only the content below it scrolls.
 
 ```css
 position: fixed; top: 0; left: 0; right: 0; width: 100%; z-index: 1030;
@@ -432,7 +469,7 @@ Espresso footer: logo, Visit / Follow links and the copyright.
 | File | Covers |
 | --- | --- |
 | `styles/variables.css` | The five brand colours, the tones mixed from them, light/dark tokens, and `--nav-h` (80 px, or 64 px under 992 px) |
-| `styles/global.css` | Base styles; the body's `padding-top` and the `scroll-padding-top` for the fixed navbar; the no-sideways-scroll safety net (`overflow-x: clip`, media `max-width: 100%`); the `scroll-locked` class; Bootstrap Reboot overrides; buttons, labels, reveal and enter/exit animations; waves; theme transition; reduced motion |
+| `styles/global.css` | Base styles; the body's `padding-top` and the `scroll-padding-top` for the fixed navbar (desktop); the phone/tablet "app shell" (`.app-shell`, `.app-scroll`); the no-sideways-scroll safety net (`overflow-x: clip`, media `max-width: 100%`); the `scroll-locked` class; Bootstrap Reboot overrides; buttons, labels, reveal and enter/exit animations; waves; theme transition; reduced motion |
 | `styles/navbar.css` | Fixed navbar and the full-screen mobile menu |
 | `styles/hero.css` | Hero, hero cards and the next-event pill |
 | `styles/story.css` | Our Story |

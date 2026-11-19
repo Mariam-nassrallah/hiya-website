@@ -18,8 +18,8 @@ html.scroll-locked { overflow: hidden; padding-right: var(--scrollbar-w, 0px); }
 :where(img, svg, canvas, video) { max-width: 100%; height: auto; }
 body {
   margin: 0;
-  /* The navbar is fixed at the top: push the page down by its height
-     (+ the iPhone notch), so the hero starts right below it. */
+  /* Desktop: the navbar is fixed at the top, so push the page down by its
+     height (+ the iPhone notch) and the hero starts right below it. */
   padding-top: calc(var(--nav-h) + env(safe-area-inset-top));
   font-family: var(--sans);
   font-size: 16px;
@@ -27,6 +27,29 @@ body {
   background: var(--bg);
   color: var(--text);
   -webkit-font-smoothing: antialiased;
+}
+
+/* ---------- Phones and tablets (< 992px): "app shell" ----------
+   Phone browsers move a fixed bar while the page scrolls (iOS bounce, address
+   bars that shrink/grow, in-app browsers repainting late), so text could flash
+   behind or above it. Here the page itself never scrolls: the navbar is a
+   normal block at the top and only .app-scroll (everything below it) scrolls,
+   so content can never reach the navbar. Desktop keeps the fixed navbar.
+   (This block must stay below the body rule above, so it can override it.) */
+@media (max-width: 991.98px) {
+  html, body, #root { height: 100%; overflow: hidden; overscroll-behavior-y: none; }
+  body { padding-top: 0; }
+  .app-shell { display: flex; flex-direction: column; height: 100%; height: 100dvh; }
+  .app-scroll {
+    flex: 1 1 auto; min-height: 0;
+    overflow-y: auto; overflow-x: clip;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain; /* no bounce passing on to the page */
+    scroll-padding-top: 16px; /* anchor links: the title stops 16px below the navbar */
+    scroll-behavior: smooth;
+  }
+  /* a modal, the cart or the menu is open: freeze the scrolling area too */
+  html.scroll-locked .app-scroll { overflow-y: hidden; }
 }
 /* Undo Bootstrap Reboot spacing so the layout matches the design */
 h1, h2, h3, h4, h5, h6, p, ul, ol, figure, blockquote { margin: 0; padding: 0; }
@@ -109,7 +132,7 @@ button { font: inherit; }
 
 /* ---------- reduced motion ---------- */
 @media (prefers-reduced-motion: reduce) {
-  html { scroll-behavior: auto !important; }
+  html, .app-scroll { scroll-behavior: auto !important; }
   *, *::before, *::after { animation: none !important; transition: none !important; }
   .hero-title .line span { transform: none; }
   .reveal, .hero-bg, .h-cards .h-card, .fx, .anim-in { opacity: 1; transform: none; filter: none; }
