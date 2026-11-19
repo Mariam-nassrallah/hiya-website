@@ -12,11 +12,21 @@ main.jsx ─ BrowserRouter ─ AuthProvider (logged-in user, login, logout)
          ├─ Sidebar
          ├─ TopNavbar ─ ConfirmModal (logout)
          ├─ <Outlet />  → Dashboard | UsersPage | ProductsPage | OrdersPage | NotFound
-         │                 Dashboard: StatCard ×4, ChartCard ×2, StatusBadge
-         │                 List pages: DataTable ─ SearchBar, Pagination, StatusBadge,
-         │                                          EditModal, ConfirmModal
+         │                 Dashboard: StatCard ×4, ChartCard ×2, ResponsiveTable, StatusBadge
+         │                 List pages: DataTable ─ SearchBar, ResponsiveTable, Pagination,
+         │                                          StatusBadge, EditModal, ConfirmModal
          └─ ToastMessage
 ```
+
+**Layout rules:**
+- **No sticky or fixed top bar.** The top bar scrolls away with the page. Only
+  the desktop sidebar is fixed, on the left, and the content starts next to it
+  (`margin-left: 260px`), never under it.
+- **No sideways scrolling, on any page or table.**
+  - `html, body { overflow-x: clip }` is set as a safety net.
+  - Tables never need it: `ResponsiveTable` hides less important columns on
+    smaller screens and turns rows into cards on phones.
+  - Checked at 375, 390, 768, 992, 1024, 1100, 1200, 1280, 1399 and 1440 px.
 
 ---
 
@@ -171,6 +181,8 @@ It uses Bootstrap's responsive `offcanvas-lg` class:
 - **992 px and wider:** a normal sidebar, fixed on the left
 - **below 992 px:** an offcanvas panel that slides in when `open` is `true`, with
   a backdrop. It closes with ×, a backdrop click, Escape, or choosing a link.
+  While it's open the page behind can't scroll (`html:has(.sidebar.show)` in
+  `theme.css`).
 
 | Prop | Type | Purpose |
 | --- | --- | --- |
@@ -183,7 +195,8 @@ It uses Bootstrap's responsive `offcanvas-lg` class:
 - **Used in:** `Layout`
 
 ### `TopNavbar`
-Sticky top bar with:
+A normal top bar: **not sticky or fixed**, with a solid cream background and no
+blur. It scrolls away with the page. It contains:
 - a hamburger button (below 992 px)
 - the page title (Playfair Display)
 - the logged-in user's avatar (initials), name and role, read from `useAuth()`
@@ -219,7 +232,47 @@ with ↗ (up), terracotta with ↘ (down), or muted (neutral).
 | `tone` | `'up' \| 'down' \| 'neutral'` | Trend colour and arrow |
 | `color` | `'olive' \| 'terra' \| 'sage' \| 'espresso'` | Icon background |
 
+- **Phones (< 576 px):** two cards fit per row, so the icon sits above the text
+  and the number is a little smaller.
 - **State:** none · **Used in:** `Dashboard` (4 cards)
+
+### `ResponsiveTable`
+One table component for every table in the dashboard. It never scrolls
+sideways:
+- **768 px and wider:** a normal Bootstrap `table-hover`.
+  - Less important columns hide on smaller screens (`column.hideBelow`).
+  - The breakpoints are `xl` (1200 px) and `xxl` (1400 px), not `lg`. From
+    992 px the 260 px sidebar appears, so a 1024 px screen has *less* room for a
+    table than a 768 px tablet.
+- **Below 768 px:** each row becomes a stacked card:
+  - the title column as the heading, with the status badge top-right
+  - every other column as a "Label: value" line
+  - the actions as full-width buttons at the bottom
+- **Long text** (emails) wraps with `text-break`.
+
+| Prop | Type | Purpose |
+| --- | --- | --- |
+| `columns` | array of column objects (see below) | The columns |
+| `rows` | object[] | The rows to show (each needs a unique `id`) |
+| `actions` | `row => [{ label, icon, variant, onClick }]` (optional) | Buttons per row: icon buttons in the table, full-width buttons in the cards |
+| `getRowLabel` | `row => string` (optional) | Added to button labels for screen readers, e.g. "Edit Maya Haddad" |
+| `caption` | string (optional) | Accessible name of the table / card list |
+
+Each column object:
+
+| Field | Type | Purpose |
+| --- | --- | --- |
+| `key` | string | The row field to show |
+| `label` | string | Column header, and the label in phone cards |
+| `render` | `row => JSX` (optional) | Custom content (badges, money, dates) |
+| `hideBelow` | `'xl'` (< 1200 px) or `'xxl'` (< 1400 px), optional | Hide the column in the table below that width (phone cards still show it) |
+| `nowrap` | boolean, optional | Keep the cell on one line |
+| `className` | string, optional | Extra class for the cell, e.g. `'text-break'` |
+| `card` | `'title'` or `'badge'`, optional | Which column is the card's heading, and which sits top-right |
+
+- **State:** none (it only displays what it receives)
+- **Used in:** `DataTable` (Users, Products, Orders) and the Dashboard's
+  "Recent orders"
 
 ### `ChartCard`
 A card with a title and subtitle around a chart. The chart sits in a box of fixed
@@ -239,8 +292,9 @@ box and resize with the window.
 The one table used by the Users, Products and Orders pages.
 - A search box that looks in every column and goes back to page 1.
 - An optional filter dropdown.
-- A Bootstrap `table-hover` inside `table-responsive`, so it scrolls sideways on
-  small screens.
+- The rows are shown with `ResponsiveTable`: a table on tablets and desktops, and
+  stacked cards on phones, never scrolling sideways.
+- On phones the search box and filter are stacked, each full width.
 - 8 rows per page, with `Pagination` and a "Showing 1–8 of 40" line.
 - Edit and Delete buttons on each row, and an empty-state message when nothing
   matches.
@@ -250,7 +304,7 @@ only UI state.
 
 | Prop | Type | Purpose |
 | --- | --- | --- |
-| `columns` | `{ key, label, render? }[]` | Columns to show. `render(row)` can return custom JSX (badges, money, dates) |
+| `columns` | column objects (see `ResponsiveTable`) | Columns to show; also searched by the search box |
 | `rows` | object[] | The data (each row needs a unique `id`) |
 | `filter` | `{ key, label, allLabel, options }` (optional) | Filter dropdown, e.g. role |
 | `editFields` | array | Field config passed to `EditModal` |
@@ -291,7 +345,8 @@ A controlled text input with a search icon.
 ### `Pagination`
 Bootstrap pagination with Prev, the page numbers and Next. Prev is disabled on
 the first page and Next on the last. It renders nothing when there's only one
-page.
+page. Below 576 px only the current page number is shown ("Prev 3 Next"), so it
+always fits on one line.
 
 | Prop | Type | Purpose |
 | --- | --- | --- |
@@ -394,8 +449,8 @@ All pages read shared data with `useOutletContext()`. None of them has its own
 `DataTable`.
 
 ### `Dashboard`
-- **4 `StatCard`s** in a responsive row: `col-12` (phone), `col-md-6` (tablet),
-  `col-xl-3` (desktop).
+- **4 `StatCard`s** in a responsive row: `col-6` (2 per row on phones and
+  tablets), `col-xl-3` (4 per row on desktop).
   - **Total Users:** shows how many joined in the last 60 days.
   - **Total Products:** shows how many are out of stock.
   - **Total Orders** and **Total Revenue** (completed orders only): show the change
@@ -403,7 +458,10 @@ All pages read shared data with `useOutletContext()`. None of them has its own
 - **Orders & revenue** chart (react-chartjs-2 `Bar`): bars for orders and a line
   for revenue, for the last 6 months, calculated from `orders.json`.
 - **Orders by status** chart (`Doughnut`), in the same colours as the badges.
-- **Recent orders:** the 5 newest orders.
+- **Recent orders:** the 5 newest orders, shown with `ResponsiveTable` (cards on
+  phones).
+- **Charts:** always 100% of their card's width, in a fixed-height box
+  (`ChartCard`).
 - **Top products:** the 5 best sellers by `sold`, each with a progress bar.
 
 Because the data is static, "now" is the date of the newest order
@@ -415,6 +473,8 @@ Because the data is static, "now" is the date of the newest order
 Users table with the columns name (with initials), email, phone, role, status
 and joined date, a role filter, and an edit form for name, email, phone, role
 and status.
+- **Smaller screens:** role hides below 1200 px; phone and joined hide below
+  1400 px. Phone cards show everything.
 - **Props:** none · **State:** none
 - **Save / Delete:** `setUsers` with `map` (replace the row) or `filter` (remove
   the row), then `showToast`
@@ -426,13 +486,14 @@ Products table with the columns name, category, price, stock (marked "low" under
 price and stock.
 
 **Status is not edited directly:** on save it is set from the stock (0 means
-"Out of stock"), so the two can never disagree.
+"Out of stock"), so the two can never disagree. "Sold" hides below 1200 px.
 - **Props:** none · **State:** none · **Used in:** route `/products`
 
 ### `OrdersPage`
 Orders table (newest first, a sorted copy) with the columns id, customer, items,
 total, payment (with icon), status and date, a status filter, and an edit form
-for customer, items, total, payment and status.
+for customer, items, total, payment and status. Items and payment hide below
+1400 px.
 - **Props:** none · **State:** none · **Used in:** route `/orders`
 
 ### `NotFound`
@@ -447,7 +508,9 @@ A simple 404 card with a "Back to dashboard" link. The navbar title shows
 ### `useModalBehavior(show, onClose)` (`src/hooks/`)
 Shared by both modals. While `show` is `true`, it:
 - closes the modal on Escape
-- adds Bootstrap's `modal-open` class to `<body>` so the page behind can't scroll
+- adds Bootstrap's `modal-open` class to `<body>` so the page behind can't
+  scroll. `<html>` has `overflow-x: clip`, so `theme.css` also locks `<html>`
+  while that class is present (`html:has(body.modal-open)`).
 
 Both are removed in the effect's cleanup.
 

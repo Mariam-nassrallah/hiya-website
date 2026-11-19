@@ -19,7 +19,8 @@ export default function TopNavbar({ title, onMenuClick }) {
 
   return (
     <>
-      <header className="top-navbar sticky-top">
+      {/* A normal bar: not sticky or fixed, it scrolls away with the page */}
+      <header className="top-navbar">
         <div className="container-fluid px-3 px-md-4 py-3 d-flex align-items-center gap-3">
           <button
             type="button"
@@ -50,7 +51,7 @@ export default function TopNavbar({ title, onMenuClick }) {
         </div>
       </header>
 
-      {/* Rendered outside the header: the header's blur effect would otherwise trap the fixed modal inside it */}
+      {/* A modal is a page-level overlay, so it is rendered next to the header, not inside it */}
       <ConfirmModal
         show={confirmLogout}
         title="Log out?"

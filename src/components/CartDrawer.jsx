@@ -3,6 +3,7 @@ import Offcanvas from 'bootstrap/js/dist/offcanvas';
 import Toast from 'bootstrap/js/dist/toast';
 import { useCart } from '../context/CartContext';
 import { money } from '../utils/format';
+import { lockScroll, unlockScroll } from '../utils/scrollLock';
 import { ArrowIcon, CheckIcon, TrashIcon } from './Icons';
 import '../styles/cart.css';
 
@@ -18,13 +19,26 @@ export default function CartDrawer() {
   const [thanks, setThanks] = useState('');
 
   // Create the Bootstrap instance once; sync "closed" back into React state.
+  // While open, the page behind is locked (see utils/scrollLock.js).
   useEffect(() => {
     const el = panelRef.current;
-    offcanvas.current = Offcanvas.getOrCreateInstance(el);
-    const onHidden = () => closeCart();
+    let locked = false;
+    offcanvas.current = Offcanvas.getOrCreateInstance(el, { scroll: true }); // we lock scrolling ourselves
+    const onShow = () => {
+      if (!locked) lockScroll();
+      locked = true;
+    };
+    const onHidden = () => {
+      if (locked) unlockScroll();
+      locked = false;
+      closeCart();
+    };
+    el.addEventListener('show.bs.offcanvas', onShow);
     el.addEventListener('hidden.bs.offcanvas', onHidden);
     return () => {
+      el.removeEventListener('show.bs.offcanvas', onShow);
       el.removeEventListener('hidden.bs.offcanvas', onHidden);
+      if (locked) unlockScroll();
       offcanvas.current?.dispose();
       offcanvas.current = null;
     };

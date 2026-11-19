@@ -48,7 +48,15 @@
 }
 
 body { -webkit-font-smoothing: antialiased; }
+/* No sideways scrolling. "clip" (not "hidden") does not turn <html>/<body>
+   into scroll containers. */
 html, body { overflow-x: clip; }
+/* Lock the page behind an open modal or the open mobile sidebar.
+   Locking <body> alone is not enough because <html> has overflow-x: clip. */
+html:has(body.modal-open) { overflow: hidden; }
+@media (max-width: 991.98px) { html:has(.sidebar.show) { overflow: hidden; } }
+/* Media never wider than its container (zero specificity, classes still win) */
+:where(img, svg, canvas, video) { max-width: 100%; height: auto; }
 
 /* Titles use Playfair Display */
 .font-title { font-family: var(--font-title); }
@@ -115,7 +123,8 @@ html, body { overflow-x: clip; }
   font-size: .75rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase;
   color: var(--bs-secondary-color); white-space: nowrap; border-bottom-width: 1px;
 }
-.table td { white-space: nowrap; }
+/* Cells may wrap so tables fit; columns that must stay on one line use .text-nowrap,
+   long words such as emails use .text-break */
 
 /* ---------- pagination ---------- */
 .pagination {
@@ -175,7 +184,17 @@ html, body { overflow-x: clip; }
 .sidebar-close:hover { color: var(--sage); }
 .sidebar-note { background: rgba(245, 235, 221, .07); color: rgba(245, 235, 221, .7); }
 
-.top-navbar { background: rgba(245, 235, 221, .92); backdrop-filter: blur(8px); border-bottom: 1px solid rgba(56, 37, 29, .08); }
+/* Normal top bar: solid, not sticky, scrolls away with the page */
+.top-navbar { background: var(--cream); border-bottom: 1px solid rgba(56, 37, 29, .08); }
+
+/* ---------- ResponsiveTable: phone cards (< 768px) ---------- */
+.rt-cards { display: grid; gap: .75rem; }
+.rt-card { background: var(--cream); border: 1px solid rgba(56, 37, 29, .08); border-radius: 1rem; padding: 1rem; }
+.rt-title { font-weight: 600; min-width: 0; }
+.rt-fields { margin: .5rem 0 0; display: grid; gap: .35rem; font-size: .9rem; }
+.rt-field { display: flex; justify-content: space-between; gap: 1rem; }
+.rt-field dt { font-weight: 500; color: var(--bs-secondary-color); flex-shrink: 0; }
+.rt-field dd { margin: 0; text-align: right; min-width: 0; }
 .page-title { font-family: var(--font-title); font-weight: 600; }
 .avatar {
   width: 40px; height: 40px; border-radius: 50%; display: inline-grid; place-items: center; flex-shrink: 0;
@@ -190,7 +209,11 @@ html, body { overflow-x: clip; }
 
 /* stat cards */
 .stat-icon { width: 48px; height: 48px; border-radius: 14px; display: grid; place-items: center; font-size: 1.35rem; flex-shrink: 0; }
-.stat-value { font-family: var(--font-title); font-weight: 600; font-size: 1.9rem; line-height: 1.1; }
+.stat-value { font-family: var(--font-title); font-weight: 600; font-size: 1.9rem; line-height: 1.1; overflow-wrap: anywhere; }
+@media (max-width: 575.98px) {
+  .stat-value { font-size: 1.5rem; } /* 2 stat cards per row on phones */
+  .stat-icon { width: 40px; height: 40px; font-size: 1.15rem; border-radius: 12px; }
+}
 .icon-olive { background: rgba(105, 122, 50, .14); color: var(--olive); }
 .icon-terra { background: rgba(183, 111, 76, .15); color: var(--terra-dark); }
 .icon-sage { background: var(--sage-soft); color: var(--olive-dark); }

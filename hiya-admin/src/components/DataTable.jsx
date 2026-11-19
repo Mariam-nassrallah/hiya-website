@@ -2,6 +2,7 @@ import { useState } from 'react';
 import ConfirmModal from './ConfirmModal';
 import EditModal from './EditModal';
 import Pagination from './Pagination';
+import ResponsiveTable from './ResponsiveTable';
 import SearchBar from './SearchBar';
 
 const ROWS_PER_PAGE = 8;
@@ -14,7 +15,7 @@ const ROWS_PER_PAGE = 8;
  * which row is being edited or deleted.
  */
 export default function DataTable({
-  columns, // [{ key, label, render?(row) }]
+  columns, // [{ key, label, render?(row), hideBelow?, nowrap?, card? }] (see ResponsiveTable)
   rows, // the data to show
   filter, // optional { key, label, allLabel, options: [...] }
   editFields, // fields for the EditModal
@@ -101,49 +102,17 @@ export default function DataTable({
             <p className="text-body-secondary small mb-0">Try a different search or filter.</p>
           </div>
         ) : (
-          <div className="table-responsive">
-            <table className="table table-hover align-middle mb-0">
-              <thead>
-                <tr>
-                  {columns.map((column) => (
-                    <th key={column.key} scope="col">{column.label}</th>
-                  ))}
-                  <th scope="col" className="text-end">Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {pageRows.map((row) => (
-                  <tr key={row.id}>
-                    {columns.map((column) => (
-                      <td key={column.key}>{column.render ? column.render(row) : row[column.key]}</td>
-                    ))}
-                    <td className="text-end">
-                      <div className="d-inline-flex gap-2">
-                        <button
-                          type="button"
-                          className="btn btn-outline-primary btn-icon"
-                          onClick={() => setEditingRow(row)}
-                          aria-label={`Edit ${getRowLabel(row)}`}
-                          title="Edit"
-                        >
-                          <i className="bi bi-pencil" aria-hidden="true" />
-                        </button>
-                        <button
-                          type="button"
-                          className="btn btn-outline-danger btn-icon"
-                          onClick={() => setDeletingRow(row)}
-                          aria-label={`Delete ${getRowLabel(row)}`}
-                          title="Delete"
-                        >
-                          <i className="bi bi-trash3" aria-hidden="true" />
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+          // Table on tablet/desktop, stacked cards on phones (no sideways scrolling)
+          <ResponsiveTable
+            columns={columns}
+            rows={pageRows}
+            caption={`${itemName}s`}
+            getRowLabel={getRowLabel}
+            actions={(row) => [
+              { label: 'Edit', icon: 'bi-pencil', variant: 'primary', onClick: () => setEditingRow(row) },
+              { label: 'Delete', icon: 'bi-trash3', variant: 'danger', onClick: () => setDeletingRow(row) },
+            ]}
+          />
         )}
 
         {/* Footer: count + pagination */}

@@ -1,5 +1,6 @@
 import { useEffect, useId, useRef, useState } from 'react';
 import { formatDate, shortMoney } from '../utils/format';
+import { lockScroll, unlockScroll } from '../utils/scrollLock';
 import { ArrowIcon, CheckIcon } from './Icons';
 
 const MAX_GUESTS = 6;
@@ -48,8 +49,7 @@ export default function RegisterModal({ open, event, registration, seatsLeft, on
   // Esc to close, Tab focus trap, scroll lock, initial focus
   useEffect(() => {
     if (!open) return undefined;
-    const prevOverflow = document.body.style.overflow;
-    document.body.style.overflow = 'hidden';
+    lockScroll();
 
     const onKey = (e) => {
       if (e.key === 'Escape') {
@@ -74,7 +74,7 @@ export default function RegisterModal({ open, event, registration, seatsLeft, on
     };
     window.addEventListener('keydown', onKey);
     return () => {
-      document.body.style.overflow = prevOverflow;
+      unlockScroll();
       window.removeEventListener('keydown', onKey);
     };
   }, [open, onClose]);

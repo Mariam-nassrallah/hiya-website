@@ -1,8 +1,17 @@
 # Components
 
 Reference for every component, context and hook in `src/`. The page is a single
-scroll in this order: Navbar → Hero → StorySection → MenuSection → EventsSection
-→ WhyUs → Gallery → Contact → Footer, with CartDrawer mounted at the end.
+scroll in this order: Hero (with the Navbar inside it) → StorySection →
+MenuSection → EventsSection → WhyUs → Gallery → Contact → Footer, with
+CartDrawer mounted at the end.
+
+**Layout rules:**
+- **The navbar is never fixed or sticky.** It scrolls away with the page, so
+  nothing can pass behind it, and anchor links like `#menu` need no
+  `scroll-margin-top`.
+- **No sideways scrolling.** `html, body { overflow-x: clip }` is set as a safety
+  net, but nothing on the page is wider than the screen even without it (checked
+  at 375, 390, 768, 1024 and 1440 px).
 
 ---
 
@@ -14,7 +23,9 @@ Entry point. Imports Bootstrap CSS once, then `styles/variables.css` and
 and `EventsProvider`.
 
 ### `App.jsx`
-Lays out the page sections and the cart drawer, and adds a "Skip to content" link.
+Lays out the page sections and the cart drawer, and adds a "Skip to content" link
+that jumps past the navbar to the hero text (`#content`). The navbar itself is
+rendered by `Hero`.
 - **Props:** none · **State:** none
 - **Used in:** `main.jsx`
 
@@ -116,6 +127,15 @@ Helpers: `img(file)` (path to `public/images`), `money(n)`, `shortMoney(n)`,
 `formatDate(iso)` → `{ day, mon, wd }`, `readStore` / `writeStore` (localStorage
 that never throws).
 
+### `utils/scrollLock.js`
+`lockScroll()` / `unlockScroll()` stop the page from scrolling behind a
+full-screen overlay by adding the `scroll-locked` class to `<html>`.
+- **Why `<html>`:** it has `overflow-x: clip`, so `overflow: hidden` on `<body>`
+  alone would **not** stop the page from scrolling.
+- **Nesting:** a counter means nested overlays unlock correctly.
+- **Used by:** `Navbar` (mobile menu), `RegisterModal` and `CartDrawer`. Each
+  unlocks when it closes or unmounts.
+
 ---
 
 ## Shared building blocks
@@ -144,25 +164,37 @@ Inline SVG icons from the design: `ArrowIcon`, `BagIcon`, `PlayIcon`,
 ## Sections
 
 ### `Navbar`
-Fixed header: logo, divider, links (Home, Menu, Our Story, Experiences, Contact),
-theme toggle, cart button with count, an **Admin login** icon button
-(`bi-person-circle`, title "Admin login"), then ORDER NOW.
-- Transparent over the hero. Olive with a shadow after 40 px of scroll.
-- Highlights the link of the section in view.
-- Under 992 px, the links become a hamburger that opens a full-screen olive
-  panel with a circle `clip-path` animation. The panel closes on link click, Esc,
-  or when the window widens past 992 px, and locks page scroll while open.
+A normal header, **not fixed or sticky**: it scrolls away with the page. It holds
+the logo, a divider, the links (Home, Menu, Our Story, Experiences, Contact), the
+theme toggle, the cart button with count, an **Admin login** icon button
+(`bi-person-circle`, title "Admin login") and ORDER NOW.
+- **On the hero** (`onHero`, used by `Hero`): transparent, `position: absolute;
+  top: 0; left: 0; right: 0` inside the hero, which is `position: relative`. So it
+  scrolls away together with the hero. The hero content has enough top padding to
+  start below it.
+- **Without a hero:** `position: relative` with the olive background.
+- **iPhones:** extra `padding-top: env(safe-area-inset-top)` for the notch.
+- "Home" keeps the underline from the design. There is no scroll listener: the
+  navbar is only visible at the top of the page.
+- **Under 992 px:** the links become a hamburger that opens a full-screen olive
+  panel with a circle `clip-path` animation.
+  - Only while open, the panel and the bar above it are `position: fixed`.
+  - The page behind is locked with `lockScroll()` and unlocked on close.
+  - The panel closes on link click, Esc, or when the window widens past 992 px.
 - **Admin login link:** goes to `/admin/login`, the admin dashboard on the same
   site. Locally, Vite's dev proxy serves it; on Render it's the `dist/admin`
   folder.
   - On desktop it's the round icon before ORDER NOW.
   - Under 992 px the icon is hidden, and "Admin login" appears at the bottom of
     the full-screen menu instead.
-- **Props:** none
-- **State:** `scrolled`, `open`, `active`
-- **Listeners:** window `scroll`; `keydown` and a `matchMedia` listener while the
-  menu is open. All are removed on cleanup.
-- **Used in:** `App`
+| Prop | Type | Purpose |
+| --- | --- | --- |
+| `onHero` | boolean (default `false`) | `true`: transparent and absolutely positioned at the top of the hero. `false`: a solid olive bar in the normal page flow. |
+
+- **State:** `open` (mobile menu)
+- **Listeners:** only while the menu is open: `keydown` (Esc) and a `matchMedia`
+  listener. Both are removed on cleanup, which also unlocks scrolling.
+- **Used in:** `Hero`
 
 ### `ThemeToggle`
 Round sun/moon button that cross-fades between the two icons.
@@ -170,10 +202,20 @@ Round sun/moon button that cross-fades between the two icons.
 - **Used in:** `Navbar`
 
 ### `Hero`
-`EventPill` (next event), eyebrow, the heading "A little sip of happiness."
-(terracotta dot), description, and the EXPLORE OUR MENU and DISCOVER HIYA
-buttons. The drinks image is on the right with soft masked edges and slides in on
-load. Below 992 px it moves under the buttons. Ends with three `HeroCard`s.
+Contains, in order:
+- the `Navbar` (`onHero`), at the top of the hero
+- `EventPill` (next event), the eyebrow, and the heading "A little sip of
+  happiness." (terracotta dot)
+- the description and the EXPLORE OUR MENU and DISCOVER HIYA buttons
+- the drinks image, on the right with soft masked edges, which slides in on load
+- three `HeroCard`s at the end
+
+The hero is `position: relative`. Its content starts `160px` (phones `130px`)
+plus the iPhone safe area from the top, so nothing sits under the navbar. The
+text block has `id="content"`, the target of "Skip to content".
+
+**Phones:** the buttons are full width, the drinks image moves under the buttons,
+and the cards stack.
 - **Props:** none · **State:** none (CSS animations only; the pill reads
   `EventsContext`)
 - **Used in:** `App`
@@ -239,6 +281,10 @@ Bootstrap Offcanvas on the right, controlled by `CartContext.isOpen`.
   with a thank-you message.
 - Closes with ×, Esc or a backdrop click (Bootstrap fires `hidden.bs.offcanvas`,
   which updates React state).
+- **Page scroll:** locked with `lockScroll()` on `show.bs.offcanvas` and unlocked
+  on `hidden.bs.offcanvas`. The offcanvas uses `scroll: true`, so Bootstrap's own
+  body lock doesn't interfere.
+- **Phones:** full width (`min(420px, 100vw)`).
 - **Props:** none
 - **State:** `thanks` (toast text). Bootstrap instances are disposed on unmount.
 - **Used in:** `App`
@@ -292,7 +338,7 @@ Registration dialog (`role="dialog"`, `aria-modal`).
 - On success it shows a ticket with a booking code such as `HY-6JV93`. Events
   you already registered for reopen straight to the ticket.
 - Closes with ×, Done, Esc or a click outside. Keeps Tab focus inside, locks page
-  scroll, and becomes a bottom sheet under 640 px.
+  scroll with `lockScroll()`, and becomes a full-width bottom sheet under 640 px.
 - **Props:** `open`, `event`, `registration`, `seatsLeft`, `onClose()`,
   `onRegister(eventId, record)`
 - **State:** `values` (`name`, `phone`, `email`, `notes`), `guests`, `tried`.
@@ -307,6 +353,8 @@ Three reason cards. The middle one is terracotta. Cards lift on hover.
 
 ### `Gallery` (`#gallery`)
 Photo grid (one tall photo and six small ones). Photos zoom slowly on hover.
+- **Columns:** 4 on desktop, 2 on tablets. On phones (≤ 520 px) it's a single
+  column, with the first photo a little taller.
 - **Props:** none · **State:** none
 - **Used in:** `App`
 
@@ -320,6 +368,8 @@ sent to a server.
 
 ### `Footer`
 Espresso footer: logo, Visit / Follow links and the copyright.
+- **Columns:** 3 on desktop and 2 on tablets; stacked in one column on phones
+  (≤ 520 px).
 - **Props:** none · **State:** none
 - **Used in:** `App`
 
@@ -330,8 +380,8 @@ Espresso footer: logo, Visit / Follow links and the copyright.
 | File | Covers |
 | --- | --- |
 | `styles/variables.css` | The five brand colours, the tones mixed from them, light/dark tokens |
-| `styles/global.css` | Base styles, Bootstrap Reboot overrides, buttons, labels, reveal and enter/exit animations, waves, theme transition, reduced motion |
-| `styles/navbar.css` | Navbar and mobile menu |
+| `styles/global.css` | Base styles; the no-sideways-scroll safety net (`overflow-x: clip`, media `max-width: 100%`); the `scroll-locked` class; Bootstrap Reboot overrides; buttons, labels, reveal and enter/exit animations; waves; theme transition; reduced motion |
+| `styles/navbar.css` | Navbar (normal flow / on the hero) and mobile menu |
 | `styles/hero.css` | Hero, hero cards and the next-event pill |
 | `styles/story.css` | Our Story |
 | `styles/menu.css` | Menu section |

@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useCart } from '../context/CartContext';
 import { img } from '../utils/format';
+import { lockScroll, unlockScroll } from '../utils/scrollLock';
 import { BagIcon } from './Icons';
 import ThemeToggle from './ThemeToggle';
 import '../styles/navbar.css';
@@ -12,47 +13,31 @@ const LINKS = [
   { id: 'events', label: 'Experiences' },
   { id: 'contact', label: 'Contact' },
 ];
-// Order the sections appear on the page (used to highlight the active link).
-const PAGE_ORDER = ['hero', 'story', 'menu', 'events', 'contact'];
 
 // The admin dashboard is served by the same site at /admin
 // (locally through the dev proxy, on Render as a sub-folder).
 const ADMIN_LOGIN = '/admin/login';
 
-export default function Navbar() {
-  const [scrolled, setScrolled] = useState(false);
+/**
+ * A normal (not fixed) navbar that scrolls away with the page.
+ * onHero: true when it sits at the top of the hero (transparent, positioned
+ * absolutely inside the hero). Without a hero it is a solid olive bar.
+ */
+export default function Navbar({ onHero = false }) {
   const [open, setOpen] = useState(false);
-  const [active, setActive] = useState('hero');
   const { count, openCart } = useCart();
-
-  // Background after 40px + active link
-  useEffect(() => {
-    const onScroll = () => {
-      setScrolled(window.scrollY > 40);
-      let current = 'hero';
-      for (const id of PAGE_ORDER) {
-        const el = document.getElementById(id);
-        if (el && el.getBoundingClientRect().top <= window.innerHeight * 0.35) current = id;
-      }
-      setActive(current);
-    };
-    onScroll();
-    window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
-  }, []);
 
   // Mobile menu: lock page scroll, close on Esc or when widening past 992px
   useEffect(() => {
     if (!open) return undefined;
-    const prev = document.body.style.overflow;
-    document.body.style.overflow = 'hidden';
+    lockScroll();
     const onKey = (e) => e.key === 'Escape' && setOpen(false);
     const mq = window.matchMedia('(min-width: 992px)');
     const onMq = (e) => e.matches && setOpen(false);
     window.addEventListener('keydown', onKey);
     mq.addEventListener('change', onMq);
     return () => {
-      document.body.style.overflow = prev;
+      unlockScroll();
       window.removeEventListener('keydown', onKey);
       mq.removeEventListener('change', onMq);
     };
@@ -61,7 +46,7 @@ export default function Navbar() {
   const close = () => setOpen(false);
 
   return (
-    <header className={`hy-nav is-fixed${scrolled ? ' scrolled' : ''}${open ? ' open' : ''}`}>
+    <header className={`hy-nav${onHero ? ' on-hero' : ''}${open ? ' open' : ''}`}>
       <div className="wrap">
         <a href="#hero" className="brand" aria-label="HIYA Coffee Shop, back to top" onClick={close}>
           <img src={img('logo.png')} alt="HIYA Coffee Shop" />
@@ -71,7 +56,8 @@ export default function Navbar() {
           <ul className="links">
             {LINKS.map((l) => (
               <li key={l.id}>
-                <a href={`#${l.id}`} className={active === l.id ? 'active' : undefined} aria-current={active === l.id ? 'true' : undefined}>
+                {/* "Home" keeps the underline from the design: the navbar is only seen at the top of the page */}
+                <a href={`#${l.id}`} className={l.id === 'hero' ? 'active' : undefined}>
                   {l.label}
                 </a>
               </li>

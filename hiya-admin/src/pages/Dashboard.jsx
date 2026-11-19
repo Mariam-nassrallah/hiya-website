@@ -2,6 +2,7 @@ import { Bar, Doughnut } from 'react-chartjs-2';
 import { Link, useOutletContext } from 'react-router-dom';
 import '../utils/chartSetup';
 import ChartCard from '../components/ChartCard';
+import ResponsiveTable from '../components/ResponsiveTable';
 import StatCard from '../components/StatCard';
 import StatusBadge from '../components/StatusBadge';
 import { BRAND } from '../utils/brand';
@@ -24,6 +25,14 @@ const STATUS_COLORS = {
   Completed: BRAND.olive,
   Cancelled: BRAND.espresso,
 };
+
+// Columns of the "Recent orders" table (see ResponsiveTable)
+const RECENT_COLUMNS = [
+  { key: 'id', label: 'Order', card: 'title', nowrap: true, render: (order) => <span className="fw-semibold">{order.id}</span> },
+  { key: 'customer', label: 'Customer' },
+  { key: 'total', label: 'Total', nowrap: true, render: (order) => formatMoney(order.total) },
+  { key: 'status', label: 'Status', card: 'badge', nowrap: true, render: (order) => <StatusBadge status={order.status} /> },
+];
 
 /** 'up' / 'down' / 'neutral' for a StatCard, from a percentage change */
 function toneFor(change) {
@@ -117,12 +126,12 @@ export default function Dashboard() {
         Overview up to {formatDate(referenceDate)} (date of the newest order).
       </p>
 
-      {/* Stat cards: 1 per row on phones, 2 on tablets, 4 on desktop */}
+      {/* Stat cards: 2 per row on phones and tablets, 4 on desktop */}
       <div className="row g-3 g-lg-4 mb-4">
-        <div className="col-12 col-md-6 col-xl-3">
+        <div className="col-6 col-xl-3">
           <StatCard icon="bi-people" color="olive" label="Total Users" value={users.length} trend={`${newUsers} new in the last 60 days`} tone={newUsers > 0 ? 'up' : 'neutral'} />
         </div>
-        <div className="col-12 col-md-6 col-xl-3">
+        <div className="col-6 col-xl-3">
           <StatCard
             icon="bi-cup-hot"
             color="sage"
@@ -132,7 +141,7 @@ export default function Dashboard() {
             tone={outOfStock > 0 ? 'down' : 'neutral'}
           />
         </div>
-        <div className="col-12 col-md-6 col-xl-3">
+        <div className="col-6 col-xl-3">
           <StatCard
             icon="bi-receipt"
             color="terra"
@@ -142,7 +151,7 @@ export default function Dashboard() {
             tone={toneFor(ordersChange)}
           />
         </div>
-        <div className="col-12 col-md-6 col-xl-3">
+        <div className="col-6 col-xl-3">
           <StatCard
             icon="bi-cash-stack"
             color="espresso"
@@ -177,28 +186,8 @@ export default function Dashboard() {
                 <h2 className="h6 card-title mb-0">Recent orders</h2>
                 <Link to="/orders" className="small fw-semibold text-decoration-none">View all</Link>
               </div>
-              <div className="table-responsive">
-                <table className="table table-hover align-middle mb-0">
-                  <thead>
-                    <tr>
-                      <th scope="col">Order</th>
-                      <th scope="col">Customer</th>
-                      <th scope="col">Total</th>
-                      <th scope="col">Status</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {recentOrders.map((order) => (
-                      <tr key={order.id}>
-                        <td className="fw-semibold">{order.id}</td>
-                        <td>{order.customer}</td>
-                        <td>{formatMoney(order.total)}</td>
-                        <td><StatusBadge status={order.status} /></td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
+              {/* Table on tablet/desktop, cards on phones */}
+              <ResponsiveTable columns={RECENT_COLUMNS} rows={recentOrders} caption="Recent orders" />
             </div>
           </div>
         </div>

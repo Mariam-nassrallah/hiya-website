@@ -68,6 +68,11 @@
   .contact { padding: 90px 0; border-radius: 36px 36px 0 0; }
   .two { grid-template-columns: 1fr; }
   .c-card { padding: 28px; }
-  .g-grid { grid-template-columns: 1fr 1fr; grid-template-rows: none; grid-auto-rows: 170px; }
-  .g1 { grid-row: span 2; }
+  /* phones: one photo per row, the first one a little taller */
+  .g-grid { grid-template-columns: 1fr; grid-template-rows: 320px; grid-auto-rows: 240px; }
+  .g1 { grid-row: span 1; }
+  /* phones: footer stacked in one column */
+  .f-grid { grid-template-columns: 1fr; gap: 32px; }
+  .f-grid > div:first-child { grid-column: auto; }
+  .f-brand { font-size: 1.8rem; }
 }

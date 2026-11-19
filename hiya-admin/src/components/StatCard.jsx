@@ -6,7 +6,8 @@ export default function StatCard({ icon, label, value, trend, tone = 'neutral', 
 
   return (
     <div className="card card-lift h-100">
-      <div className="card-body d-flex align-items-start gap-3 p-4">
+      {/* Phones show 2 cards per row, so the icon sits above the text there */}
+      <div className="card-body d-flex flex-column flex-sm-row align-items-start gap-2 gap-sm-3 p-3 p-sm-4">
         <div className={`stat-icon icon-${color}`} aria-hidden="true">
           <i className={`bi ${icon}`} />
         </div>

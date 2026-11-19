@@ -6,14 +6,17 @@ import { ORDER_STATUSES } from '../utils/stats';
 
 const PAYMENTS = ['Cash', 'Card'];
 
+// hideBelow / card: see ResponsiveTable
 const columns = [
-  { key: 'id', label: 'Order', render: (order) => <span className="fw-semibold">{order.id}</span> },
+  { key: 'id', label: 'Order', card: 'title', nowrap: true, render: (order) => <span className="fw-semibold">{order.id}</span> },
   { key: 'customer', label: 'Customer' },
-  { key: 'items', label: 'Items' },
-  { key: 'total', label: 'Total', render: (order) => formatMoney(order.total) },
+  { key: 'items', label: 'Items', hideBelow: 'xxl' },
+  { key: 'total', label: 'Total', nowrap: true, render: (order) => formatMoney(order.total) },
   {
     key: 'payment',
     label: 'Payment',
+    hideBelow: 'xxl',
+    nowrap: true,
     render: (order) => (
       <>
         <i className={`bi ${order.payment === 'Card' ? 'bi-credit-card' : 'bi-cash-coin'} me-2 text-body-secondary`} aria-hidden="true" />
@@ -21,8 +24,8 @@ const columns = [
       </>
     ),
   },
-  { key: 'status', label: 'Status', render: (order) => <StatusBadge status={order.status} /> },
-  { key: 'date', label: 'Date', render: (order) => formatDateTime(order.date) },
+  { key: 'status', label: 'Status', card: 'badge', nowrap: true, render: (order) => <StatusBadge status={order.status} /> },
+  { key: 'date', label: 'Date', nowrap: true, render: (order) => formatDateTime(order.date) },
 ];
 
 const editFields = [

@@ -15,8 +15,11 @@
 @keyframes bgIn { to { transform: none; opacity: 1; } }
 
 .hero .wrap { position: relative; z-index: 2; }
-.hero .wrap.top { padding: 160px 0 80px; }
+/* The navbar sits on top of the hero (absolute), so the content starts below it.
+   env(safe-area-inset-top) adds room for the iPhone notch. */
+.hero .wrap.top { padding: calc(160px + env(safe-area-inset-top)) 0 80px; }
 .copy { max-width: 600px; }
+#content:focus { outline: none; } /* target of the "Skip to content" link */
 /* next-event pill (EventPill) */
 .event-pill {
   display: inline-flex; align-items: center; gap: 12px; max-width: 100%; margin-bottom: 28px;
@@ -111,7 +114,7 @@
     -webkit-mask-image: linear-gradient(transparent 0, #000 18%, #000 78%, transparent 100%);
     mask-image: linear-gradient(transparent 0, #000 18%, #000 78%, transparent 100%);
   }
-  .hero .wrap.top { order: 1; padding: 130px 0 0; }
+  .hero .wrap.top { order: 1; padding: calc(130px + env(safe-area-inset-top)) 0 0; }
   .hero .h-cards { order: 3; grid-template-columns: 1fr; gap: 14px; padding: 0 0 50px; }
   .h-card { height: 140px; }
 }

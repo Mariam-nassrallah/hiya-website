@@ -6,13 +6,15 @@ import { formatMoney } from '../utils/format';
 const CATEGORIES = ['Hot coffee', 'Iced coffee', 'Frappe', 'Matcha', 'Breakfast', 'Sweets'];
 const LOW_STOCK = 10;
 
+// hideBelow / card: see ResponsiveTable
 const columns = [
-  { key: 'name', label: 'Product', render: (product) => <span className="fw-semibold">{product.name}</span> },
-  { key: 'category', label: 'Category' },
-  { key: 'price', label: 'Price', render: (product) => formatMoney(product.price) },
+  { key: 'name', label: 'Product', card: 'title', render: (product) => <span className="fw-semibold">{product.name}</span> },
+  { key: 'category', label: 'Category', nowrap: true },
+  { key: 'price', label: 'Price', nowrap: true, render: (product) => formatMoney(product.price) },
   {
     key: 'stock',
     label: 'Stock',
+    nowrap: true,
     render: (product) =>
       product.stock > 0 && product.stock < LOW_STOCK ? (
         <span className="text-terra fw-semibold">{product.stock} · low</span>
@@ -20,8 +22,8 @@ const columns = [
         product.stock
       ),
   },
-  { key: 'sold', label: 'Sold' },
-  { key: 'status', label: 'Status', render: (product) => <StatusBadge status={product.status} /> },
+  { key: 'sold', label: 'Sold', hideBelow: 'xl' },
+  { key: 'status', label: 'Status', card: 'badge', nowrap: true, render: (product) => <StatusBadge status={product.status} /> },
 ];
 
 // Status is not in the form: it is worked out from the stock when saving

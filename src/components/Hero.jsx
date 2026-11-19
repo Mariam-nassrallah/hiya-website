@@ -1,6 +1,7 @@
 import { img } from '../utils/format';
 import EventPill from './EventPill';
 import HeroCard from './HeroCard';
+import Navbar from './Navbar';
 import { ArrowIcon, PlayIcon } from './Icons';
 import '../styles/hero.css';
 
@@ -13,13 +14,16 @@ const CARDS = [
 export default function Hero() {
   return (
     <section className="hero" id="hero">
+      {/* Transparent navbar at the top of the hero (absolute, scrolls away with it) */}
+      <Navbar onHero />
       <div
         className="hero-bg"
         role="img"
         aria-label="Iced Spanish latte and iced matcha latte with milk and matcha splashes"
         style={{ backgroundImage: `url(${img('hero-bg.jpg')})` }}
       />
-      <div className="wrap top">
+      {/* "Skip to content" lands here, past the navbar */}
+      <div className="wrap top" id="content" tabIndex={-1}>
         <div className="copy">
           <EventPill />
           <p className="eyebrow reveal" style={{ animationDelay: '.1s' }}>

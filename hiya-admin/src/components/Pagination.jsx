@@ -1,4 +1,5 @@
 // Bootstrap pagination: Prev, page numbers, Next.
+// Below 576px only the current page number is shown, so it fits on one line.
 export default function Pagination({ currentPage, totalPages, onPageChange }) {
   if (totalPages <= 1) return null;
 
@@ -14,8 +15,9 @@ export default function Pagination({ currentPage, totalPages, onPageChange }) {
           </button>
         </li>
 
+        {/* On small phones only the current page number is shown (Prev 3 Next) */}
         {pages.map((page) => (
-          <li key={page} className={`page-item ${page === currentPage ? 'active' : ''}`}>
+          <li key={page} className={`page-item ${page === currentPage ? 'active' : 'd-none d-sm-block'}`}>
             <button
               type="button"
               className="page-link"

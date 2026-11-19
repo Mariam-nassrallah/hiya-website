@@ -7,10 +7,13 @@ const ROLES = ['Admin', 'Staff', 'Customer'];
 const STATUSES = ['Active', 'Inactive'];
 
 // Which columns the table shows
+// hideBelow: less important columns hide on smaller screens (see ResponsiveTable).
+// card: on phones, 'title' is the card heading and 'badge' sits top-right.
 const columns = [
   {
     key: 'name',
     label: 'Name',
+    card: 'title',
     render: (user) => (
       <div className="d-flex align-items-center gap-2">
         <span className="avatar avatar-sm" aria-hidden="true">{getInitials(user.name)}</span>
@@ -18,11 +21,11 @@ const columns = [
       </div>
     ),
   },
-  { key: 'email', label: 'Email' },
-  { key: 'phone', label: 'Phone' },
-  { key: 'role', label: 'Role' },
-  { key: 'status', label: 'Status', render: (user) => <StatusBadge status={user.status} /> },
-  { key: 'joined', label: 'Joined', render: (user) => formatDate(user.joined) },
+  { key: 'email', label: 'Email', className: 'text-break' },
+  { key: 'phone', label: 'Phone', hideBelow: 'xxl', nowrap: true },
+  { key: 'role', label: 'Role', hideBelow: 'xl' },
+  { key: 'status', label: 'Status', card: 'badge', render: (user) => <StatusBadge status={user.status} /> },
+  { key: 'joined', label: 'Joined', hideBelow: 'xxl', nowrap: true, render: (user) => formatDate(user.joined) },
 ];
 
 // Which fields the Edit form shows
