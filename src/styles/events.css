@@ -78,7 +78,7 @@
 
 /* ---------- registration modal ---------- */
 .hy-modal {
-  position: fixed; inset: 0; z-index: 100; display: grid; place-items: center; padding: 20px;
+  position: fixed; inset: 0; z-index: 1055; display: grid; place-items: center; padding: 20px; /* above the fixed navbar (1030) */
   background: color-mix(in srgb, var(--espresso) 50%, transparent); backdrop-filter: blur(6px);
   opacity: 0; pointer-events: none; visibility: hidden;
   transition: opacity .35s var(--ease), visibility 0s .35s;

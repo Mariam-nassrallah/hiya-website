@@ -6,13 +6,21 @@
 /* No sideways scrolling. "clip" (not "hidden") keeps position: sticky/fixed working
    inside the page and does not turn <html>/<body> into a scroll container. */
 html, body { overflow-x: clip; }
-/* Set by utils/scrollLock.js while a full-screen menu, modal or drawer is open */
-html.scroll-locked { overflow: hidden; }
+html {
+  /* Anchor links (#menu, #events, #contact) stop below the fixed navbar, plus 16px */
+  scroll-padding-top: calc(var(--nav-h) + env(safe-area-inset-top) + 16px);
+}
+/* Set by utils/scrollLock.js while a full-screen menu, modal or drawer is open.
+   The padding replaces the hidden scrollbar's width, so nothing jumps sideways. */
+html.scroll-locked { overflow: hidden; padding-right: var(--scrollbar-w, 0px); }
 /* Media never wider than its container. :where() has zero specificity,
    so any component class that sets a size still wins. */
 :where(img, svg, canvas, video) { max-width: 100%; height: auto; }
 body {
   margin: 0;
+  /* The navbar is fixed at the top: push the page down by its height
+     (+ the iPhone notch), so the hero starts right below it. */
+  padding-top: calc(var(--nav-h) + env(safe-area-inset-top));
   font-family: var(--sans);
   font-size: 16px;
   line-height: normal;
@@ -31,8 +39,10 @@ button { font: inherit; }
 
 .wrap { width: min(1240px, 92%); margin-inline: auto; }
 
+/* "Skip to content" lives inside the fixed navbar, so z-index: 1 is enough to
+   show it on top of the navbar's row when it gets keyboard focus. */
 .skip-link:focus {
-  position: fixed !important; left: 16px; top: 16px; z-index: 2000;
+  position: fixed !important; left: 16px; top: 16px; z-index: 1;
   background: var(--cream); color: var(--espresso); padding: 12px 18px; border-radius: 999px; font-weight: 600;
 }
 .center { text-align: center; }

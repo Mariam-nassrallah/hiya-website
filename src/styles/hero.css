@@ -1,8 +1,8 @@
 /* ---------- HERO ---------- */
-/* The hero starts directly under the static navbar (106px tall on desktop),
-   so together they fill the first screen. */
+/* The hero starts right below the fixed navbar (the body is pushed down by
+   --nav-h), so together they fill the first screen. */
 .hero {
-  position: relative; min-height: max(calc(100vh - 106px), 654px);
+  position: relative; min-height: max(calc(100vh - var(--nav-h) - env(safe-area-inset-top)), 680px);
   display: flex; flex-direction: column; justify-content: space-between;
   overflow: hidden; color: var(--cream); background: var(--hero-grad);
 }

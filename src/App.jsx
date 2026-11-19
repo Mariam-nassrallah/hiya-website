@@ -12,10 +12,7 @@ import CartDrawer from './components/CartDrawer';
 export default function App() {
   return (
     <>
-      <a href="#main" className="visually-hidden-focusable skip-link">
-        Skip to content
-      </a>
-      {/* Static navbar in the normal flow; the hero starts right below it */}
+      {/* Fixed navbar, rendered once, before all sections (it also holds the "Skip to content" link) */}
       <Navbar />
       <main id="main">
         <Hero />

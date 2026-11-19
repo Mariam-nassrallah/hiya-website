@@ -16,6 +16,7 @@
   --sage-soft: color-mix(in srgb, var(--sage) 35%, var(--cream));
   --font-title: 'Playfair Display', Georgia, serif;
   --sidebar-width: 260px;
+  --topbar-h: 72px; /* height of the fixed top bar; the content is pushed down by it */
 
   /* ---- Bootstrap variables ---- */
   --bs-primary: var(--olive);
@@ -53,7 +54,9 @@ body { -webkit-font-smoothing: antialiased; }
 html, body { overflow-x: clip; }
 /* Lock the page behind an open modal or the open mobile sidebar.
    Locking <body> alone is not enough because <html> has overflow-x: clip. */
-html:has(body.modal-open) { overflow: hidden; }
+html:has(body.modal-open) { overflow: hidden; padding-right: var(--scrollbar-w, 0px); }
+/* keep the hidden scrollbar's space in the fixed top bar too, so it doesn't jump */
+html:has(body.modal-open) .top-navbar { padding-right: var(--scrollbar-w, 0px); }
 @media (max-width: 991.98px) { html:has(.sidebar.show) { overflow: hidden; } }
 /* Media never wider than its container (zero specificity, classes still win) */
 :where(img, svg, canvas, video) { max-width: 100%; height: auto; }
@@ -161,7 +164,8 @@ html:has(body.modal-open) { overflow: hidden; }
 .bg-sage-soft { background: var(--sage-soft) !important; }
 
 /* ---------- layout ---------- */
-.admin-main { min-width: 0; }
+/* The top bar is fixed: push the content down by its height so nothing hides under it */
+.admin-main { min-width: 0; padding-top: var(--topbar-h); }
 @media (min-width: 992px) {
   .sidebar-shell { position: fixed; inset: 0 auto 0 0; width: var(--sidebar-width); background: var(--espresso); z-index: 1030; }
   .admin-main { margin-left: var(--sidebar-width); }
@@ -184,8 +188,18 @@ html:has(body.modal-open) { overflow: hidden; }
 .sidebar-close:hover { color: var(--sage); }
 .sidebar-note { background: rgba(245, 235, 221, .07); color: rgba(245, 235, 221, .7); }
 
-/* Normal top bar: solid, not sticky, scrolls away with the page */
-.top-navbar { background: var(--cream); border-bottom: 1px solid rgba(56, 37, 29, .08); }
+/* Top bar: fixed at the top of the screen, always visible while scrolling.
+   Fully solid (no transparency or blur), so nothing shows through it.
+   Desktop: it starts where the fixed sidebar ends; under 992px: full width. */
+.top-navbar {
+  position: fixed; top: 0; right: 0; left: 0; z-index: 1030;
+  height: var(--topbar-h);
+  background: #F5EBDD; /* cream */
+  border-bottom: 1px solid rgba(56, 37, 29, .08);
+}
+@media (min-width: 992px) { .top-navbar { left: var(--sidebar-width); } }
+/* dark theme (when <html data-bs-theme="dark"> is set): solid espresso */
+[data-bs-theme='dark'] .top-navbar { background: #38251D; color: var(--cream); }
 
 /* ---------- ResponsiveTable: phone cards (< 768px) ---------- */
 .rt-cards { display: grid; gap: .75rem; }

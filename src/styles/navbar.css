@@ -1,39 +1,56 @@
 /* ---------- NAVBAR ----------
-   position: static, a solid olive bar in the normal document flow.
-   It scrolls away with the page and the hero starts right below it,
-   so nothing ever passes behind it. */
+   Fixed at the top of the screen on every page: it stays visible while
+   scrolling. Fully solid olive (no transparency, opacity, blur or transform),
+   so nothing ever shows through it. Exactly --nav-h tall (+ the iPhone notch);
+   the body is pushed down by the same amount (global.css), so nothing hides
+   under it. z-index 1030: only the cart drawer, modals and toasts go above it. */
 .hy-nav {
-  position: static; background: var(--olive); color: var(--cream);
-  padding: calc(22px + env(safe-area-inset-top)) 0 22px; /* env(): room for the iPhone notch */
+  position: fixed; top: 0; left: 0; right: 0; width: 100%; z-index: 1030;
+  height: calc(var(--nav-h) + env(safe-area-inset-top));
+  padding-top: env(safe-area-inset-top); /* room for the iPhone notch */
+  background: var(--olive); color: var(--cream);
 }
-.hy-nav .wrap { display: flex; align-items: center; gap: 28px; }
-.brand img { width: 62px; height: 62px; display: block; }
+/* while scrolling is locked (cart, modal, menu) keep the hidden scrollbar's space,
+   so the navbar's content doesn't jump sideways (see utils/scrollLock.js) */
+html.scroll-locked .hy-nav { padding-right: var(--scrollbar-w, 0px); }
+.hy-nav .wrap { height: 100%; display: flex; align-items: center; gap: 28px; }
+.brand img { width: 56px; height: 56px; display: block; }
 .divider { width: 1px; height: 40px; background: color-mix(in srgb, var(--cream) 45%, transparent); }
 .links { display: flex; gap: 40px; list-style: none; margin: 0; padding: 0; }
 .hy-nav nav[aria-label='Main'] { margin-right: auto; }
-.links a { position: relative; font-size: .98rem; color: color-mix(in srgb, var(--cream) 86%, transparent); transition: color .3s; }
-.links a::after {
-  content: ''; position: absolute; left: 0; right: 0; bottom: -8px; height: 2px; background: var(--cream);
-  transform: scaleX(0); transform-origin: left; transition: transform .4s var(--ease);
+
+/* The underline is a 2px background line 6–8px under the text that grows from
+   the left on hover (padding on an inline link does not change the layout). */
+.links a {
+  font-size: .98rem; color: color-mix(in srgb, var(--cream) 86%, transparent);
+  padding-bottom: 8px;
+  background: linear-gradient(var(--cream), var(--cream)) left bottom / 0 2px no-repeat;
+  transition: color .3s, background-size .4s var(--ease);
 }
-.links a:hover, .links a.active { color: var(--cream); }
-.links a:hover::after, .links a.active::after { transform: scaleX(1); }
+.links a:hover, .links a.active { color: var(--cream); background-size: 100% 2px; }
 
 .nav-actions { display: flex; align-items: center; gap: 12px; }
 
-/* round icon buttons: theme toggle + cart */
+/* round icon buttons: theme toggle, cart, admin login */
 .nav-icon {
-  position: relative; width: 44px; height: 44px; border-radius: 50%;
+  width: 44px; height: 44px; padding: 0; border-radius: 50%;
   border: 1.5px solid color-mix(in srgb, var(--cream) 45%, transparent);
   background: transparent; color: var(--cream); display: grid; place-items: center; cursor: pointer;
   transition: background .3s var(--ease), color .3s var(--ease), border-color .3s var(--ease);
 }
 .nav-icon:hover { background: var(--cream); color: var(--olive); border-color: var(--cream); }
+
+/* Cart count: the bag icon and the count share one grid cell; the count sits
+   in the top-right corner and is nudged 5px outside the circle. */
+.nav-cart > * { grid-area: 1 / 1; }
 .nav-count {
-  position: absolute; top: -5px; right: -5px; min-width: 20px; height: 20px; padding: 0 5px;
+  place-self: start end; transform: translate(5px, -5px);
+  min-width: 20px; height: 20px; padding: 0 5px;
   border-radius: 999px; background: var(--terra); color: var(--cream);
   font: 700 .7rem/20px var(--sans); text-align: center;
 }
+
+/* Theme toggle: sun and moon share one grid cell and cross-fade */
 .theme-toggle .tt-icon {
   grid-area: 1 / 1; display: grid; place-items: center;
   opacity: 0; transform: rotate(-90deg) scale(.6);
@@ -47,46 +64,69 @@
 .btn-order { background: var(--cream); color: var(--espresso); padding: 14px 24px; margin-left: 4px; }
 .btn-order:hover { color: var(--espresso); transform: translateY(-2px); box-shadow: 0 12px 24px -12px var(--shadow); }
 
-.burger { display: none; width: 44px; height: 44px; border: 0; background: none; cursor: pointer; position: relative; padding: 0; }
-.burger span { position: absolute; left: 11px; right: 11px; height: 1.5px; background: var(--cream); transition: .35s var(--ease); }
-.burger span:nth-child(1) { top: 17px; }
-.burger span:nth-child(2) { top: 25px; }
-.hy-nav.open .burger span:nth-child(1) { top: 21px; transform: rotate(45deg); }
-.hy-nav.open .burger span:nth-child(2) { top: 21px; transform: rotate(-45deg); }
+/* Hamburger: two lines in a flex column; they turn into an X with transform */
+.burger {
+  display: none; width: 44px; height: 44px; padding: 0; border: 0; background: none; cursor: pointer;
+  flex-direction: column; justify-content: center; align-items: center; gap: 6.5px;
+}
+.burger span { display: block; width: 22px; height: 1.5px; background: var(--cream); transition: transform .35s var(--ease); }
+.hy-nav.open .burger span:nth-child(1) { transform: translateY(4px) rotate(45deg); }
+.hy-nav.open .burger span:nth-child(2) { transform: translateY(-4px) rotate(-45deg); }
+
+/* Full-screen mobile menu: not shown at all while closed (also on desktop) */
+.menu-panel { display: none; }
 
 @media (max-width: 1100px) { .links { gap: 26px; } }
 
 @media (max-width: 991px) {
   .hy-nav nav[aria-label='Main'], .divider, .hy-nav .btn-order, .nav-admin { display: none; }
   .nav-actions { margin-left: auto; gap: 8px; }
-  .burger { display: block; }
-  .menu-panel {
-    /* Full-screen overlay: fixed, but only visible while the menu is open
-       (page scroll is locked meanwhile, see utils/scrollLock.js) */
-    position: fixed; inset: 0; z-index: 60; background: var(--olive);
-    display: flex; flex-direction: column; justify-content: center; gap: 10px; padding: 0 8%;
-    clip-path: circle(0 at calc(100% - 40px) 40px);
-    visibility: hidden; transition: clip-path .7s var(--ease), visibility 0s .7s;
+  .burger { display: flex; }
+
+  /* Only while the menu is open (and during its short closing animation):
+     a fixed overlay over the whole screen. Page scroll is locked while it is
+     open (utils/scrollLock.js). z-index: -1 places it inside the navbar's own
+     layer (1030): above the whole page, but below the bar's row, so the logo,
+     theme, cart and close button stay visible on top of it. */
+  .hy-nav.open .menu-panel,
+  .hy-nav.closing .menu-panel {
+    /* 3 rows below the bar: equal space above and below the links,
+       "Admin login" at the bottom of the last row */
+    display: grid; grid-template-rows: 1fr auto 1fr; position: fixed; inset: 0; z-index: -1;
+    background: var(--olive); padding: calc(var(--nav-h) + env(safe-area-inset-top)) 8% 0; overflow-y: auto;
+    animation: menuOpen .7s var(--ease) both;
   }
-  .hy-nav.open .menu-panel { clip-path: circle(150% at calc(100% - 40px) 40px); visibility: visible; transition: clip-path .7s var(--ease); }
-  /* Only while the menu is open: the bar's row (logo, theme, cart, close button)
-     stays visible on top of the overlay. */
-  .hy-nav.open .wrap { position: relative; z-index: 61; }
-  .menu-panel a { font-family: var(--serif); font-size: 2.5rem; color: var(--cream); opacity: 0; transform: translateY(20px); transition: .5s var(--ease); align-self: flex-start; }
-  .hy-nav.open .menu-panel a { opacity: 1; transform: none; }
-  .menu-panel .btn-terra { margin-top: 24px; font-family: var(--sans); font-size: .95rem; }
-  /* small "Admin login" link pinned to the bottom of the full-screen menu */
-  .menu-panel .menu-admin {
-    position: absolute; left: 8%; bottom: max(32px, env(safe-area-inset-bottom));
+  .hy-nav.closing .menu-panel { animation: menuClose .6s var(--ease) both; }
+
+  /* the big links in the middle row; "Admin login" at the bottom of the last row */
+  .menu-links { grid-row: 2; display: flex; flex-direction: column; align-items: flex-start; gap: 10px; }
+  .menu-panel a { animation: menuLinkIn .5s var(--ease) both; }
+  .menu-links a { font-family: var(--serif); font-size: 2.5rem; color: var(--cream); }
+  .menu-links .btn-terra { margin-top: 24px; font-family: var(--sans); font-size: .95rem; }
+  .menu-admin {
+    grid-row: 3; align-self: end; justify-self: start; margin-bottom: max(32px, env(safe-area-inset-bottom));
     display: inline-flex; align-items: center; gap: 10px;
     font: 500 .95rem var(--sans); color: color-mix(in srgb, var(--cream) 80%, transparent);
     border-bottom: 1px solid color-mix(in srgb, var(--cream) 35%, transparent); padding-bottom: 4px;
   }
-  .menu-panel .menu-admin i { font-size: 1.2rem; }
-  .menu-panel .menu-admin:hover { color: var(--cream); }
+  .menu-admin i { font-size: 1.2rem; }
+  .menu-admin:hover { color: var(--cream); }
 }
-@media (min-width: 992px) { .menu-panel { display: none; } }
-@media (max-width: 520px) {
-  .brand img { width: 52px; height: 52px; }
+
+/* circle that grows from the menu button / shrinks back into it
+   (the button's centre: 4% + 22px from the right, half the bar's height from the top) */
+@keyframes menuOpen {
+  from { clip-path: circle(0 at calc(96% - 22px) calc(env(safe-area-inset-top) + var(--nav-h) / 2)); }
+  to { clip-path: circle(150% at calc(96% - 22px) calc(env(safe-area-inset-top) + var(--nav-h) / 2)); }
+}
+@keyframes menuClose {
+  from { clip-path: circle(150% at calc(96% - 22px) calc(env(safe-area-inset-top) + var(--nav-h) / 2)); }
+  to { clip-path: circle(0 at calc(96% - 22px) calc(env(safe-area-inset-top) + var(--nav-h) / 2)); }
+}
+@keyframes menuLinkIn { from { opacity: 0; transform: translateY(20px); } }
+
+/* the 64px bar under 992px: smaller logo and icon buttons */
+@media (max-width: 991px) {
+  .brand img { width: 44px; height: 44px; }
   .nav-icon { width: 40px; height: 40px; }
 }

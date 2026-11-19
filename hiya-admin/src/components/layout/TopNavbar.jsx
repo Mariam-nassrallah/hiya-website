@@ -19,9 +19,9 @@ export default function TopNavbar({ title, onMenuClick }) {
 
   return (
     <>
-      {/* A normal bar: not sticky or fixed, it scrolls away with the page */}
+      {/* Fixed bar: stays at the top while scrolling (see .top-navbar in theme.css) */}
       <header className="top-navbar">
-        <div className="container-fluid px-3 px-md-4 py-3 d-flex align-items-center gap-3">
+        <div className="container-fluid h-100 px-3 px-md-4 d-flex align-items-center gap-3">
           <button
             type="button"
             className="btn btn-outline-secondary btn-icon d-lg-none flex-shrink-0"
@@ -42,10 +42,14 @@ export default function TopNavbar({ title, onMenuClick }) {
                 <small className="text-body-secondary">{user.role}</small>
               </div>
             </div>
-            <button type="button" className="btn btn-outline-danger btn-sm px-3" onClick={() => setConfirmLogout(true)}>
+            <button
+              type="button"
+              className="btn btn-outline-danger btn-sm px-3"
+              onClick={() => setConfirmLogout(true)}
+              aria-label="Logout"
+            >
               <i className="bi bi-box-arrow-right" aria-hidden="true" />
               <span className="d-none d-md-inline ms-2">Logout</span>
-              <span className="visually-hidden d-md-none">Logout</span>
             </button>
           </div>
         </div>

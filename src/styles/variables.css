@@ -11,6 +11,10 @@
   --sage: #C5C9A2;
   --ease: cubic-bezier(.22, 1, .36, 1);
 
+  /* Height of the fixed navbar (navbar.css sets the bar to exactly this height).
+     The page is pushed down by it, so nothing hides under the navbar. */
+  --nav-h: 80px;
+
   --serif: 'Playfair Display', Georgia, serif;
   --sans: 'DM Sans', system-ui, sans-serif;
 
@@ -43,6 +47,11 @@
   --disabled-text: color-mix(in srgb, var(--espresso) 70%, var(--cream));
   --error: color-mix(in srgb, var(--terra) 70%, var(--espresso));
   --shadow: color-mix(in srgb, var(--espresso) 45%, transparent);
+}
+
+/* Smaller navbar under 992px (phones and tablets) */
+@media (max-width: 991px) {
+  :root { --nav-h: 64px; }
 }
 
 /* ---------- Dark theme: espresso backgrounds, cream text ---------- */

@@ -5,10 +5,17 @@ scroll in this order: Navbar → Hero → StorySection → MenuSection → Event
 → WhyUs → Gallery → Contact → Footer, with CartDrawer mounted at the end.
 
 **Layout rules:**
-- **The navbar is `position: static`,** in the normal document flow. The hero
-  starts right at its bottom edge, and both scroll away with the page, so
-  nothing can pass behind the navbar. Anchor links like `#menu` need no
-  `scroll-margin-top`.
+- **The navbar is `position: fixed` and always visible** at the top of the
+  screen while scrolling. It's fully solid olive, so nothing shows through it.
+  - **Height:** exactly `--nav-h` (80 px, or 64 px under 992 px).
+  - **Space for it:** the body is pushed down by the same amount
+    (`padding-top: calc(var(--nav-h) + env(safe-area-inset-top))`), so the hero
+    starts right below it.
+  - **Anchor links** like `#menu` stop below it thanks to
+    `html { scroll-padding-top }`.
+- **Layers:** only the cart drawer (1040/1045), the registration modal (1055)
+  and toasts (1090) go above the navbar (1030). The open mobile menu lives
+  inside the navbar's own layer.
 - **No sideways scrolling.** `html, body { overflow-x: clip }` is set as a safety
   net, but nothing on the page is wider than the screen even without it (checked
   at 375, 390, 768, 1024 and 1440 px).
@@ -23,8 +30,9 @@ Entry point. Imports Bootstrap CSS once, then `styles/variables.css` and
 and `EventsProvider`.
 
 ### `App.jsx`
-Lays out the page: a "Skip to content" link (to `#main`), the `Navbar`, then
-`<main>` with all the sections, the footer and the cart drawer.
+Lays out the page: the fixed `Navbar` first (rendered once, before all sections;
+it also holds the "Skip to content" link), then `<main>` with all the sections,
+the footer and the cart drawer.
 - **Props:** none · **State:** none
 - **Used in:** `main.jsx`
 
@@ -132,6 +140,12 @@ full-screen overlay by adding the `scroll-locked` class to `<html>`.
 - **Why `<html>`:** it has `overflow-x: clip`, so `overflow: hidden` on `<body>`
   alone would **not** stop the page from scrolling.
 - **Nesting:** a counter means nested overlays unlock correctly.
+- **No sideways jump:** on computers with a classic scrollbar, hiding it would
+  shift the page and the fixed navbar by its width.
+  - So `lockScroll()` first measures the scrollbar (`innerWidth −
+    clientWidth`) and stores it as `--scrollbar-w`.
+  - While locked, `<html>` and the navbar get that much `padding-right`.
+  - On phones the scrollbar takes no space, so it is 0.
 - **Used by:** `Navbar` (mobile menu), `RegisterModal` and `CartDrawer`. Each
   unlocks when it closes or unmounts.
 
@@ -163,24 +177,56 @@ Inline SVG icons from the design: `ArrowIcon`, `BagIcon`, `PlayIcon`,
 ## Sections
 
 ### `Navbar`
-A **static** header (`position: static`, normal document flow) with a solid olive
-background (`var(--olive)`) and cream text. There is no fixed or sticky
-positioning, no z-index and no blur, so it scrolls away with the page and the
-hero starts right below it.
+A **fixed** header that always stays visible at the top of the screen while
+scrolling, on desktop and on phones:
+
+```css
+position: fixed; top: 0; left: 0; right: 0; width: 100%; z-index: 1030;
+height: calc(var(--nav-h) + env(safe-area-inset-top));
+padding-top: env(safe-area-inset-top);   /* iPhone notch */
+background: var(--olive);                /* fully solid */
+```
+
+- **Solid:** no transparency, opacity, `backdrop-filter` or `transform`, so
+  nothing shows through it, and it looks the same on every part of the page and
+  in light and dark mode.
+- **Height:** the bar is exactly `--nav-h` tall: **80 px**, or **64 px** under
+  992 px (set in `variables.css`). The logo is 56 px, or 44 px under 992 px.
+- **Nothing hides under it:** `body` has `padding-top` of the same height, and
+  `html { scroll-padding-top: calc(var(--nav-h) + env(safe-area-inset-top) + 16px) }`
+  makes `#menu`, `#events` and `#contact` stop 16 px below it.
+- **No scroll listener:** there is no "scrolled" state and no transparent
+  version.
+- **"Skip to content":** it's the navbar's first element, and only shows on
+  keyboard focus.
+
+The small details are built with normal layout, with no extra positioning:
+
+| Detail | How it's done |
+| --- | --- |
+| Link underline | A 2px background line under the link (`background-size` grows from 0 to 100% on hover / for "Home") instead of an absolute `::after` |
+| Cart count | The bag icon and the count share one grid cell; the count is aligned top-right and nudged 5px out with `transform` |
+| Theme toggle | Sun and moon share one grid cell and cross-fade |
+| Hamburger | Two lines in a flex column that turn into an X with `transform` |
 
 It holds the logo, a divider, the links (Home, Menu, Our Story, Experiences,
 Contact), the theme toggle, the cart button with count, an **Admin login** icon
 button (`bi-person-circle`, title "Admin login") and ORDER NOW.
-- **iPhones:** `padding-top: env(safe-area-inset-top)` is added for the notch.
-- "Home" keeps the underline from the design. There is no scroll listener and no
-  "scrolled" state.
+- "Home" keeps the underline from the design.
 - **Under 992 px:** the links become a hamburger that opens a full-screen olive
-  panel with a circle `clip-path` animation.
-  - Only while open, the panel is a `position: fixed` overlay, and the bar's row
-    (logo, theme, cart, close button) is kept above it.
-  - The page behind is locked with `lockScroll()` and unlocked on close.
-  - The panel closes on the X, a link click, Esc, or when the window widens past
-    992 px.
+  menu with a circle animation that grows from the button. The menu can be
+  opened anywhere on the page, since the bar is always visible.
+  - **Closed:** the menu is `display: none`.
+  - **Open** (and during the 0.6 s closing animation): it is a
+    `position: fixed` overlay over the whole screen with `z-index: -1`. That
+    keeps it inside the navbar's own layer (1030): above the whole page, but
+    below the bar's row, so the logo, theme, cart and close button stay on top.
+  - **Layout:** a 3-row grid below the bar centres the big links, with "Admin
+    login" at the bottom.
+  - The page behind is locked with `lockScroll()` and unlocked on close, and the
+    scroll position stays the same.
+  - The menu closes on the X, a link click, Esc, or when the window widens past
+    992 px. With reduced motion it closes instantly.
 - **Admin login link:** goes to `/admin/login`, the admin dashboard on the same
   site. Locally, Vite's dev proxy serves it; on Render it's the `dist/admin`
   folder.
@@ -189,7 +235,9 @@ button (`bi-person-circle`, title "Admin login") and ORDER NOW.
     the full-screen menu instead.
 
 - **Props:** none
-- **State:** `open` (mobile menu)
+- **State:** `menu`: `'closed'`, `'open'` or `'closing'` (the circle shrinking
+  back). A timer switches `'closing'` to `'closed'` after 600 ms, and is cleared
+  on unmount.
 - **Listeners:** only while the menu is open: `keydown` (Esc) and a `matchMedia`
   listener. Both are removed on cleanup, which also unlocks scrolling.
 - **Used in:** `App`
@@ -207,12 +255,13 @@ Contains, in order:
 - the drinks image, on the right with soft masked edges, which slides in on load
 - three `HeroCard`s at the end
 
-The hero starts directly **under** the static navbar: its background begins at
-the navbar's bottom edge, with no negative margin and no extra padding for the
-navbar.
-- **Content:** starts `56px` from the hero's top (`40px` on phones).
-- **Height:** `max(100vh − 106px, 654px)`, so the navbar plus the hero fill the
-  first screen.
+The hero starts directly **below** the fixed navbar, because the body is pushed
+down by `--nav-h`. Its background begins at the navbar's bottom edge, with no
+negative margin and no extra padding for the navbar.
+- **Content:** starts `56px` from the hero's top (`40px` on phones). That's
+  normal spacing, not room for the navbar.
+- **Height:** `max(100vh − --nav-h − notch, 680px)`, so the navbar plus the hero
+  fill the first screen.
 - **Drinks image:** `position: absolute; top: 0` inside the hero, which is
   `position: relative; overflow: hidden`, so it never reaches the navbar.
 
@@ -341,6 +390,7 @@ Registration dialog (`role="dialog"`, `aria-modal`).
   you already registered for reopen straight to the ticket.
 - Closes with ×, Done, Esc or a click outside. Keeps Tab focus inside, locks page
   scroll with `lockScroll()`, and becomes a full-width bottom sheet under 640 px.
+  Its overlay has `z-index: 1055`, so it also covers the fixed navbar (1030).
 - **Props:** `open`, `event`, `registration`, `seatsLeft`, `onClose()`,
   `onRegister(eventId, record)`
 - **State:** `values` (`name`, `phone`, `email`, `notes`), `guests`, `tried`.
@@ -381,9 +431,9 @@ Espresso footer: logo, Visit / Follow links and the copyright.
 
 | File | Covers |
 | --- | --- |
-| `styles/variables.css` | The five brand colours, the tones mixed from them, light/dark tokens |
-| `styles/global.css` | Base styles; the no-sideways-scroll safety net (`overflow-x: clip`, media `max-width: 100%`); the `scroll-locked` class; Bootstrap Reboot overrides; buttons, labels, reveal and enter/exit animations; waves; theme transition; reduced motion |
-| `styles/navbar.css` | Static navbar and the full-screen mobile menu |
+| `styles/variables.css` | The five brand colours, the tones mixed from them, light/dark tokens, and `--nav-h` (80 px, or 64 px under 992 px) |
+| `styles/global.css` | Base styles; the body's `padding-top` and the `scroll-padding-top` for the fixed navbar; the no-sideways-scroll safety net (`overflow-x: clip`, media `max-width: 100%`); the `scroll-locked` class; Bootstrap Reboot overrides; buttons, labels, reveal and enter/exit animations; waves; theme transition; reduced motion |
+| `styles/navbar.css` | Fixed navbar and the full-screen mobile menu |
 | `styles/hero.css` | Hero, hero cards and the next-event pill |
 | `styles/story.css` | Our Story |
 | `styles/menu.css` | Menu section |

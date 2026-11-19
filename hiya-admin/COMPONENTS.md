@@ -19,9 +19,16 @@ main.jsx ─ BrowserRouter ─ AuthProvider (logged-in user, login, logout)
 ```
 
 **Layout rules:**
-- **No sticky or fixed top bar.** The top bar scrolls away with the page. Only
-  the desktop sidebar is fixed, on the left, and the content starts next to it
-  (`margin-left: 260px`), never under it.
+- **The top bar is fixed and always visible** while scrolling, on every page.
+  - It's fully solid, so nothing shows through it.
+  - The content is pushed down by its height (`--topbar-h`, 72 px), so it
+    starts below it.
+  - On desktop the sidebar is also fixed on the left, full height. The top bar
+    starts where the sidebar ends, and the content starts next to the sidebar
+    (`margin-left: 260px`), never under it.
+- **Login page:** it has no top bar and no extra padding.
+- **Layers:** only modals (1050/1055), the mobile sidebar (1040/1045) and toasts
+  (1090) go above the top bar (1030).
 - **No sideways scrolling, on any page or table.**
   - `html, body { overflow-x: clip }` is set as a safety net.
   - Tables never need it: `ResponsiveTable` hides less important columns on
@@ -148,7 +155,9 @@ data only. See the note in `README.md` about what a real login needs.
 
 ### `Layout`
 The app shell: `Sidebar`, `TopNavbar`, then the current page through
-`<Outlet />`, plus the global `ToastMessage`.
+`<Outlet />`, plus the global `ToastMessage`. The top bar is fixed, so the
+content wrapper (`.admin-main`) has `padding-top: var(--topbar-h)` (72 px) and
+starts below it.
 
 - **Props:** none
 - **State**
@@ -195,8 +204,25 @@ It uses Bootstrap's responsive `offcanvas-lg` class:
 - **Used in:** `Layout`
 
 ### `TopNavbar`
-A normal top bar: **not sticky or fixed**, with a solid cream background and no
-blur. It scrolls away with the page. It contains:
+A **fixed** top bar that always stays visible at the top of the screen while
+scrolling (`.top-navbar` in `theme.css`):
+
+```css
+position: fixed; top: 0; right: 0; z-index: 1030; height: var(--topbar-h); /* 72px */
+left: 0;                                  /* under 992px */
+left: var(--sidebar-width);               /* 992px and up: starts where the sidebar ends (260px) */
+background: #F5EBDD;                      /* fully solid; dark theme: #38251D */
+```
+
+- **Solid:** no transparency and no blur, so nothing shows through it.
+- **Space for it:** `.admin-main` has `padding-top: var(--topbar-h)`, so the
+  content starts below it.
+- **Dark theme:** the `#38251D` background applies when `<html>` has
+  `data-bs-theme="dark"`. The dashboard has no theme switch yet, so it shows
+  the light bar.
+- **Phones:** the Logout button is named with `aria-label="Logout"`.
+
+It contains:
 - a hamburger button (below 992 px)
 - the page title (Playfair Display)
 - the logged-in user's avatar (initials), name and role, read from `useAuth()`
@@ -511,8 +537,11 @@ Shared by both modals. While `show` is `true`, it:
 - adds Bootstrap's `modal-open` class to `<body>` so the page behind can't
   scroll. `<html>` has `overflow-x: clip`, so `theme.css` also locks `<html>`
   while that class is present (`html:has(body.modal-open)`).
+- measures the scrollbar first and stores its width as `--scrollbar-w`. While
+  the modal is open, `<html>` and the fixed top bar get that much
+  `padding-right`, so nothing jumps sideways when the scrollbar disappears.
 
-Both are removed in the effect's cleanup.
+All of this is removed in the effect's cleanup.
 
 ### `utils/stats.js`
 Pure functions used by the Dashboard:
