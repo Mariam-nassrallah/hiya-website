@@ -1,14 +1,11 @@
 /* ---------- NAVBAR ----------
-   A normal navbar: it is never fixed or sticky, so it scrolls away with the
-   page and nothing ever passes behind it.
-   - Default (a page without a hero): a solid olive bar in the normal flow.
-   - .on-hero: transparent, placed at the top of the hero (the hero is
-     position: relative), so it scrolls away together with the hero. */
+   position: static, a solid olive bar in the normal document flow.
+   It scrolls away with the page and the hero starts right below it,
+   so nothing ever passes behind it. */
 .hy-nav {
-  position: relative; z-index: 50; background: var(--olive);
-  padding: calc(22px + env(safe-area-inset-top)) 0 22px; /* room for the iPhone notch */
+  position: static; background: var(--olive); color: var(--cream);
+  padding: calc(22px + env(safe-area-inset-top)) 0 22px; /* env(): room for the iPhone notch */
 }
-.hy-nav.on-hero { position: absolute; top: 0; left: 0; right: 0; background: transparent; }
 .hy-nav .wrap { display: flex; align-items: center; gap: 28px; }
 .brand img { width: 62px; height: 62px; display: block; }
 .divider { width: 1px; height: 40px; background: color-mix(in srgb, var(--cream) 45%, transparent); }
@@ -64,15 +61,17 @@
   .nav-actions { margin-left: auto; gap: 8px; }
   .burger { display: block; }
   .menu-panel {
-    position: fixed; inset: 0; z-index: -1; background: var(--olive);
+    /* Full-screen overlay: fixed, but only visible while the menu is open
+       (page scroll is locked meanwhile, see utils/scrollLock.js) */
+    position: fixed; inset: 0; z-index: 60; background: var(--olive);
     display: flex; flex-direction: column; justify-content: center; gap: 10px; padding: 0 8%;
     clip-path: circle(0 at calc(100% - 40px) 40px);
     visibility: hidden; transition: clip-path .7s var(--ease), visibility 0s .7s;
   }
   .hy-nav.open .menu-panel { clip-path: circle(150% at calc(100% - 40px) 40px); visibility: visible; transition: clip-path .7s var(--ease); }
-  /* Only while the full-screen menu is open: keep the bar (logo, close button)
-     pinned on top of the overlay. Page scroll is locked meanwhile (scrollLock.js). */
-  .hy-nav.open { position: fixed; top: 0; left: 0; right: 0; background: transparent; }
+  /* Only while the menu is open: the bar's row (logo, theme, cart, close button)
+     stays visible on top of the overlay. */
+  .hy-nav.open .wrap { position: relative; z-index: 61; }
   .menu-panel a { font-family: var(--serif); font-size: 2.5rem; color: var(--cream); opacity: 0; transform: translateY(20px); transition: .5s var(--ease); align-self: flex-start; }
   .hy-nav.open .menu-panel a { opacity: 1; transform: none; }
   .menu-panel .btn-terra { margin-top: 24px; font-family: var(--sans); font-size: .95rem; }

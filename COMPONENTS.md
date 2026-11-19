@@ -1,13 +1,13 @@
 # Components
 
 Reference for every component, context and hook in `src/`. The page is a single
-scroll in this order: Hero (with the Navbar inside it) → StorySection →
-MenuSection → EventsSection → WhyUs → Gallery → Contact → Footer, with
-CartDrawer mounted at the end.
+scroll in this order: Navbar → Hero → StorySection → MenuSection → EventsSection
+→ WhyUs → Gallery → Contact → Footer, with CartDrawer mounted at the end.
 
 **Layout rules:**
-- **The navbar is never fixed or sticky.** It scrolls away with the page, so
-  nothing can pass behind it, and anchor links like `#menu` need no
+- **The navbar is `position: static`,** in the normal document flow. The hero
+  starts right at its bottom edge, and both scroll away with the page, so
+  nothing can pass behind the navbar. Anchor links like `#menu` need no
   `scroll-margin-top`.
 - **No sideways scrolling.** `html, body { overflow-x: clip }` is set as a safety
   net, but nothing on the page is wider than the screen even without it (checked
@@ -23,9 +23,8 @@ Entry point. Imports Bootstrap CSS once, then `styles/variables.css` and
 and `EventsProvider`.
 
 ### `App.jsx`
-Lays out the page sections and the cart drawer, and adds a "Skip to content" link
-that jumps past the navbar to the hero text (`#content`). The navbar itself is
-rendered by `Hero`.
+Lays out the page: a "Skip to content" link (to `#main`), the `Navbar`, then
+`<main>` with all the sections, the footer and the cart drawer.
 - **Props:** none · **State:** none
 - **Used in:** `main.jsx`
 
@@ -164,37 +163,36 @@ Inline SVG icons from the design: `ArrowIcon`, `BagIcon`, `PlayIcon`,
 ## Sections
 
 ### `Navbar`
-A normal header, **not fixed or sticky**: it scrolls away with the page. It holds
-the logo, a divider, the links (Home, Menu, Our Story, Experiences, Contact), the
-theme toggle, the cart button with count, an **Admin login** icon button
-(`bi-person-circle`, title "Admin login") and ORDER NOW.
-- **On the hero** (`onHero`, used by `Hero`): transparent, `position: absolute;
-  top: 0; left: 0; right: 0` inside the hero, which is `position: relative`. So it
-  scrolls away together with the hero. The hero content has enough top padding to
-  start below it.
-- **Without a hero:** `position: relative` with the olive background.
-- **iPhones:** extra `padding-top: env(safe-area-inset-top)` for the notch.
-- "Home" keeps the underline from the design. There is no scroll listener: the
-  navbar is only visible at the top of the page.
+A **static** header (`position: static`, normal document flow) with a solid olive
+background (`var(--olive)`) and cream text. There is no fixed or sticky
+positioning, no z-index and no blur, so it scrolls away with the page and the
+hero starts right below it.
+
+It holds the logo, a divider, the links (Home, Menu, Our Story, Experiences,
+Contact), the theme toggle, the cart button with count, an **Admin login** icon
+button (`bi-person-circle`, title "Admin login") and ORDER NOW.
+- **iPhones:** `padding-top: env(safe-area-inset-top)` is added for the notch.
+- "Home" keeps the underline from the design. There is no scroll listener and no
+  "scrolled" state.
 - **Under 992 px:** the links become a hamburger that opens a full-screen olive
   panel with a circle `clip-path` animation.
-  - Only while open, the panel and the bar above it are `position: fixed`.
+  - Only while open, the panel is a `position: fixed` overlay, and the bar's row
+    (logo, theme, cart, close button) is kept above it.
   - The page behind is locked with `lockScroll()` and unlocked on close.
-  - The panel closes on link click, Esc, or when the window widens past 992 px.
+  - The panel closes on the X, a link click, Esc, or when the window widens past
+    992 px.
 - **Admin login link:** goes to `/admin/login`, the admin dashboard on the same
   site. Locally, Vite's dev proxy serves it; on Render it's the `dist/admin`
   folder.
   - On desktop it's the round icon before ORDER NOW.
   - Under 992 px the icon is hidden, and "Admin login" appears at the bottom of
     the full-screen menu instead.
-| Prop | Type | Purpose |
-| --- | --- | --- |
-| `onHero` | boolean (default `false`) | `true`: transparent and absolutely positioned at the top of the hero. `false`: a solid olive bar in the normal page flow. |
 
+- **Props:** none
 - **State:** `open` (mobile menu)
 - **Listeners:** only while the menu is open: `keydown` (Esc) and a `matchMedia`
   listener. Both are removed on cleanup, which also unlocks scrolling.
-- **Used in:** `Hero`
+- **Used in:** `App`
 
 ### `ThemeToggle`
 Round sun/moon button that cross-fades between the two icons.
@@ -203,16 +201,20 @@ Round sun/moon button that cross-fades between the two icons.
 
 ### `Hero`
 Contains, in order:
-- the `Navbar` (`onHero`), at the top of the hero
 - `EventPill` (next event), the eyebrow, and the heading "A little sip of
   happiness." (terracotta dot)
 - the description and the EXPLORE OUR MENU and DISCOVER HIYA buttons
 - the drinks image, on the right with soft masked edges, which slides in on load
 - three `HeroCard`s at the end
 
-The hero is `position: relative`. Its content starts `160px` (phones `130px`)
-plus the iPhone safe area from the top, so nothing sits under the navbar. The
-text block has `id="content"`, the target of "Skip to content".
+The hero starts directly **under** the static navbar: its background begins at
+the navbar's bottom edge, with no negative margin and no extra padding for the
+navbar.
+- **Content:** starts `56px` from the hero's top (`40px` on phones).
+- **Height:** `max(100vh − 106px, 654px)`, so the navbar plus the hero fill the
+  first screen.
+- **Drinks image:** `position: absolute; top: 0` inside the hero, which is
+  `position: relative; overflow: hidden`, so it never reaches the navbar.
 
 **Phones:** the buttons are full width, the drinks image moves under the buttons,
 and the cards stack.
@@ -381,7 +383,7 @@ Espresso footer: logo, Visit / Follow links and the copyright.
 | --- | --- |
 | `styles/variables.css` | The five brand colours, the tones mixed from them, light/dark tokens |
 | `styles/global.css` | Base styles; the no-sideways-scroll safety net (`overflow-x: clip`, media `max-width: 100%`); the `scroll-locked` class; Bootstrap Reboot overrides; buttons, labels, reveal and enter/exit animations; waves; theme transition; reduced motion |
-| `styles/navbar.css` | Navbar (normal flow / on the hero) and mobile menu |
+| `styles/navbar.css` | Static navbar and the full-screen mobile menu |
 | `styles/hero.css` | Hero, hero cards and the next-event pill |
 | `styles/story.css` | Our Story |
 | `styles/menu.css` | Menu section |

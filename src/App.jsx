@@ -1,3 +1,4 @@
+import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import StorySection from './components/StorySection';
 import MenuSection from './components/MenuSection';
@@ -11,11 +12,12 @@ import CartDrawer from './components/CartDrawer';
 export default function App() {
   return (
     <>
-      <a href="#content" className="visually-hidden-focusable skip-link">
+      <a href="#main" className="visually-hidden-focusable skip-link">
         Skip to content
       </a>
+      {/* Static navbar in the normal flow; the hero starts right below it */}
+      <Navbar />
       <main id="main">
-        {/* The navbar is rendered inside the Hero, so it scrolls away with it */}
         <Hero />
         <StorySection />
         <MenuSection />

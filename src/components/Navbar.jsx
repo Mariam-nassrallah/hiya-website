@@ -19,11 +19,10 @@ const LINKS = [
 const ADMIN_LOGIN = '/admin/login';
 
 /**
- * A normal (not fixed) navbar that scrolls away with the page.
- * onHero: true when it sits at the top of the hero (transparent, positioned
- * absolutely inside the hero). Without a hero it is a solid olive bar.
+ * A static navbar: a solid olive bar in the normal page flow, above the hero.
+ * It scrolls away with the page; nothing ever passes behind it.
  */
-export default function Navbar({ onHero = false }) {
+export default function Navbar() {
   const [open, setOpen] = useState(false);
   const { count, openCart } = useCart();
 
@@ -46,7 +45,7 @@ export default function Navbar({ onHero = false }) {
   const close = () => setOpen(false);
 
   return (
-    <header className={`hy-nav${onHero ? ' on-hero' : ''}${open ? ' open' : ''}`}>
+    <header className={`hy-nav${open ? ' open' : ''}`}>
       <div className="wrap">
         <a href="#hero" className="brand" aria-label="HIYA Coffee Shop, back to top" onClick={close}>
           <img src={img('logo.png')} alt="HIYA Coffee Shop" />
